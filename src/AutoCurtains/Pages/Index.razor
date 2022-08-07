@@ -1,0 +1,36 @@
+﻿@inject IStepperMotor StepperMotor
+@inject IOptions<CurtainConfig> CurtainConfig
+
+@page "/"
+
+<br />
+<br />
+
+<MudStack Spacing="8">
+    <MudPaper>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true" OnClick="Open">Open</MudButton>
+    </MudPaper>
+    <MudPaper>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true" OnClick="Close">Close</MudButton>
+    </MudPaper>
+</MudStack>
+
+@code {
+    async Task Open()
+    {
+        await Task.Run(() =>
+        {
+            StepperMotor.RPM = CurtainConfig.Value.RPM;
+            StepperMotor.Step(CurtainConfig.Value.Steps);
+        });
+    }
+
+    async Task Close()
+    {
+        await Task.Run(() =>
+        {
+            StepperMotor.RPM = CurtainConfig.Value.RPM;
+            StepperMotor.Step(-CurtainConfig.Value.Steps);
+        });
+    }
+}
