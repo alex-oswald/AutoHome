@@ -8,7 +8,7 @@ public abstract class StepperMotorOptionsBase
     public ushort EnablePin { get; set; }
 
     [Required]
-    public bool Simulation { get; set; } = true;
+    public bool Simulation { get; set; }
 
     public int StepsPerRevolution { get; set; } = 200;
 }

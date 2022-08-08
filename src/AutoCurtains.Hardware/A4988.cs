@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 using System.Device.Gpio;
 using System.Diagnostics;
@@ -24,10 +25,10 @@ public class A4988 : StepperMotorBase
     private readonly Stopwatch _stopwatch = new();
     private int _steps = 0;
 
-    public A4988(ILogger<A4988> logger, A4988Options options)
+    public A4988(ILogger<A4988> logger, IOptions<A4988Options> options)
     {
         _logger = logger;
-        Options = options ?? throw new ArgumentNullException(nameof(options));
+        Options = options.Value ?? throw new ArgumentNullException(nameof(options));
 
         _logger.LogDebug("Initializing A4988 simulation:{simulation}", Options.Simulation);
 

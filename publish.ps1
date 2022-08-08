@@ -6,7 +6,10 @@ param(
 $runDirectory = Get-Location
 
 try {
-	Set-Location $ProjectName
+	Set-Location "src\$ProjectName"
+
+	$a = Get-Location
+	Write-Host $a
 
 	Write-Host "Publishing $ProjectName" -ForegroundColor Green
 
