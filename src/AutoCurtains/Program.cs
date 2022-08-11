@@ -29,6 +29,19 @@ try
         .ValidateDataAnnotations();
     builder.Services.AddAutoCurtainsHardware(builder.Configuration);
 
+    CertificateOptions certOptions = new();
+    builder.Configuration.GetSection(CertificateOptions.Section).Bind(certOptions);
+    if (!builder.Environment.IsDevelopment())
+    {
+        builder.WebHost.ConfigureKestrel(options =>
+        {
+            options.ListenAnyIP(5000, listenOptions =>
+            {
+                listenOptions.UseHttps(certOptions.Path, certOptions.Password);
+            });
+        }).UseUrls("https://ac.pi.lan");
+    }
+
     var app = builder.Build();
 
     if (!app.Environment.IsDevelopment())

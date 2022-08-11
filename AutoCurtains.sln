@@ -7,11 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoCurtains", "src\AutoCur
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{991B2368-57CC-4EFD-86B6-F51E6548B977}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		publish.ps1 = publish.ps1
+		publish_sc.ps1 = publish_sc.ps1
 		README.md = README.md
+		setup_sdcard.ps1 = setup_sdcard.ps1
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCurtains.Hardware", "src\AutoCurtains.Hardware\AutoCurtains.Hardware.csproj", "{D41A9D61-80BD-4D62-9604-4DAB0DC24EEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoCurtains.Hardware", "src\AutoCurtains.Hardware\AutoCurtains.Hardware.csproj", "{D41A9D61-80BD-4D62-9604-4DAB0DC24EEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

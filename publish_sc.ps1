@@ -13,11 +13,12 @@ try {
 	dotnet build
 
 	dotnet publish `
+		--runtime linux-arm `
 		--configuration Release `
-		--output "bin\Release\net6.0\publish\" `
-		--self-contained false
+		--output "bin\Release\net6.0\linux-arm\publish\" `
+		--self-contained
 
-	scp -r bin\Release\net6.0\publish\* pi@$($IPAddress):/home/pi/$($ProjectName)
+	scp -r bin\Release\net6.0\linux-arm\publish\* pi@$($IPAddress):/home/pi/$($ProjectName)
 	
 	# Copy certificate
 	Set-Location $runDirectory

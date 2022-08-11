@@ -22,3 +22,14 @@ The Raspberry Pi runs a Blazor server app that controls the stepper motor. Visit
 
 ![phone_screenshot](./misc/phone_screenshot.png)
 
+## Secrets
+
+Create `appsettings.Production.json` and copy contents of `secrets.json`.
+
+## Other
+
+A4988 [Datasheet](https://www.allegromicro.com/-/media/files/datasheets/a4988-datasheet.pdf)
+
+https://docs.microsoft.com/en-us/dotnet/iot/deployment
+
+https://www.makerguides.com/a4988-stepper-motor-driver-arduino-tutorial/
