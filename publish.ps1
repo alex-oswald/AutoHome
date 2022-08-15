@@ -21,7 +21,7 @@ try {
 	
 	# Copy certificate
 	Set-Location $runDirectory
-	scp server.pfx pi@$($IPAddress):/home/pi/$($ProjectName)
+	scp sslcert.pfx pi@$($IPAddress):/home/pi/$($ProjectName)
 }
 finally {
 	Set-Location $runDirectory

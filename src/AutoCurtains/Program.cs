@@ -37,7 +37,7 @@ try
         {
             options.ListenAnyIP(5000, listenOptions =>
             {
-                listenOptions.UseHttps(certOptions.Path, certOptions.Password);
+                listenOptions.UseHttps(certOptions.Path);
             });
         }).UseUrls("https://ac.pi.lan");
     }
