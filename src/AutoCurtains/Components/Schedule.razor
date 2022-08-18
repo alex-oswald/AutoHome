@@ -1,0 +1,46 @@
+﻿<MudText Typo="Typo.h4" Class="mb-4">Schedule</MudText>
+
+<MudStack Spacing="4">
+    <MudPaper Class="pa-4">
+
+        <MudText Typo="Typo.subtitle1">Auto Open</MudText>
+        <MudSwitch @onchange="SunsetCheckedChanged" @bind-Checked="@sunset" Color="Color.Secondary">Close at Sunset</MudSwitch>
+        <MudTimePicker @ref="_openPicker" PickerVariant="PickerVariant.Dialog" Label="Open Time" AmPm="true" AutoClose="true" Disabled="sunset">
+            <PickerActions>
+                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _openPicker?.Clear())">Clear</MudButton>
+            </PickerActions>
+        </MudTimePicker>
+
+    </MudPaper>
+    <MudPaper Class="pa-4">
+
+        <MudText Typo="Typo.subtitle1">Auto Close</MudText>
+        <MudSwitch @onchange="SunriseCheckedChanged" @bind-Checked="@sunrise" Color="Color.Secondary">Open at Sunrise</MudSwitch>
+        <MudTimePicker @ref="_closePicker" PickerVariant="PickerVariant.Dialog" Label="Close Time" AmPm="true" AutoClose="true" Disabled="sunrise">
+            <PickerActions>
+                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _closePicker?.Clear())">Clear</MudButton>
+            </PickerActions>
+        </MudTimePicker>
+
+    </MudPaper>
+</MudStack>
+
+@code {
+    MudTimePicker? _openPicker;
+    MudTimePicker? _closePicker;
+    private bool sunset;
+    private bool sunrise;
+
+    TimeSpan? openTime = null;
+    TimeSpan? closeTime = null;
+
+    void SunsetCheckedChanged(ChangeEventArgs value)
+    {
+        sunset = value.Value as bool? ?? false;
+    }
+
+    void SunriseCheckedChanged(ChangeEventArgs value)
+    {
+        sunrise = value.Value as bool? ?? false;
+    }
+}
