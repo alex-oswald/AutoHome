@@ -1,5 +1,7 @@
 using AutoCurtains;
+using AutoCurtains.Data;
 using AutoCurtains.Hardware;
+using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using Serilog;
 using Serilog.Events;
@@ -28,7 +30,15 @@ try
     builder.Services.AddOptions<CurtainConfig>()
         .Bind(builder.Configuration.GetSection(CurtainConfig.Section))
         .ValidateDataAnnotations();
+    builder.Services.AddOptions<DeviceOptions>()
+        .Bind(builder.Configuration.GetSection(DeviceOptions.Section))
+        .ValidateDataAnnotations();
     builder.Services.AddAutoCurtainsHardware(builder.Configuration);
+
+    builder.Services.AddDbContext<SqliteDbContext>(options =>
+        options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
+
+    builder.Services.AddScoped<ICurtainsDataManager, CurtainsDataManager>();
 
     CertificateOptions certOptions = new();
     builder.Configuration.GetSection(CertificateOptions.Section).Bind(certOptions);
@@ -44,6 +54,13 @@ try
     }
 
     var app = builder.Build();
+
+    // Make sure the database is created
+    using (var scoped = app.Services.CreateScope())
+    {
+        var db = scoped.ServiceProvider.GetService<SqliteDbContext>();
+        db?.Database.EnsureCreated();
+    }
 
     if (!app.Environment.IsDevelopment())
     {
