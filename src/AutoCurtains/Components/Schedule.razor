@@ -47,7 +47,6 @@
 
     async Task CloseTimeChanged(TimeSpan? time)
     {
-        if (time < openTime)
         closeTime = time;
         await CurtainsDataManager.SaveCloseTimeAsync(closeTime, CancellationToken.None);
     }

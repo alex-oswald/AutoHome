@@ -40,6 +40,9 @@ try
 
     builder.Services.AddScoped<ICurtainsDataManager, CurtainsDataManager>();
 
+    builder.Services.AddSingleton<ITimeTriggersService, TimeTriggersService>();
+    builder.Services.AddHostedService<TriggerLoaderHostedService>();
+
     CertificateOptions certOptions = new();
     builder.Configuration.GetSection(CertificateOptions.Section).Bind(certOptions);
     if (!builder.Environment.IsDevelopment())
