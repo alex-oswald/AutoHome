@@ -17,26 +17,26 @@ public class CurtainsDataManager : ICurtainsDataManager
 
     private readonly ILogger<CurtainsDataManager> _logger;
     private readonly SqliteDbContext _dbContext;
-    private readonly DeviceOptions _options;
+    //private readonly DeviceOptions _options;
 
     public CurtainsDataManager(
         ILogger<CurtainsDataManager> logger,
-        SqliteDbContext dbContext,
-        IOptions<DeviceOptions> options)
+        SqliteDbContext dbContext)
+        //IOptions<DeviceOptions> options)
     {
         _logger = logger;
         _dbContext = dbContext;
-        _options = options.Value ?? throw new ArgumentNullException(nameof(options));
+        //_options = options.Value ?? throw new ArgumentNullException(nameof(options));
     }
 
     public async Task<(TimeSpan? open, TimeSpan? close)> GetTimesAsync(CancellationToken cancellationToken)
     {
         var open = await _dbContext.TimeTriggers!
-            .Where(o => o.DeviceId == _options.Id)
+            //.Where(o => o.DeviceId == _options.Id)
             .Where(o => o.Name == CURTAINS_OPEN)
             .SingleOrDefaultAsync(cancellationToken);
         var close = await _dbContext.TimeTriggers!
-            .Where(o => o.DeviceId == _options.Id)
+            //.Where(o => o.DeviceId == _options.Id)
             .Where(o => o.Name == CURTAINS_CLOSE)
             .SingleOrDefaultAsync(cancellationToken);
         _logger.LogInformation("{name} open:{openTime} close:{closeTime}", nameof(GetTimesAsync), open?.Time, close?.Time);
@@ -47,7 +47,7 @@ public class CurtainsDataManager : ICurtainsDataManager
     {
         _logger.LogInformation("{name} open:{time}", nameof(SaveOpenTimeAsync), time);
         var open = await _dbContext.TimeTriggers!
-            .Where(o => o.DeviceId == _options.Id)
+            //.Where(o => o.DeviceId == _options.Id)
             .Where(o => o.Name == CURTAINS_OPEN)
             .SingleOrDefaultAsync(cancellationToken);
         if (open is not null)
@@ -59,7 +59,7 @@ public class CurtainsDataManager : ICurtainsDataManager
         {
             open ??= new()
             {
-                DeviceId = _options.Id,
+                //DeviceId = _options.Id,
                 Name = CURTAINS_OPEN,
                 Time = time,
             };
@@ -72,7 +72,7 @@ public class CurtainsDataManager : ICurtainsDataManager
     {
         _logger.LogInformation("{name} close:{time}", nameof(SaveCloseTimeAsync), time);
         var close = await _dbContext.TimeTriggers!
-            .Where(o => o.DeviceId == _options.Id)
+            //.Where(o => o.DeviceId == _options.Id)
             .Where(o => o.Name == CURTAINS_CLOSE)
             .SingleOrDefaultAsync(cancellationToken);
         if (close is not null)
@@ -84,7 +84,7 @@ public class CurtainsDataManager : ICurtainsDataManager
         {
             close ??= new()
             {
-                DeviceId = _options.Id,
+                //DeviceId = _options.Id,
                 Name = CURTAINS_CLOSE,
                 Time = time,
             };

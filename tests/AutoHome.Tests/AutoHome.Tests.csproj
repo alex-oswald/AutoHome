@@ -21,8 +21,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\AutoCurtains\AutoHome.csproj" />
-  </ItemGroup>
-
 </Project>

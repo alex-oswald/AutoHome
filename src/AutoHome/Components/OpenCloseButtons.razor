@@ -1,7 +1,4 @@
-﻿@inject IStepperMotor StepperMotor
-@inject IOptions<CurtainConfig> CurtainConfig
-
-<MudText Typo="Typo.h4" Class="mb-4">Controls</MudText>
+﻿<MudText Typo="Typo.h4" Class="mb-4">Controls</MudText>
 
 <MudStack Spacing="4">
     <MudPaper>
@@ -53,18 +50,6 @@
 
     async Task Rotate(bool clockwise)
     {
-        await Task.Run(() =>
-        {
-            try
-            {
-                StepperMotor.SetEnabledState(true);
-                StepperMotor.RPM = CurtainConfig.Value.RPM;
-                StepperMotor.Step(clockwise ? CurtainConfig.Value.Steps : -CurtainConfig.Value.Steps);
-            }
-            finally
-            {
-                StepperMotor.SetEnabledState(false);
-            }
-        });
+
     }
 }

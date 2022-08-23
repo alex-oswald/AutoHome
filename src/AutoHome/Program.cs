@@ -1,6 +1,5 @@
 using AutoHome;
 using AutoHome.Data;
-using AutoHome.Hardware;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using Serilog;
@@ -26,14 +25,6 @@ try
     builder.Services.AddRazorPages();
     builder.Services.AddServerSideBlazor();
     builder.Services.AddMudServices();
-
-    builder.Services.AddOptions<CurtainConfig>()
-        .Bind(builder.Configuration.GetSection(CurtainConfig.Section))
-        .ValidateDataAnnotations();
-    builder.Services.AddOptions<DeviceOptions>()
-        .Bind(builder.Configuration.GetSection(DeviceOptions.Section))
-        .ValidateDataAnnotations();
-    builder.Services.AddAutoCurtainsHardware(builder.Configuration);
 
     builder.Services.AddDbContext<SqliteDbContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("Default")));

@@ -1,5 +1,4 @@
-﻿@inject ICurtainsDataManager CurtainsDataManager
-
+﻿
 <MudText Typo="Typo.h4" Class="mb-4">Schedule</MudText>
 
 <MudStack Spacing="4">
@@ -34,20 +33,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var times = await CurtainsDataManager.GetTimesAsync(CancellationToken.None);
-        openTime = times.open;
-        closeTime = times.close;
+        //var times = await CurtainsDataManager.GetTimesAsync(CancellationToken.None);
+        //openTime = times.open;
+        //closeTime = times.close;
     }
 
     async Task OpenTimeChanged(TimeSpan? time)
     {
         openTime = time;
-        await CurtainsDataManager.SaveOpenTimeAsync(openTime, CancellationToken.None);
+        //await CurtainsDataManager.SaveOpenTimeAsync(openTime, CancellationToken.None);
     }
 
     async Task CloseTimeChanged(TimeSpan? time)
     {
         closeTime = time;
-        await CurtainsDataManager.SaveCloseTimeAsync(closeTime, CancellationToken.None);
+        //await CurtainsDataManager.SaveCloseTimeAsync(closeTime, CancellationToken.None);
     }
 }

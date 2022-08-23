@@ -1,5 +1,4 @@
 ﻿using AutoHome.Data;
-using AutoHome.Hardware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -13,19 +12,19 @@ public interface ICurtainController
 
 public class CurtainController : ICurtainController
 {
-    private readonly ILogger<CurtainController> _logger;
-    private readonly IStepperMotor _stepperMotor;
-    private readonly CurtainConfig _options;
+    //private readonly ILogger<CurtainController> _logger;
+    //private readonly IStepperMotor _stepperMotor;
+    //private readonly CurtainConfig _options;
 
-    public CurtainController(
-        ILogger<CurtainController> logger,
-        IStepperMotor stepperMotor,
-        IOptions<CurtainConfig> options)
-    {
-        _logger = logger;
-        _stepperMotor = stepperMotor;
-        _options = options.Value ?? throw new ArgumentNullException(nameof(options));
-    }
+    //public CurtainController(
+    //    ILogger<CurtainController> logger,
+    //    IStepperMotor stepperMotor,
+    //    IOptions<CurtainConfig> options)
+    //{
+    //    _logger = logger;
+    //    _stepperMotor = stepperMotor;
+    //    _options = options.Value ?? throw new ArgumentNullException(nameof(options));
+    //}
 
     public async Task OpenAsync() => await RotateAsync(true);
 
@@ -35,16 +34,16 @@ public class CurtainController : ICurtainController
     {
         await Task.Run(() =>
         {
-            try
-            {
-                _stepperMotor.SetEnabledState(true);
-                _stepperMotor.RPM = _options.RPM;
-                _stepperMotor.Step(clockwise ? _options.Steps : -_options.Steps);
-            }
-            finally
-            {
-                _stepperMotor.SetEnabledState(false);
-            }
+            //try
+            //{
+            //    _stepperMotor.SetEnabledState(true);
+            //    _stepperMotor.RPM = _options.RPM;
+            //    _stepperMotor.Step(clockwise ? _options.Steps : -_options.Steps);
+            //}
+            //finally
+            //{
+            //    _stepperMotor.SetEnabledState(false);
+            //}
         });
     }
 }

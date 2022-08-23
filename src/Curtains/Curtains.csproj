@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoCurtains.Hardware\AutoHome.Hardware.csproj" />
+    <ProjectReference Include="..\AutoHome.Hardware\AutoHome.Hardware.csproj" />
   </ItemGroup>
 
 </Project>
