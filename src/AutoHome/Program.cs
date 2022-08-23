@@ -1,7 +1,6 @@
 using AutoHome;
 using AutoHome.Data;
 using Microsoft.EntityFrameworkCore;
-using MudBlazor.Services;
 using Serilog;
 using Serilog.Events;
 
@@ -22,9 +21,8 @@ try
 
     builder.Host.UseSerilog();
 
+    builder.Services.AddControllersWithViews();
     builder.Services.AddRazorPages();
-    builder.Services.AddServerSideBlazor();
-    builder.Services.AddMudServices();
 
     builder.Services.AddDbContext<SqliteDbContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
@@ -57,7 +55,11 @@ try
         db?.Database.EnsureCreated();
     }
 
-    if (!app.Environment.IsDevelopment())
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseWebAssemblyDebugging();
+    }
+    else
     {
         app.UseExceptionHandler("/Error");
         app.UseHsts();
@@ -65,12 +67,14 @@ try
 
     app.UseHttpsRedirection();
 
+    app.UseBlazorFrameworkFiles();
     app.UseStaticFiles();
 
     app.UseRouting();
 
-    app.MapBlazorHub();
-    app.MapFallbackToPage("/_Host");
+    app.MapRazorPages();
+    app.MapControllers();
+    app.MapFallbackToFile("index.html");
 
     app.Run();
 }
