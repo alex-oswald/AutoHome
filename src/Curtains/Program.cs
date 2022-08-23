@@ -1,4 +1,4 @@
-using AutoCurtains.Hardware;
+using AutoHome.Hardware;
 using Curtains;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

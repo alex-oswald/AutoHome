@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AutoCurtains.Hardware;
+namespace AutoHome.Hardware;
 
 public abstract class StepperMotorOptionsBase
 {

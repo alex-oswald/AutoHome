@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoCurtains", "src\AutoCurtains\AutoCurtains.csproj", "{B88DD1D1-B1F7-4F70-AF16-F62316FA2A3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome", "src\AutoHome\AutoHome.csproj", "{B88DD1D1-B1F7-4F70-AF16-F62316FA2A3C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{991B2368-57CC-4EFD-86B6-F51E6548B977}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,11 +14,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		setup_sdcard.ps1 = setup_sdcard.ps1
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoCurtains.Hardware", "src\AutoCurtains.Hardware\AutoCurtains.Hardware.csproj", "{D41A9D61-80BD-4D62-9604-4DAB0DC24EEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Hardware", "src\AutoHome.Hardware\AutoHome.Hardware.csproj", "{D41A9D61-80BD-4D62-9604-4DAB0DC24EEB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoCurtains.Tests", "tests\AutoCurtains.Tests\AutoCurtains.Tests.csproj", "{F1E2DBDD-29C3-4845-B0FE-61CC43D88A23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Tests", "tests\AutoHome.Tests\AutoHome.Tests.csproj", "{F1E2DBDD-29C3-4845-B0FE-61CC43D88A23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Curtains", "src\Curtains\Curtains.csproj", "{502FBDD9-BFBE-463D-BE28-6F477EDEFAAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Curtains", "src\Curtains\Curtains.csproj", "{502FBDD9-BFBE-463D-BE28-6F477EDEFAAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

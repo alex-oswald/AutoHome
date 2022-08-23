@@ -1,4 +1,4 @@
-﻿namespace AutoCurtains.Data;
+﻿namespace AutoHome.Data;
 
 public interface IEntity
 {

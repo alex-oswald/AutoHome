@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AutoCurtains;
+namespace AutoHome;
 
 public class DeviceOptions
 {

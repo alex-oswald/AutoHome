@@ -1,4 +1,4 @@
-namespace AutoCurtains.Tests;
+namespace AutoHome.Tests;
 
 public class UnitTest1
 {

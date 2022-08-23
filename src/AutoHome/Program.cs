@@ -1,6 +1,6 @@
-using AutoCurtains;
-using AutoCurtains.Data;
-using AutoCurtains.Hardware;
+using AutoHome;
+using AutoHome.Data;
+using AutoHome.Hardware;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using Serilog;

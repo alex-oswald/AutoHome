@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace AutoCurtains.Data;
+namespace AutoHome.Data;
 
 public class SqliteDbContext : DbContext
 {

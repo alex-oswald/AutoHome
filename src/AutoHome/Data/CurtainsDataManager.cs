@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace AutoCurtains.Data;
+namespace AutoHome.Data;
 
 public interface ICurtainsDataManager
 {

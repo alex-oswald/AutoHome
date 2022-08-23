@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AutoCurtains.Hardware;
+namespace AutoHome.Hardware;
 
 public static class ServiceCollectionExtensions
 {

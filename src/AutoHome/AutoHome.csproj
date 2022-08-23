@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoCurtains.Hardware\AutoCurtains.Hardware.csproj" />
+    <ProjectReference Include="..\AutoCurtains.Hardware\AutoHome.Hardware.csproj" />
   </ItemGroup>
 
 </Project>

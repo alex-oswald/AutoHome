@@ -1,4 +1,4 @@
-﻿namespace AutoCurtains.Hardware;
+﻿namespace AutoHome.Hardware;
 
 public abstract class StepperMotorBase : IStepperMotor
 {

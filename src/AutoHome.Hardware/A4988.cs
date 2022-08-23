@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Device.Gpio;
 using System.Diagnostics;
 
-namespace AutoCurtains.Hardware;
+namespace AutoHome.Hardware;
 
 public class A4988Options : StepperMotorOptionsBase
 {

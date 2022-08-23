@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace AutoCurtains;
+namespace AutoHome;
 
 public record TimeTriggerPackage(string Name, TimeSpan Time, Func<Task> Task);
 public record TimeTrigger(Timer Timer, TimeTriggerPackage TimeTriggerPackage);
