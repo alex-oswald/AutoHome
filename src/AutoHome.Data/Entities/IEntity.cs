@@ -1,4 +1,4 @@
-﻿namespace AutoHome.Data;
+﻿namespace AutoHome.Data.Entities;
 
 public interface IEntity
 {

@@ -16,4 +16,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AutoHome.Data\AutoHome.Data.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Concurrent;
 
-namespace AutoHome;
+namespace AutoHome.Server.Services;
 
 public record TimeTriggerPackage(string Name, TimeSpan Time, Func<Task> Task);
-public record TimeTrigger(Timer Timer, TimeTriggerPackage TimeTriggerPackage);
+public record TimerPackage(Timer Timer, TimeTriggerPackage TimeTriggerPackage);
 
 public interface ITimeTriggersService
 {
@@ -12,7 +12,7 @@ public interface ITimeTriggersService
 
 public class TimeTriggersService : ITimeTriggersService
 {
-    private readonly IDictionary<string, TimeTrigger> _timeTriggers = new ConcurrentDictionary<string, TimeTrigger>();
+    private readonly IDictionary<string, TimerPackage> _timeTriggers = new ConcurrentDictionary<string, TimerPackage>();
     private readonly ILogger<TimeTriggersService> _logger;
 
     public TimeTriggersService(
@@ -33,7 +33,7 @@ public class TimeTriggersService : ITimeTriggersService
             dueTime: timeTriggerPackage.Time,
             period: Timeout.InfiniteTimeSpan);
 
-        _timeTriggers.Add(timeTriggerPackage.Name, new TimeTrigger(timer, timeTriggerPackage));
+        _timeTriggers.Add(timeTriggerPackage.Name, new TimerPackage(timer, timeTriggerPackage));
     }
 
     private void Callback(object state)
@@ -41,10 +41,10 @@ public class TimeTriggersService : ITimeTriggersService
         _logger.LogInformation("{class}.{method} for {state}", nameof(TimeTriggersService), nameof(Callback), state as string);
 
         var key = state as string;
-        var success = _timeTriggers.TryGetValue(key!, out TimeTrigger? timeTrigger);
+        var success = _timeTriggers.TryGetValue(key!, out TimerPackage? timeTrigger);
         if (!success)
         {
-            _logger.LogError("Could not get the {object} object from the dictionary with key {key}", nameof(TimeTrigger), key);
+            _logger.LogError("Could not get the {object} object from the dictionary with key {key}", nameof(TimerPackage), key);
         }
         _logger.LogInformation("Removing trigger for {key}", key);
         _timeTriggers.Remove(key!);

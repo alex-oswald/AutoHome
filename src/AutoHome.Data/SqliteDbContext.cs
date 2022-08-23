@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoHome.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoHome.Data;
 
@@ -9,7 +10,7 @@ public class SqliteDbContext : DbContext
     {
     }
 
-    public DbSet<TimeTrigger> TimeTriggers { get; set; }
-
     public DbSet<Device> Devices { get; set; }
+
+    public DbSet<TimeTrigger> TimeTriggers { get; set; }
 }

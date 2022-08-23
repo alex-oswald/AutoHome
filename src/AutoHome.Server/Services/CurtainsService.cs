@@ -1,28 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+﻿using AutoHome.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace AutoHome.Data;
+namespace AutoHome.Server.Services;
 
-public interface ICurtainsDataManager
+public interface ICurtainsService
 {
     Task<(TimeSpan? open, TimeSpan? close)> GetTimesAsync(CancellationToken cancellationToken);
     Task SaveCloseTimeAsync(TimeSpan? time, CancellationToken cancellationToken);
     Task SaveOpenTimeAsync(TimeSpan? time, CancellationToken cancellationToken);
 }
 
-public class CurtainsDataManager : ICurtainsDataManager
+public class CurtainsService : ICurtainsService
 {
     private const string CURTAINS_OPEN = "CurtainsOpen";
     private const string CURTAINS_CLOSE = "CurtainsClose";
 
-    private readonly ILogger<CurtainsDataManager> _logger;
+    private readonly ILogger<CurtainsService> _logger;
     private readonly SqliteDbContext _dbContext;
     //private readonly DeviceOptions _options;
 
-    public CurtainsDataManager(
-        ILogger<CurtainsDataManager> logger,
+    public CurtainsService(
+        ILogger<CurtainsService> logger,
         SqliteDbContext dbContext)
-        //IOptions<DeviceOptions> options)
+    //IOptions<DeviceOptions> options)
     {
         _logger = logger;
         _dbContext = dbContext;

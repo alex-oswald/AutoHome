@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Server", "src\AutoHome\AutoHome.Server.csproj", "{B88DD1D1-B1F7-4F70-AF16-F62316FA2A3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Server", "src\AutoHome.Server\AutoHome.Server.csproj", "{B88DD1D1-B1F7-4F70-AF16-F62316FA2A3C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{991B2368-57CC-4EFD-86B6-F51E6548B977}"
 	ProjectSection(SolutionItems) = preProject
@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Tests", "tests\Aut
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Curtains", "src\Curtains\Curtains.csproj", "{502FBDD9-BFBE-463D-BE28-6F477EDEFAAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHome.Client", "src\AutoHome.Client\AutoHome.Client.csproj", "{D7B1605E-7FCA-4F3A-9F45-F2093124A7CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Client", "src\AutoHome.Client\AutoHome.Client.csproj", "{D7B1605E-7FCA-4F3A-9F45-F2093124A7CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHome.Data", "src\AutoHome.Data\AutoHome.Data.csproj", "{2D276F80-3B29-467F-88F7-FD8B7DB36039}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{D7B1605E-7FCA-4F3A-9F45-F2093124A7CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7B1605E-7FCA-4F3A-9F45-F2093124A7CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7B1605E-7FCA-4F3A-9F45-F2093124A7CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D276F80-3B29-467F-88F7-FD8B7DB36039}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D276F80-3B29-467F-88F7-FD8B7DB36039}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D276F80-3B29-467F-88F7-FD8B7DB36039}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D276F80-3B29-467F-88F7-FD8B7DB36039}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

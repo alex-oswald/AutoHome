@@ -1,6 +1,6 @@
 ﻿using AutoHome.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using AutoHome.Data.Entities;
+using AutoHome.Server.Services;
 
 namespace AutoHome;
 
@@ -71,11 +71,11 @@ public class TriggerLoaderHostedService : IHostedService
     {
         using var scope = _sp.CreateScope();
 
-        var dbContext = scope.ServiceProvider.GetService<SqliteDbContext>();
+        var timeTriggersRepo = scope.ServiceProvider.GetService<IAsyncRepository<TimeTrigger>>();
 
-        var triggers = await dbContext.TimeTriggers.ToListAsync();
+        var triggers = await timeTriggersRepo!.ListAsync(cancellationToken);
 
-        foreach (var trigger in triggers)
+        foreach (var trigger in triggers!)
         {
             switch (trigger.Name)
             {

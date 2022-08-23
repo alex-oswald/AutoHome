@@ -1,5 +1,7 @@
 using AutoHome;
 using AutoHome.Data;
+using AutoHome.Data.Entities;
+using AutoHome.Server.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
@@ -21,13 +23,17 @@ try
 
     builder.Host.UseSerilog();
 
+    builder.Services.AddAutoMapper(typeof(Program));
+
     builder.Services.AddControllersWithViews();
     builder.Services.AddRazorPages();
 
     builder.Services.AddDbContext<SqliteDbContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
+    builder.Services.AddScoped<IAsyncRepository<Device>, EntityFrameworkRepository<Device, SqliteDbContext>>();
+    builder.Services.AddScoped<IAsyncRepository<TimeTrigger>, EntityFrameworkRepository<TimeTrigger, SqliteDbContext>>();
 
-    builder.Services.AddScoped<ICurtainsDataManager, CurtainsDataManager>();
+    builder.Services.AddScoped<ICurtainsService, CurtainsService>();
     builder.Services.AddSingleton<ICurtainController, CurtainController>();
 
     builder.Services.AddSingleton<ITimeTriggersService, TimeTriggersService>();
