@@ -10,4 +10,6 @@ public class SqliteDbContext : DbContext
     }
 
     public DbSet<TimeTrigger> TimeTriggers { get; set; }
+
+    public DbSet<Device> Devices { get; set; }
 }
