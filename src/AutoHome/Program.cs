@@ -30,6 +30,7 @@ try
         options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
     builder.Services.AddScoped<ICurtainsDataManager, CurtainsDataManager>();
+    builder.Services.AddSingleton<ICurtainController, CurtainController>();
 
     builder.Services.AddSingleton<ITimeTriggersService, TimeTriggersService>();
     builder.Services.AddHostedService<TriggerLoaderHostedService>();

@@ -9,7 +9,7 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7068;http://localhost:5068"
     },
-    "Docker (1)": {
+    "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",

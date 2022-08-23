@@ -51,25 +51,29 @@ public class CurtainController : ICurtainController
 public class TriggerLoaderHostedService : IHostedService
 {
     private readonly ILogger<TriggerLoaderHostedService> _logger;
+    private readonly IServiceProvider _sp;
     private readonly ITimeTriggersService _timeTriggersService;
-    private readonly SqliteDbContext _dbContext;
     private readonly ICurtainController _curtainController;
 
     public TriggerLoaderHostedService(
         ILogger<TriggerLoaderHostedService> logger,
+        IServiceProvider sp,
         ITimeTriggersService timeTriggersService,
-        SqliteDbContext dbContext,
         ICurtainController curtainController)
     {
         _logger = logger;
+        _sp = sp;
         _timeTriggersService = timeTriggersService;
-        _dbContext = dbContext;
         _curtainController = curtainController;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        var triggers = await _dbContext.TimeTriggers.ToListAsync();
+        using var scope = _sp.CreateScope();
+
+        var dbContext = scope.ServiceProvider.GetService<SqliteDbContext>();
+
+        var triggers = await dbContext.TimeTriggers.ToListAsync();
 
         foreach (var trigger in triggers)
         {
