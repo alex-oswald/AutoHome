@@ -8,7 +8,7 @@ public interface IAsyncRepository<T>
 {
     Task<T> AddAsync(T entity, CancellationToken cancellationToken);
 
-    Task DeleteAsync(T entity, CancellationToken cancellationToken);
+    Task<bool> DeleteAsync(T entity, CancellationToken cancellationToken);
 
     Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 

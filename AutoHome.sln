@@ -10,8 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
 		publish.ps1 = publish.ps1
-		publish_sc.ps1 = publish_sc.ps1
 		README.md = README.md
+		publish_curtains.ps1 = publish_curtains.ps1
 		setup_sdcard.ps1 = setup_sdcard.ps1
 	EndProjectSection
 EndProject
@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Curtains", "src\Curtains\Cu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Client", "src\AutoHome.Client\AutoHome.Client.csproj", "{D7B1605E-7FCA-4F3A-9F45-F2093124A7CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHome.Data", "src\AutoHome.Data\AutoHome.Data.csproj", "{2D276F80-3B29-467F-88F7-FD8B7DB36039}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Data", "src\AutoHome.Data\AutoHome.Data.csproj", "{2D276F80-3B29-467F-88F7-FD8B7DB36039}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

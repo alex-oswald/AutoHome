@@ -1,11 +1,11 @@
 param(
-	[string]$IPAddress,
-	[string]$ProjectName = "AutoCurtains"
+	[string]$IPAddress
 )
 
 $runDirectory = Get-Location
 
 try {
+	$ProjectName = "Curtains"
 	Set-Location "src\$ProjectName"
 
 	Write-Host "Publishing $ProjectName" -ForegroundColor Green
@@ -19,10 +19,10 @@ try {
 		--self-contained
 
 	scp -r bin\Release\net6.0\linux-arm\publish\* pi@$($IPAddress):/home/pi/$($ProjectName)
-	
-	# Copy certificate
-	Set-Location $runDirectory
-	scp server.pfx pi@$($IPAddress):/home/pi/$($ProjectName)
+
+	# On the pi
+	# chmod +x Curtains
+	# ./Curtains
 }
 finally {
 	Set-Location $runDirectory

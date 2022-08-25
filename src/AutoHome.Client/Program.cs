@@ -14,4 +14,6 @@ builder.Services.AddClientDataManagers();
 
 builder.Services.AddMudServices();
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 await builder.Build().RunAsync();

@@ -30,10 +30,11 @@ public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
         return entity;
     }
 
-    public virtual async Task DeleteAsync(T entity, CancellationToken cancellationToken)
+    public virtual async Task<bool> DeleteAsync(T entity, CancellationToken cancellationToken)
     {
         _dbContext.Set<T>().Remove(entity);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        var writes = await _dbContext.SaveChangesAsync(cancellationToken);
+        return writes > 0;
     }
 
     public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken)

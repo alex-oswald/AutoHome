@@ -1,6 +1,6 @@
 param(
 	[string]$IPAddress,
-	[string]$ProjectName = "AutoCurtains"
+	[string]$ProjectName = "Curtains"
 )
 
 $runDirectory = Get-Location
