@@ -15,5 +15,6 @@ public class AutoMapping : Profile
 		CreateMap<Device, GetDeviceResult>();
 		CreateMap<Device, ListDevicesResult>();
 		CreateMap<Device, UpdateDeviceRequest>();
+		CreateMap<Device, UpdateDeviceResult>();
 	}
 }

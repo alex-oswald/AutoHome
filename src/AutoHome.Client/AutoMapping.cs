@@ -8,6 +8,8 @@ public class AutoMapping : Profile
 {
 	public AutoMapping()
 	{
-		CreateMap<AddDeviceForm, AddDeviceRequest>();
+		CreateMap<AddEditDeviceForm, AddDeviceRequest>();
+		CreateMap<ListDevicesResult, AddEditDeviceForm>();
+		CreateMap<AddEditDeviceForm, UpdateDeviceRequest>();
 	}
 }

@@ -33,7 +33,8 @@ public class Update : EndpointBaseAsync
         _mapper.Map(request, device);
         await _repository.UpdateAsync(device, cancellationToken).ConfigureAwait(false);
 
-        var result = _mapper.Map<UpdateDeviceResult>(device);
+        UpdateDeviceResult result = new();
+        _mapper.Map(device, result);
         return result;
     }
 }

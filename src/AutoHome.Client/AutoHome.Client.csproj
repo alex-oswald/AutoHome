@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Curtains.Plugin\Curtains.Plugin.csproj" />
     <ProjectReference Include="..\AutoHome.Data\AutoHome.Data.csproj" />
   </ItemGroup>
 

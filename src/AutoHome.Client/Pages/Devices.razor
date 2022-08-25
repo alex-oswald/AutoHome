@@ -1,6 +1,7 @@
 ﻿@page "/devices"
 @inject IDevicesManager DevicesManager;
-@inject IDialogService DialogService
+@inject IDialogService DialogService;
+@inject IMapper Mapper;
 
 <MudText Typo="Typo.h4" Class="mt-4 mb-4">Devices</MudText>
 
@@ -25,7 +26,7 @@
                     <td>@row.Name</td>
                     <td>@row.Uri</td>
                     <td>
-                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" />
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="@(async () => UpdateDevice(row))" />
                         <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(async () => DeleteDevice(row))" />
                     </td>
                 </tr>
@@ -66,9 +67,29 @@
         };
 
         var dialog = DialogService.Show<AddDeviceDialog>("Add Device", dialogOptions);
-        var result = (bool)(await dialog.Result).Data;
+        var result = (bool?)(await dialog.Result).Data;
 
-        if (result)
+        if (result ?? false)
+        {
+            await RefreshDevices();
+        }
+    }
+
+    private async void UpdateDevice(ListDevicesResult device)
+    {
+        var dialogOptions = new DialogOptions()
+        {
+            CloseOnEscapeKey = true,
+            DisableBackdropClick = true,
+        };
+        AddEditDeviceForm model = new();
+        Mapper.Map(device, model);
+        var parameters = new DialogParameters { ["Model"] = model };
+
+        var dialog = DialogService.Show<EditDeviceDialog>($"Update {device.Name}", parameters, dialogOptions);
+        var result = (bool?)(await dialog.Result).Data;
+
+        if (result ?? false)
         {
             await RefreshDevices();
         }
@@ -89,7 +110,6 @@
             {
                 await DialogService.ShowMessageBox($"Delete {device.Name}", $"Error deleting {device.Name}.");
             }
-            
         }
     }
 }
