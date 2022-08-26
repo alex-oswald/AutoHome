@@ -1,7 +1,8 @@
 ﻿@page "/"
 @inject IDevicesManager DevicesManager;
+@inject IMapper Mapper;
 
-@if (_devices.Any())
+@if (_devices is not null && _devices.Any())
 {
     foreach (var device in _devices)
     {
@@ -9,18 +10,20 @@
         {
             case "Curtain":
                 <MudText Typo="Typo.h4" Class="mt-4 mb-4">@device.Name Controls</MudText>
-                <CurtainControls />
+                <CurtainControls Device="device" />
                 break;
         }
     }
 }
 
 @code {
-    IEnumerable<ListDevicesResult> _devices { get; set; } = new List<ListDevicesResult>();
+    IEnumerable<Device>? _devices { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var devices = await DevicesManager.ListAsync(CancellationToken.None);
-        if (devices?.Any() ?? false) _devices = devices;
+        var devicesResult = await DevicesManager.ListAsync(CancellationToken.None);
+        var devices = devicesResult!.Select(i => Mapper.Map<Device>(i));
+
+        if (devices is not null && devices.Any()) _devices = devices;
     }
 }
