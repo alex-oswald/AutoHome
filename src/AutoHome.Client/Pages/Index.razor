@@ -1,0 +1,26 @@
+﻿@page "/"
+@inject IDevicesManager DevicesManager;
+
+@if (_devices.Any())
+{
+    foreach (var device in _devices)
+    {
+        switch (device.Type)
+        {
+            case "Curtain":
+                <MudText Typo="Typo.h4" Class="mt-4 mb-4">@device.Name Controls</MudText>
+                <CurtainControls />
+                break;
+        }
+    }
+}
+
+@code {
+    IEnumerable<ListDevicesResult> _devices { get; set; } = new List<ListDevicesResult>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var devices = await DevicesManager.ListAsync(CancellationToken.None);
+        if (devices?.Any() ?? false) _devices = devices;
+    }
+}

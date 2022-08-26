@@ -1,0 +1,53 @@
+﻿@page "/schedule"
+
+<MudText Typo="Typo.h4" Class="mt-4 mb-4">Schedule</MudText>
+
+<MudStack Spacing="4">
+    <MudPaper Class="pa-4">
+
+        <MudText Typo="Typo.subtitle1">Auto Open</MudText>
+        <MudTimePicker @ref="_openPicker" PickerVariant="PickerVariant.Dialog" Label="Open Time" AmPm="true" AutoClose="true" TimeChanged="OpenTimeChanged" Time="openTime">
+            <PickerActions>
+                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _openPicker?.Clear())">Clear</MudButton>
+            </PickerActions>
+        </MudTimePicker>
+
+    </MudPaper>
+    <MudPaper Class="pa-4">
+
+        <MudText Typo="Typo.subtitle1">Auto Close</MudText>
+        <MudTimePicker @ref="_closePicker" PickerVariant="PickerVariant.Dialog" Label="Close Time" AmPm="true" AutoClose="true" TimeChanged="CloseTimeChanged" Time="closeTime">
+            <PickerActions>
+                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _closePicker?.Clear())">Clear</MudButton>
+            </PickerActions>
+        </MudTimePicker>
+
+    </MudPaper>
+</MudStack>
+
+@code {
+    MudTimePicker? _openPicker;
+    MudTimePicker? _closePicker;
+
+    TimeSpan? openTime = null;
+    TimeSpan? closeTime = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //var times = await CurtainsDataManager.GetTimesAsync(CancellationToken.None);
+        //openTime = times.open;
+        //closeTime = times.close;
+    }
+
+    async Task OpenTimeChanged(TimeSpan? time)
+    {
+        openTime = time;
+        //await CurtainsDataManager.SaveOpenTimeAsync(openTime, CancellationToken.None);
+    }
+
+    async Task CloseTimeChanged(TimeSpan? time)
+    {
+        closeTime = time;
+        //await CurtainsDataManager.SaveCloseTimeAsync(closeTime, CancellationToken.None);
+    }
+}

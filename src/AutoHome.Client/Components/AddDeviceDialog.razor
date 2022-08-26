@@ -1,0 +1,46 @@
+﻿@inject IDevicesManager DevicesManager;
+@inject IMapper Mapper;
+@inject ISnackbar Snackbar
+
+<EditForm Model="@model" OnValidSubmit="Submit">
+    <DataAnnotationsValidator />
+    <MudDialog>
+        <DialogContent>
+            <MudTextField Label="Device Id"
+                @bind-Value="model.DeviceId" For="@(() => model.DeviceId)" />
+            <MudSelect Label="Type" AnchorOrigin="Origin.BottomCenter"
+                @bind-Value="model.Type" For="@(() => model.Type)">
+                <MudSelectItem Value="@("Curtain")" />
+            </MudSelect>
+            <MudTextField Label="Name"
+                @bind-Value="model.Name" For="@(() => model.Name)" />
+            <MudTextField Label="Uri"
+                @bind-Value="model.Uri" For="@(() => model.Uri)" />
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="Cancel">Cancel</MudButton>
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit">Ok</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    AddEditDeviceForm model = new();
+
+    async Task Submit(EditContext context)
+    {
+        var request = new AddDeviceRequest();
+        Mapper.Map(model, request);
+        var result = await DevicesManager.AddAsync(request, CancellationToken.None);
+        if (result is null)
+        {
+            Snackbar.Add("Error adding the device.", Severity.Error);
+        }
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}
