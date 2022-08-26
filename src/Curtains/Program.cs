@@ -24,6 +24,17 @@ try
 
     var builder = WebApplication.CreateBuilder(args);
 
+    // Cors
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    });
+
     // Auth
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
     {
@@ -79,6 +90,7 @@ try
 
     var app = builder.Build();
 
+    app.UseCors();
     app.Urls.Add("http://*:5000");
 
     if (app.Environment.IsDevelopment() || builder.Configuration["Swagger"] == "Enabled")
@@ -99,7 +111,7 @@ try
         }
 
         var token = tokenService.BuildToken(builder.Configuration["Jwt:Key"], builder.Configuration["Jwt:Issuer"]);
-        return Results.Ok(new { token = token });
+        return Results.Ok(new { token });
     })
     .Accepts(typeof(Auth), "application/json")
     .Produces(StatusCodes.Status200OK)

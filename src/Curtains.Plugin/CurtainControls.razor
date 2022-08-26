@@ -1,4 +1,6 @@
-﻿<MudStack Spacing="4">
+﻿@inject ICurtainsManager CurtainsManager
+
+<MudStack Spacing="4">
     <MudPaper>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true" Disabled="@motorRunning()" OnClick="Open">
             @if (opening)
@@ -28,6 +30,10 @@
 </MudStack>
 
 @code {
+    [Parameter]
+    [EditorRequired]
+    public Device? Device { get; set; }
+
     bool motorRunning() => opening || closing;
     bool opening = false;
     bool closing = false;
@@ -35,19 +41,14 @@
     async Task Open()
     {
         opening = true;
-        await Rotate(true);
+        await CurtainsManager.OpenAsync(Device!, CancellationToken.None);
         opening = false;
     }
 
     async Task Close()
     {
         closing = true;
-        await Rotate(false);
+        await CurtainsManager.CloseAsync(Device!, CancellationToken.None);
         closing = false;
-    }
-
-    async Task Rotate(bool clockwise)
-    {
-
     }
 }

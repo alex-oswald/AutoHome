@@ -1,10 +1,15 @@
-# AutoCurtains
+# AutoHome
 
-An IoT solution for automatically opening and closing curtains.
+Open source home automation! AutoHome is a web application that runs on a Raspberry Pi and controls local devices on your network.
 
-The Raspberry Pi runs a Blazor server app that controls the stepper motor. Visit the web page on your local network to open or close your curtains.
 
-## Components
+## Devices
+
+
+### Automatic Curtains
+
+
+#### Components
 
 - Raspberry Pi Zero W
 - Stepper Motor
@@ -13,20 +18,8 @@ The Raspberry Pi runs a Blazor server app that controls the stepper motor. Visit
 - 100uF Electrolytic Capacitor
 - 5.5mm/2.1mm Female Barrel Jack Connector
 
-## Wiring Diagram
 
-![bb](./schematics/AutoCurtains_bb.svg)
-
-
-## Blazor app screenshot
-
-![phone_screenshot](./misc/phone_screenshot.png)
-
-## Secrets
-
-Create `appsettings.Production.json` and copy contents of `secrets.json`.
-
-## Other
+#### Links
 
 A4988 [Datasheet](https://www.allegromicro.com/-/media/files/datasheets/a4988-datasheet.pdf)
 
