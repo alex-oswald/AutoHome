@@ -39,19 +39,6 @@ try
     builder.Services.AddSingleton<ITimeTriggersService, TimeTriggersService>();
     builder.Services.AddHostedService<TriggerLoaderHostedService>();
 
-    CertificateOptions certOptions = new();
-    builder.Configuration.GetSection(CertificateOptions.Section).Bind(certOptions);
-    if (!builder.Environment.IsDevelopment())
-    {
-        builder.WebHost.ConfigureKestrel(options =>
-        {
-            options.ListenAnyIP(5000, listenOptions =>
-            {
-                listenOptions.UseHttps(certOptions.Path);
-            });
-        }).UseUrls("https://ac.pi.lan");
-    }
-
     var app = builder.Build();
 
     // Make sure the database is created
