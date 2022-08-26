@@ -81,7 +81,7 @@ try
 
     app.Urls.Add("http://*:5000");
 
-    if (app.Environment.IsDevelopment())
+    if (app.Environment.IsDevelopment() || builder.Configuration["Swagger"] == "Enabled")
     {
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json",

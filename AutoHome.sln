@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Client", "src\Auto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Data", "src\AutoHome.Data\AutoHome.Data.csproj", "{2D276F80-3B29-467F-88F7-FD8B7DB36039}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Curtains.Plugin", "Curtains.Plugin\Curtains.Plugin.csproj", "{B648C604-A9F2-4D57-8063-9ACE18C6A85A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Curtains.Plugin", "src\Curtains.Plugin\Curtains.Plugin.csproj", "{B648C604-A9F2-4D57-8063-9ACE18C6A85A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHome.PluginCore", "src\AutoHome.PluginCore\AutoHome.PluginCore.csproj", "{15B131CC-2158-44FE-9A5F-31A856BB7064}"
 EndProject
