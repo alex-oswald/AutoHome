@@ -34,11 +34,13 @@ public class CurtainsService : ICurtainsService
         var open = await _dbContext.TimeTriggers!
             //.Where(o => o.DeviceId == _options.Id)
             .Where(o => o.Name == CURTAINS_OPEN)
-            .SingleOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
         var close = await _dbContext.TimeTriggers!
             //.Where(o => o.DeviceId == _options.Id)
             .Where(o => o.Name == CURTAINS_CLOSE)
-            .SingleOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
         _logger.LogInformation("{name} open:{openTime} close:{closeTime}", nameof(GetTimesAsync), open?.Time, close?.Time);
         return (open?.Time, close?.Time);
     }
@@ -49,7 +51,8 @@ public class CurtainsService : ICurtainsService
         var open = await _dbContext.TimeTriggers!
             //.Where(o => o.DeviceId == _options.Id)
             .Where(o => o.Name == CURTAINS_OPEN)
-            .SingleOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
         if (open is not null)
         {
             open.Time = time;
@@ -63,9 +66,9 @@ public class CurtainsService : ICurtainsService
                 Name = CURTAINS_OPEN,
                 Time = time,
             };
-            await _dbContext.AddAsync(open, cancellationToken);
+            await _dbContext.AddAsync(open, cancellationToken).ConfigureAwait(false);
         }
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public async Task SaveCloseTimeAsync(TimeSpan? time, CancellationToken cancellationToken)
@@ -74,7 +77,8 @@ public class CurtainsService : ICurtainsService
         var close = await _dbContext.TimeTriggers!
             //.Where(o => o.DeviceId == _options.Id)
             .Where(o => o.Name == CURTAINS_CLOSE)
-            .SingleOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
         if (close is not null)
         {
             close.Time = time;
@@ -88,8 +92,8 @@ public class CurtainsService : ICurtainsService
                 Name = CURTAINS_CLOSE,
                 Time = time,
             };
-            await _dbContext.AddAsync(close, cancellationToken);
+            await _dbContext.AddAsync(close, cancellationToken).ConfigureAwait(false);
         }
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 }

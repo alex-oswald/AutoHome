@@ -104,7 +104,7 @@ try
     app.UseAuthorization();
 
     app.MapPost("/token", [AllowAnonymous] async (HttpContext http, ITokenService tokenService) => {
-        var deviceId = await http.Request.ReadFromJsonAsync<Auth>();
+        var deviceId = await http.Request.ReadFromJsonAsync<Auth>().ConfigureAwait(false);
         if (deviceId?.DeviceId != builder.Configuration["DeviceId"])
         {
             return Results.Unauthorized();

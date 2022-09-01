@@ -73,7 +73,7 @@ public class TriggerLoaderHostedService : IHostedService
 
         var timeTriggersRepo = scope.ServiceProvider.GetService<IAsyncRepository<TimeTrigger>>();
 
-        var triggers = await timeTriggersRepo!.ListAsync(cancellationToken);
+        var triggers = await timeTriggersRepo!.ListAsync(cancellationToken).ConfigureAwait(false);
 
         foreach (var trigger in triggers!)
         {

@@ -23,17 +23,17 @@ public class CurtainsManager : ICurtainsManager
     {
         HttpClient client = new();
 
-        var token = await _tokenProvider.GetTokenAsync(device, cancellationToken);
+        var token = await _tokenProvider.GetTokenAsync(device, cancellationToken).ConfigureAwait(false);
         var request = new HttpRequestMessage(HttpMethod.Post, device.Uri + "/open");
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await client.SendAsync(request, cancellationToken);
+        var response = await client.SendAsync(request, cancellationToken).ConfigureAwait(false);
         
         if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
-            token = await _tokenProvider.RefreshTokenAsync(device, cancellationToken);
+            token = await _tokenProvider.RefreshTokenAsync(device, cancellationToken).ConfigureAwait(false);
             request = new HttpRequestMessage(HttpMethod.Post, device.Uri + "/open");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            response = await client.SendAsync(request, cancellationToken);
+            response = await client.SendAsync(request, cancellationToken).ConfigureAwait(false);
         }
     }
 
@@ -41,17 +41,17 @@ public class CurtainsManager : ICurtainsManager
     {
         HttpClient client = new();
 
-        var token = await _tokenProvider.GetTokenAsync(device, cancellationToken);
+        var token = await _tokenProvider.GetTokenAsync(device, cancellationToken).ConfigureAwait(false);
         var request = new HttpRequestMessage(HttpMethod.Post, device.Uri + "/close");
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await client.SendAsync(request, cancellationToken);
+        var response = await client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
         if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
-            token = await _tokenProvider.RefreshTokenAsync(device, cancellationToken);
+            token = await _tokenProvider.RefreshTokenAsync(device, cancellationToken).ConfigureAwait(false);
             request = new HttpRequestMessage(HttpMethod.Post, device.Uri + "/close");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            response = await client.SendAsync(request, cancellationToken);
+            response = await client.SendAsync(request, cancellationToken).ConfigureAwait(false);
         }
     }
 }

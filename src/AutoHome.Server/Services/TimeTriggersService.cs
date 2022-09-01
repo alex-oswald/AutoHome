@@ -49,6 +49,6 @@ public class TimeTriggersService : ITimeTriggersService
         _logger.LogInformation("Removing trigger for {key}", key);
         _timeTriggers.Remove(key!);
         _logger.LogInformation("Invoking task for {key}", key);
-        Task.Run(async () => await timeTrigger!.TimeTriggerPackage.Task.Invoke());
+        Task.Run(async () => await timeTrigger!.TimeTriggerPackage.Task.Invoke().ConfigureAwait(false));
     }
 }
