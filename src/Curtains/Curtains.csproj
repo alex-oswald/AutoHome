@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AutoHome.Hardware\AutoHome.Hardware.csproj" />
+    <ProjectReference Include="..\AutoHome.PluginCore\AutoHome.PluginCore.csproj" />
   </ItemGroup>
 
 </Project>

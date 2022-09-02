@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
-namespace Curtains;
+namespace AutoHome.PluginCore;
 
 public interface ITokenService
 {
