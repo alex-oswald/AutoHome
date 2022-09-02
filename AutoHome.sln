@@ -10,8 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
 		publish.ps1 = publish.ps1
-		README.md = README.md
 		publish_curtains.ps1 = publish_curtains.ps1
+		README.md = README.md
 		setup_sdcard.ps1 = setup_sdcard.ps1
 	EndProjectSection
 EndProject
@@ -25,9 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Client", "src\Auto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Data", "src\AutoHome.Data\AutoHome.Data.csproj", "{2D276F80-3B29-467F-88F7-FD8B7DB36039}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Curtains.Plugin", "src\Curtains.Plugin\Curtains.Plugin.csproj", "{B648C604-A9F2-4D57-8063-9ACE18C6A85A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Curtains.Plugin", "src\Curtains.Plugin\Curtains.Plugin.csproj", "{B648C604-A9F2-4D57-8063-9ACE18C6A85A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHome.PluginCore", "src\AutoHome.PluginCore\AutoHome.PluginCore.csproj", "{15B131CC-2158-44FE-9A5F-31A856BB7064}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.PluginCore", "src\AutoHome.PluginCore\AutoHome.PluginCore.csproj", "{15B131CC-2158-44FE-9A5F-31A856BB7064}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{4F99EAFD-E939-4E48-AF74-089B2CBAB60F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{39106798-FE5A-4591-851B-8CA792BF9ABA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +74,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F1E2DBDD-29C3-4845-B0FE-61CC43D88A23} = {39106798-FE5A-4591-851B-8CA792BF9ABA}
+		{502FBDD9-BFBE-463D-BE28-6F477EDEFAAA} = {4F99EAFD-E939-4E48-AF74-089B2CBAB60F}
+		{B648C604-A9F2-4D57-8063-9ACE18C6A85A} = {4F99EAFD-E939-4E48-AF74-089B2CBAB60F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28DE9D7A-1A22-4C65-8EFF-B3233A18AAC5}
