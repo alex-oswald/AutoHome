@@ -10,7 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
 		publish.ps1 = publish.ps1
-		publish_curtains.ps1 = publish_curtains.ps1
 		README.md = README.md
 		setup_sdcard.ps1 = setup_sdcard.ps1
 	EndProjectSection
@@ -19,19 +18,25 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Hardware", "src\Au
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Tests", "tests\AutoHome.Tests\AutoHome.Tests.csproj", "{F1E2DBDD-29C3-4845-B0FE-61CC43D88A23}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Curtains", "src\Curtains\Curtains.csproj", "{502FBDD9-BFBE-463D-BE28-6F477EDEFAAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Curtains.Device", "src\Integrations\Curtains\Curtains.Device\Curtains.Device.csproj", "{502FBDD9-BFBE-463D-BE28-6F477EDEFAAA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Client", "src\AutoHome.Client\AutoHome.Client.csproj", "{D7B1605E-7FCA-4F3A-9F45-F2093124A7CF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Data", "src\AutoHome.Data\AutoHome.Data.csproj", "{2D276F80-3B29-467F-88F7-FD8B7DB36039}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Curtains.Plugin", "src\Curtains.Plugin\Curtains.Plugin.csproj", "{B648C604-A9F2-4D57-8063-9ACE18C6A85A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Curtains.Plugin", "src\Integrations\Curtains\Curtains.Plugin\Curtains.Plugin.csproj", "{B648C604-A9F2-4D57-8063-9ACE18C6A85A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.PluginCore", "src\AutoHome.PluginCore\AutoHome.PluginCore.csproj", "{15B131CC-2158-44FE-9A5F-31A856BB7064}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{4F99EAFD-E939-4E48-AF74-089B2CBAB60F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{39106798-FE5A-4591-851B-8CA792BF9ABA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Curtains", "Curtains", "{666D6C5A-B1CD-43B2-8750-CBA083ABD05A}"
+	ProjectSection(SolutionItems) = preProject
+		src\Integrations\Curtains\publish_curtains.ps1 = src\Integrations\Curtains\publish_curtains.ps1
+		src\Integrations\Curtains\README.md = src\Integrations\Curtains\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,8 +82,9 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F1E2DBDD-29C3-4845-B0FE-61CC43D88A23} = {39106798-FE5A-4591-851B-8CA792BF9ABA}
-		{502FBDD9-BFBE-463D-BE28-6F477EDEFAAA} = {4F99EAFD-E939-4E48-AF74-089B2CBAB60F}
-		{B648C604-A9F2-4D57-8063-9ACE18C6A85A} = {4F99EAFD-E939-4E48-AF74-089B2CBAB60F}
+		{502FBDD9-BFBE-463D-BE28-6F477EDEFAAA} = {666D6C5A-B1CD-43B2-8750-CBA083ABD05A}
+		{B648C604-A9F2-4D57-8063-9ACE18C6A85A} = {666D6C5A-B1CD-43B2-8750-CBA083ABD05A}
+		{666D6C5A-B1CD-43B2-8750-CBA083ABD05A} = {4F99EAFD-E939-4E48-AF74-089B2CBAB60F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28DE9D7A-1A22-4C65-8EFF-B3233A18AAC5}

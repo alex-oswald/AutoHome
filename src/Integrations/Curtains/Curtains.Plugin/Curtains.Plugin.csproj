@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoHome.PluginCore\AutoHome.PluginCore.csproj" />
+    <ProjectReference Include="..\..\..\AutoHome.PluginCore\AutoHome.PluginCore.csproj" />
   </ItemGroup>
 
 </Project>
