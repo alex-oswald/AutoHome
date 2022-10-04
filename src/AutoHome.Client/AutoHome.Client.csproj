@@ -18,8 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoHome.Data\AutoHome.Data.csproj" />
-    <ProjectReference Include="..\AutoHome.PluginCore\AutoHome.PluginCore.csproj" />
+    <ProjectReference Include="..\AutoHome.RestClient\AutoHome.RestClient.csproj" />
   </ItemGroup>
 
 </Project>

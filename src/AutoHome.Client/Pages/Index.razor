@@ -1,8 +1,8 @@
 ﻿@page "/"
-@inject IDevicesManager DevicesManager;
+
 @inject IMapper Mapper;
 
-@if (_devices is not null && _devices.Any())
+@*@if (_devices is not null && _devices.Any())
 {
     foreach (var device in _devices)
     {
@@ -10,7 +10,7 @@
         {
             case "Curtain":
                 <MudText Typo="Typo.h4" Class="mt-4 mb-4">@device.Name Controls</MudText>
-                @*<CurtainControls Device="device" />*@
+                <CurtainControls Device="device" />
                 break;
         }
     }
@@ -27,3 +27,4 @@
         if (devices is not null && devices.Any()) _devices = devices;
     }
 }
+*@

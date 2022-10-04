@@ -1,8 +1,9 @@
-using AutoHome;
 using AutoHome.Data;
 using AutoHome.Data.Entities;
+using AutoHome.Server;
 using AutoHome.Server.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 
@@ -39,7 +40,21 @@ try
     builder.Services.AddSingleton<ITimeTriggersService, TimeTriggersService>();
     builder.Services.AddHostedService<TriggerLoaderHostedService>();
 
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(options =>
+    {
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Version = "v1",
+            Title = "AutoHome REST API",
+        });
+        options.EnableAnnotations();
+    });
+
     var app = builder.Build();
+
+    app.UseSwagger();
+    app.UseSwaggerUI();
 
     // Make sure the database is created
     using (var scoped = app.Services.CreateScope())

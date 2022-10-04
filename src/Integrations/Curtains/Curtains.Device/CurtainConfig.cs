@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Curtains;
+namespace Curtains.Device;
 
 public class CurtainConfig
 {

@@ -1,4 +1,4 @@
-﻿@inject IDevicesManager DevicesManager;
+﻿@*@inject IDevicesManager DevicesManager;*@
 @inject IMapper Mapper;
 @inject ISnackbar Snackbar
 
@@ -32,13 +32,13 @@
 
     async Task Submit(EditContext context)
     {
-        var request = new AddDeviceRequest();
-        Mapper.Map(model, request);
-        var result = await DevicesManager.AddAsync(request, CancellationToken.None);
-        if (result is null)
-        {
-            Snackbar.Add("Error adding the device.", Severity.Error);
-        }
+        //var request = new AddDeviceRequest();
+        //Mapper.Map(model, request);
+        //var result = await DevicesManager.AddAsync(request, CancellationToken.None);
+        //if (result is null)
+        //{
+        //    Snackbar.Add("Error adding the device.", Severity.Error);
+        //}
         MudDialog.Close(DialogResult.Ok(true));
     }
 
