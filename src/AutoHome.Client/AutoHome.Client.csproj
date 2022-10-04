@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Curtains.Plugin\Curtains.Plugin.csproj" />
     <ProjectReference Include="..\AutoHome.Data\AutoHome.Data.csproj" />
+    <ProjectReference Include="..\AutoHome.PluginCore\AutoHome.PluginCore.csproj" />
   </ItemGroup>
 
 </Project>

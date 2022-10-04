@@ -1,6 +1,6 @@
 ﻿using AutoHome.Client.Components;
 using AutoHome.Data.EndpointObjects.Devices;
-using AutoHome.PluginCore;
+//using AutoHome.PluginCore;
 using AutoMapper;
 
 namespace AutoHome.Server;
@@ -13,6 +13,6 @@ public class AutoMapping : Profile
 		CreateMap<ListDevicesResult, AddEditDeviceForm>();
 		CreateMap<AddEditDeviceForm, UpdateDeviceRequest>();
 
-		CreateMap<ListDevicesResult, Device>();
+		//CreateMap<ListDevicesResult, Device>();
 	}
 }
