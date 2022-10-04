@@ -1,6 +1,5 @@
 ﻿using Ardalis.ApiEndpoints;
 using AutoHome.Data;
-using AutoHome.Data.EndpointObjects.Devices;
 using AutoHome.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 

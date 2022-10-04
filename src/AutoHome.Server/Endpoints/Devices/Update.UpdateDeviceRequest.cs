@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AutoHome.Data.EndpointObjects.Devices;
+namespace AutoHome.Server.Endpoints.Devices;
 
 public class UpdateDeviceRequest
 {
