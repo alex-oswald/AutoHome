@@ -161,7 +161,7 @@
         "tags": [
           "Get"
         ],
-        "operationId": "Devices_Get",
+        "operationId": "GetDevices",
         "parameters": [
           {
             "name": "id",
