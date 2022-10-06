@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AutoHome.RestClient\AutoHome.RestClient.csproj" />
+    <ProjectReference Include="..\Integrations\Curtains\Curtains.Plugin\Curtains.Plugin.csproj" />
   </ItemGroup>
 
 </Project>

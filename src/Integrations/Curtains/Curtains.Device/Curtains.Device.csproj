@@ -8,16 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="appsettings.Production.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="appsettings.Production.json" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\..\AutoHome.DeviceCore\AutoHome.DeviceCore.csproj" />
     <ProjectReference Include="..\..\..\AutoHome.Hardware\AutoHome.Hardware.csproj" />
-    <ProjectReference Include="..\..\..\AutoHome.PluginCore\AutoHome.PluginCore.csproj" />
   </ItemGroup>
 
 </Project>
