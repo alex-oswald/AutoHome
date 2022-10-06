@@ -1,6 +1,6 @@
 using AutoHome.Hardware;
 using AutoHome.PluginCore;
-using Curtains;
+using Curtains.Device;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 

@@ -1,8 +1,8 @@
 ﻿@page "/"
-@inject IDevicesManager DevicesManager;
+
 @inject IMapper Mapper;
 
-@if (_devices is not null && _devices.Any())
+@*@if (_devices is not null && _devices.Any())
 {
     foreach (var device in _devices)
     {
@@ -27,3 +27,4 @@
         if (devices is not null && devices.Any()) _devices = devices;
     }
 }
+*@

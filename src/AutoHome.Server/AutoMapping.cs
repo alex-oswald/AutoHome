@@ -1,5 +1,5 @@
-﻿using AutoHome.Data.EndpointObjects.Devices;
-using AutoHome.Data.Entities;
+﻿using AutoHome.Data.Entities;
+using AutoHome.Server.Endpoints.Devices;
 using AutoMapper;
 
 namespace AutoHome.Server;

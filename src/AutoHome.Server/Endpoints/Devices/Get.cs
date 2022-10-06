@@ -1,6 +1,5 @@
 ﻿using Ardalis.ApiEndpoints;
 using AutoHome.Data;
-using AutoHome.Data.EndpointObjects.Devices;
 using AutoHome.Data.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +21,7 @@ public class Get : EndpointBaseAsync
         _mapper = mapper;
     }
 
-    [HttpGet("api/devices/{id}", Name = "Devices_Get")]
+    [HttpGet("api/devices/{id}", Name = "GetDevices")]
     public override async Task<ActionResult<GetDeviceResult>> HandleAsync(
         Guid id, CancellationToken cancellationToken = default)
     {

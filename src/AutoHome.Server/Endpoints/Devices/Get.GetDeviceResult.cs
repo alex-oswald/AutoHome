@@ -1,6 +1,6 @@
-﻿namespace AutoHome.Data.EndpointObjects.Devices;
+﻿namespace AutoHome.Server.Endpoints.Devices;
 
-public class ListDevicesResult
+public class GetDeviceResult
 {
     public Guid Id { get; set; }
     public Guid DeviceId { get; set; }

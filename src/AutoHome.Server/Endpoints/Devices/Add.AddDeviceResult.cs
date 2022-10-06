@@ -1,4 +1,4 @@
-﻿namespace AutoHome.Data.EndpointObjects.Devices;
+﻿namespace AutoHome.Server.Endpoints.Devices;
 
 public class AddDeviceResult : AddDeviceRequest
 {

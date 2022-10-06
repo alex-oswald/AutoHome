@@ -2,7 +2,7 @@
 using AutoHome.Data.Entities;
 using AutoHome.Server.Services;
 
-namespace AutoHome;
+namespace AutoHome.Server;
 
 public interface ICurtainController
 {

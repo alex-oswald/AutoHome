@@ -1,6 +1,5 @@
 ﻿using Ardalis.ApiEndpoints;
 using AutoHome.Data;
-using AutoHome.Data.EndpointObjects.Devices;
 using AutoHome.Data.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +30,6 @@ public class Add : EndpointBaseAsync
         await _repository.AddAsync(device, cancellationToken).ConfigureAwait(false);
 
         var result = _mapper.Map<AddDeviceResult>(device);
-        return CreatedAtRoute("Devices_Get", new { id = result.Id }, result);
+        return CreatedAtRoute("GetDevices", new { id = result.Id }, result);
     }
 }
