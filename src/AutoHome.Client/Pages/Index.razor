@@ -1,8 +1,8 @@
 ﻿@page "/"
-
+@inject AutoHomeRestClient Client;
 @inject IMapper Mapper;
 
-@*@if (_devices is not null && _devices.Any())
+@if (_devices is not null && _devices.Any())
 {
     foreach (var device in _devices)
     {
@@ -21,10 +21,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var devicesResult = await DevicesManager.ListAsync(CancellationToken.None);
+        var devicesResult = await Client.ListDeviceAsync(CancellationToken.None);
         var devices = devicesResult!.Select(i => Mapper.Map<Device>(i));
 
         if (devices is not null && devices.Any()) _devices = devices;
     }
 }
-*@
