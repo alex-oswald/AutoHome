@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
-namespace AutoHome.PluginCore;
+namespace AutoHome.DeviceCore;
 
 public interface ITokenService
 {

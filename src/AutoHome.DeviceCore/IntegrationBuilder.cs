@@ -11,7 +11,7 @@ using Serilog;
 using Serilog.Events;
 using System.Text;
 
-namespace AutoHome.PluginCore;
+namespace AutoHome.DeviceCore;
 
 public class IntegrationBuilder
 {
