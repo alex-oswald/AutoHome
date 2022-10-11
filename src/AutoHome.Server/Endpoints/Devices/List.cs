@@ -3,6 +3,7 @@ using AutoHome.Data;
 using AutoHome.Data.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace AutoHome.Server.Endpoints.Devices;
 
@@ -22,6 +23,15 @@ public class List : EndpointBaseAsync
     }
 
     [HttpGet("api/devices")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ListDevicesResult>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesJson]
+    [SwaggerOperation(
+        Summary = "Lists devices",
+        OperationId = "ListDevice",
+        Tags = new[] { "Devices" }
+    )]
     public override async Task<IEnumerable<ListDevicesResult>> HandleAsync(
         CancellationToken cancellationToken = default)
     {

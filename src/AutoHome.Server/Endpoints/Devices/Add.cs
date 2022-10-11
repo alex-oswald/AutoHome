@@ -3,6 +3,7 @@ using AutoHome.Data;
 using AutoHome.Data.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace AutoHome.Server.Endpoints.Devices;
 
@@ -22,6 +23,16 @@ public class Add : EndpointBaseAsync
     }
 
     [HttpPost("api/devices")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(AddDeviceResult))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesJson]
+    [ConsumesJson]
+    [SwaggerOperation(
+        Summary = "Adds a device",
+        OperationId = "AddDevice",
+        Tags = new[] { "Devices" }
+    )]
     public override async Task<ActionResult<AddDeviceResult>> HandleAsync(
         [FromBody] AddDeviceRequest request, CancellationToken cancellationToken = default)
     {
