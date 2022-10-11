@@ -18,11 +18,10 @@ public class Delete : EndpointBaseAsync
         _repository = repository;
     }
 
-    /// <response code="204" nullable="true">The order.</response>
     [HttpDelete("api/devices/{id}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(InternalServerErrorResult))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [SwaggerOperation(
         Summary = "Deletes a device",
         OperationId = "DeleteDevice",

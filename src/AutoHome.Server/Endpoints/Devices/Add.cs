@@ -25,7 +25,7 @@ public class Add : EndpointBaseAsync
     [HttpPost("api/devices")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(AddDeviceResult))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(InternalServerErrorResult))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesJson]
     [ConsumesJson]
     [SwaggerOperation(

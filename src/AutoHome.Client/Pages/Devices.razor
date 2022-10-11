@@ -1,6 +1,7 @@
 ﻿@page "/devices"
 @inject AutoHomeRestClient Client;
 @inject IDialogService DialogService;
+@inject ISnackbar Snackbar;
 @inject IMapper Mapper;
 
 <MudText Typo="Typo.h4" Class="mt-4 mb-4">Devices</MudText>
@@ -97,18 +98,26 @@
 
     private async void DeleteDevice(ListDevicesResult device)
     {
-        bool? result = await DialogService.ShowMessageBox($"Delete {device.Name}", $"Are you sure you want to delete {device.Name}?", noText: "No");
-        if (result == true)
+        try
         {
-            try
+            bool? result = await DialogService.ShowMessageBox($"Delete {device.Name}", $"Are you sure you want to delete {device.Name}?", noText: "No");
+            if (result == true)
             {
-                await Client.DeleteDeviceAsync(device.Id.ToString(), CancellationToken.None);
-                await RefreshDevices();
+                try
+                {
+                    await Client.DeleteDeviceAsync(device.Id.ToString(), CancellationToken.None);
+                    await RefreshDevices();
+                    Snackbar.Add($"{device.Name} deleted", Severity.Success);
+                }
+                catch (Exception ex)
+                {
+                    Snackbar.Add($"Error deleting {device.Name}.\n\n{ex.Message}", Severity.Error);
+                }
             }
-            catch (Exception ex)
-            {
-                await DialogService.ShowMessageBox($"Delete {device.Name}", $"Error deleting {device.Name}.");
-            }
+        }
+        finally
+        {
+
         }
     }
 }

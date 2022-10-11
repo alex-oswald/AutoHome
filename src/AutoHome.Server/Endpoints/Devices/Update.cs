@@ -26,7 +26,7 @@ public class Update : EndpointBaseAsync
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateDeviceResult))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(InternalServerErrorResult))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesJson]
     [ConsumesJson]
     [SwaggerOperation(

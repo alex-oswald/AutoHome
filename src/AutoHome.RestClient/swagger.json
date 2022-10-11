@@ -43,14 +43,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerErrorResult"
-                }
-              }
-            }
+            "description": "Server Error"
           }
         }
       },
@@ -85,14 +78,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerErrorResult"
-                }
-              }
-            }
+            "description": "Server Error"
           }
         }
       },
@@ -143,14 +129,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerErrorResult"
-                }
-              }
-            }
+            "description": "Server Error"
           }
         }
       }
@@ -174,24 +153,7 @@
         ],
         "responses": {
           "204": {
-            "description": "No Content",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/NoContentResult"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NoContentResult"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NoContentResult"
-                }
-              }
-            }
+            "description": "No Content"
           },
           "404": {
             "description": "Not Found",
@@ -214,24 +176,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerErrorResult"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerErrorResult"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerErrorResult"
-                }
-              }
-            }
+            "description": "Server Error"
           }
         }
       },
@@ -284,14 +229,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerErrorResult"
-                }
-              }
-            }
+            "description": "Server Error"
           }
         }
       }
@@ -385,16 +323,6 @@
         },
         "additionalProperties": false
       },
-      "InternalServerErrorResult": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
       "ListDevicesResult": {
         "type": "object",
         "properties": {
@@ -417,16 +345,6 @@
           "uri": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "NoContentResult": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "type": "integer",
-            "format": "int32"
           }
         },
         "additionalProperties": false

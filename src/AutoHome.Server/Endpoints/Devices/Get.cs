@@ -26,7 +26,7 @@ public class Get : EndpointBaseAsync
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetDeviceResult))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(InternalServerErrorResult))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesJson]
     [SwaggerOperation(
         Summary = "Gets a device",
