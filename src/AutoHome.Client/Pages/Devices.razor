@@ -6,7 +6,7 @@
 
 <MudText Typo="Typo.h4" Class="mt-4 mb-4">Devices</MudText>
 
-<MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" OnClick="@(async () => OpenAddDeviceDialog())" />
+<MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => OpenAddDeviceDialog())" />
 
 <MudSimpleTable Style="overflow-x: auto;" Class="mt-4">
     <thead>
@@ -27,8 +27,8 @@
                     <td>@row.Name</td>
                     <td>@row.Uri</td>
                     <td>
-                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="@(async () => UpdateDevice(row))" />
-                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(async () => DeleteDevice(row))" />
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => UpdateDevice(row))" />
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => DeleteDevice(row))" />
                     </td>
                 </tr>
             }
@@ -46,6 +46,7 @@
 @code {
     IEnumerable<ListDevicesResult> _devices { get; set; } = new List<ListDevicesResult>();
     string[] _headings = { "Device ID", "Name", "Url", "Actions" };
+    bool _buttonsDisabled = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,45 +62,66 @@
 
     private async void OpenAddDeviceDialog()
     {
-        DialogOptions dialogOptions = new DialogOptions()
-        {
-            CloseOnEscapeKey = true,
-            DisableBackdropClick = true,
-        };
+        DialogOptions dialogOptions = new()
+            {
+                CloseOnEscapeKey = true,
+                DisableBackdropClick = true,
+            };
 
-        var dialog = DialogService.Show<AddDeviceDialog>("Add Device", dialogOptions);
-        var result = (bool?)(await dialog.Result).Data;
-
-        if (result ?? false)
+        try
         {
-            await RefreshDevices();
+            _buttonsDisabled = true;
+            var dialog = DialogService.Show<AddDeviceDialog>("Add Device", dialogOptions);
+            var result = (bool?)(await dialog.Result).Data;
+
+            if (result ?? false)
+            {
+                await RefreshDevices();
+            }
         }
+        finally
+        {
+            _buttonsDisabled = false;
+            StateHasChanged();
+        }
+
     }
 
     private async void UpdateDevice(ListDevicesResult device)
     {
         var dialogOptions = new DialogOptions()
-        {
-            CloseOnEscapeKey = true,
-            DisableBackdropClick = true,
-        };
+            {
+                CloseOnEscapeKey = true,
+                DisableBackdropClick = true,
+            };
         AddEditDeviceForm model = new();
         Mapper.Map(device, model);
         var parameters = new DialogParameters { ["Model"] = model };
 
-        var dialog = DialogService.Show<EditDeviceDialog>($"Update {device.Name}", parameters, dialogOptions);
-        var result = (bool?)(await dialog.Result).Data;
-
-        if (result ?? false)
+        try
         {
-            await RefreshDevices();
+            _buttonsDisabled = true;
+            var dialog = DialogService.Show<EditDeviceDialog>($"Update {device.Name}", parameters, dialogOptions);
+            var result = (bool?)(await dialog.Result).Data;
+
+            if (result ?? false)
+            {
+                await RefreshDevices();
+            }
         }
+        finally
+        {
+            _buttonsDisabled = false;
+            StateHasChanged();
+        }
+
     }
 
     private async void DeleteDevice(ListDevicesResult device)
     {
         try
         {
+            _buttonsDisabled = true;
             bool? result = await DialogService.ShowMessageBox($"Delete {device.Name}", $"Are you sure you want to delete {device.Name}?", noText: "No");
             if (result == true)
             {
@@ -117,7 +139,8 @@
         }
         finally
         {
-
+            _buttonsDisabled = false;
+            StateHasChanged();
         }
     }
 }
