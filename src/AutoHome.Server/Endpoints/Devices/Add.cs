@@ -36,11 +36,11 @@ public class Add : EndpointBaseAsync
     public override async Task<ActionResult<AddDeviceResult>> HandleAsync(
         [FromBody] AddDeviceRequest request, CancellationToken cancellationToken = default)
     {
-        var device = new Device();
-        _mapper.Map(request, device);
-        await _repository.AddAsync(device, cancellationToken).ConfigureAwait(false);
+        var entity = new Device();
+        _mapper.Map(request, entity);
+        await _repository.AddAsync(entity, cancellationToken).ConfigureAwait(false);
 
-        var result = _mapper.Map<AddDeviceResult>(device);
+        var result = _mapper.Map<AddDeviceResult>(entity);
         return CreatedAtRoute("GetDevices", new { id = result.Id }, result);
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace AutoHome.Data.Entities;
+﻿namespace AutoHome.PluginCore;
 
-public class TimeTrigger : BaseEntity
+public class TimeTrigger
 {
     public Guid DeviceId { get; set; }
     public string Name { get; set; } = string.Empty;

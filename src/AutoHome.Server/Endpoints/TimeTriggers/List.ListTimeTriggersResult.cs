@@ -1,7 +1,8 @@
-﻿namespace AutoHome.Data.Entities;
+﻿namespace AutoHome.Server.Endpoints.TimeTriggers;
 
-public class TimeTrigger : BaseEntity
+public class ListTimeTriggersResult
 {
+    public Guid Id { get; set; }
     public Guid DeviceId { get; set; }
     public string Name { get; set; } = string.Empty;
     public TimeSpan Time { get; set; }
