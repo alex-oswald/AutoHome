@@ -1,91 +1,59 @@
 ﻿using AutoHome.Data;
-using AutoHome.Data.Entities;
+using AutoHome.PluginCore;
 using AutoHome.Server.Services;
+using Curtains.Plugin;
 
 namespace AutoHome.Server;
-
-public interface ICurtainController
-{
-    Task CloseAsync();
-    Task OpenAsync();
-}
-
-public class CurtainController : ICurtainController
-{
-    //private readonly ILogger<CurtainController> _logger;
-    //private readonly IStepperMotor _stepperMotor;
-    //private readonly CurtainConfig _options;
-
-    //public CurtainController(
-    //    ILogger<CurtainController> logger,
-    //    IStepperMotor stepperMotor,
-    //    IOptions<CurtainConfig> options)
-    //{
-    //    _logger = logger;
-    //    _stepperMotor = stepperMotor;
-    //    _options = options.Value ?? throw new ArgumentNullException(nameof(options));
-    //}
-
-    public async Task OpenAsync() => await RotateAsync(true);
-
-    public async Task CloseAsync() => await RotateAsync(false);
-
-    private async Task RotateAsync(bool clockwise)
-    {
-        await Task.Run(() =>
-        {
-            //try
-            //{
-            //    _stepperMotor.SetEnabledState(true);
-            //    _stepperMotor.RPM = _options.RPM;
-            //    _stepperMotor.Step(clockwise ? _options.Steps : -_options.Steps);
-            //}
-            //finally
-            //{
-            //    _stepperMotor.SetEnabledState(false);
-            //}
-        });
-    }
-}
 
 public class TriggerLoaderHostedService : IHostedService
 {
     private readonly ILogger<TriggerLoaderHostedService> _logger;
     private readonly IServiceProvider _sp;
     private readonly ITimeTriggersService _timeTriggersService;
-    private readonly ICurtainController _curtainController;
+    private readonly ICurtainsManager _curtainsManager;
+    private readonly IEnumerable<ITriggerAction> _triggerActions;
 
     public TriggerLoaderHostedService(
         ILogger<TriggerLoaderHostedService> logger,
         IServiceProvider sp,
         ITimeTriggersService timeTriggersService,
-        ICurtainController curtainController)
+        ICurtainsManager curtainsManager,
+        IEnumerable<ITriggerAction> triggerActions)
     {
         _logger = logger;
         _sp = sp;
         _timeTriggersService = timeTriggersService;
-        _curtainController = curtainController;
+        _curtainsManager = curtainsManager;
+        _triggerActions = triggerActions;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         using var scope = _sp.CreateScope();
 
-        var timeTriggersRepo = scope.ServiceProvider.GetService<IAsyncRepository<TimeTrigger>>();
+        var timeTriggersRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Data.Entities.TimeTrigger>>();
+        var devicesRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Data.Entities.Device>>();
 
         var triggers = await timeTriggersRepo!.ListAsync(cancellationToken).ConfigureAwait(false);
 
         foreach (var trigger in triggers!)
         {
+            var device = await devicesRepo.GetByIdAsync(trigger.DeviceId, cancellationToken);
+
+            var action = _triggerActions.Where(o => o.Name == trigger.Name).First();
+
+            _timeTriggersService.AddTimedTrigger(
+                new TimeTriggerPackage(action.Name, new TimeSpan(0, 0, 10), action.Action.Invoke(device)));
+
             switch (trigger.Name)
             {
                 case "CurtainsOpen":
                     _timeTriggersService.AddTimedTrigger(
-                        new TimeTriggerPackage("CurtainsOpen", new TimeSpan(0, 0, 10), _curtainController.OpenAsync));
+                        new TimeTriggerPackage("CurtainsOpen", new TimeSpan(0, 0, 10), _curtainsManager.OpenAsync(device)));
                     break;
                 case "CurtainsClose":
                     _timeTriggersService.AddTimedTrigger(
-                        new TimeTriggerPackage("CurtainsClose", new TimeSpan(0, 0, 30), _curtainController.CloseAsync));
+                        new TimeTriggerPackage("CurtainsClose", new TimeSpan(0, 0, 30), _curtainsManager.CloseAsync(device)));
                     break;
                 default:
                     break;

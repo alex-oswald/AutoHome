@@ -2,6 +2,7 @@ using AutoHome.Data;
 using AutoHome.Data.Entities;
 using AutoHome.Server;
 using AutoHome.Server.Services;
+using Curtains.Plugin;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -35,10 +36,11 @@ try
     builder.Services.AddScoped<IAsyncRepository<TimeTrigger>, EntityFrameworkRepository<TimeTrigger, SqliteDbContext>>();
 
     builder.Services.AddScoped<ICurtainsService, CurtainsService>();
-    builder.Services.AddSingleton<ICurtainController, CurtainController>();
 
     builder.Services.AddSingleton<ITimeTriggersService, TimeTriggersService>();
     builder.Services.AddHostedService<TriggerLoaderHostedService>();
+
+    builder.Services.AddCurtainsPlugin();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(options =>
