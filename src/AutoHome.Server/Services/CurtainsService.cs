@@ -1,5 +1,5 @@
 ﻿using AutoHome.Data;
-using Curtains.Plugin;
+using Curtains.Plugin.TriggerActions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoHome.Server.Services;
@@ -26,12 +26,12 @@ public class CurtainsService : ICurtainsService
 
     public async Task<(TimeSpan? open, TimeSpan? close)> GetTimesAsync(Guid deviceId, CancellationToken cancellationToken)
     {
-        var open = await _dbContext.TimeTriggers!
+        var open = await _dbContext.Triggers!
             .Where(o => o.DeviceId == deviceId)
             .Where(o => o.Name == OpenCurtainsTriggerAction.ACTION_NAME)
             .SingleOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
-        var close = await _dbContext.TimeTriggers!
+        var close = await _dbContext.Triggers!
             .Where(o => o.DeviceId == deviceId)
             .Where(o => o.Name == CloseCurtainsTriggerAction.ACTION_NAME)
             .SingleOrDefaultAsync(cancellationToken)
@@ -43,7 +43,7 @@ public class CurtainsService : ICurtainsService
     public async Task SaveOpenTimeAsync(Guid deviceId, TimeSpan? time, CancellationToken cancellationToken)
     {
         _logger.LogInformation("{name} open:{time}", nameof(SaveOpenTimeAsync), time);
-        var open = await _dbContext.TimeTriggers!
+        var open = await _dbContext.Triggers!
             .Where(o => o.DeviceId == deviceId)
             .Where(o => o.Name == OpenCurtainsTriggerAction.ACTION_NAME)
             .SingleOrDefaultAsync(cancellationToken)
@@ -60,7 +60,7 @@ public class CurtainsService : ICurtainsService
             else
             {
                 // Otherwise update the db entry
-                open.Interval = Convert.ToInt64(time.Value.TotalMilliseconds);
+                open.Interval = time.Value.TotalMilliseconds;
                 _dbContext.Update(open);
             }
         }
@@ -71,7 +71,7 @@ public class CurtainsService : ICurtainsService
             {
                 DeviceId = deviceId,
                 Name = OpenCurtainsTriggerAction.ACTION_NAME,
-                Interval = Convert.ToInt64(time.Value.TotalMilliseconds),
+                Interval = time.Value.TotalMilliseconds,
         };
             await _dbContext.AddAsync(open, cancellationToken).ConfigureAwait(false);
         }
@@ -82,7 +82,7 @@ public class CurtainsService : ICurtainsService
     public async Task SaveCloseTimeAsync(Guid deviceId, TimeSpan? time, CancellationToken cancellationToken)
     {
         _logger.LogInformation("{name} close:{time}", nameof(SaveCloseTimeAsync), time);
-        var close = await _dbContext.TimeTriggers!
+        var close = await _dbContext.Triggers!
             .Where(o => o.DeviceId == deviceId)
             .Where(o => o.Name == CloseCurtainsTriggerAction.ACTION_NAME)
             .SingleOrDefaultAsync(cancellationToken)
@@ -99,7 +99,7 @@ public class CurtainsService : ICurtainsService
             else
             {
                 // Otherwise update the db entry
-                close.Interval = Convert.ToInt64(time.Value.TotalMilliseconds);
+                close.Interval = time.Value.TotalMilliseconds;
                 _dbContext.Update(close);
             }
         }
@@ -110,7 +110,7 @@ public class CurtainsService : ICurtainsService
             {
                 DeviceId = deviceId,
                 Name = CloseCurtainsTriggerAction.ACTION_NAME,
-                Interval = Convert.ToInt64(time.Value.TotalMilliseconds),
+                Interval = time.Value.TotalMilliseconds,
         };
             await _dbContext.AddAsync(close, cancellationToken).ConfigureAwait(false);
         }

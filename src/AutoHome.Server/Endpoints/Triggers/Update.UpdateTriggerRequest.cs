@@ -11,5 +11,5 @@ public class UpdateTriggerRequest
     [Required]
     public string Name { get; set; } = string.Empty;
     [Required]
-    public TimeSpan Time { get; set; }
+    public double Interval { get; set; }
 }

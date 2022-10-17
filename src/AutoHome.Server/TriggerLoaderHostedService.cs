@@ -1,5 +1,5 @@
-﻿using AutoHome.Data;
-using AutoHome.PluginCore;
+﻿using AutoHome.Core;
+using AutoHome.Data;
 using AutoHome.Server.Services;
 
 namespace AutoHome.Server;

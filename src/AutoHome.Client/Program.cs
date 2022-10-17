@@ -27,6 +27,6 @@ builder.Services.AddMudServices(config =>
 builder.Services.AddAutoMapper(typeof(Program));
 
 // Integration Plugins
-builder.Services.AddCurtainsPlugin();
+builder.Services.AddCurtainsPluginClient();
 
 await builder.Build().RunAsync();

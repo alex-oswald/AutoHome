@@ -39,7 +39,7 @@ try
     builder.Services.AddSingleton<ITriggersService, TriggersService>();
     builder.Services.AddHostedService<TriggerLoaderHostedService>();
 
-    builder.Services.AddCurtainsPlugin();
+    builder.Services.AddCurtainsPluginServer();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(options =>

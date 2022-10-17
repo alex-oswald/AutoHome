@@ -529,8 +529,8 @@
       "AddTriggerRequest": {
         "required": [
           "deviceId",
-          "name",
-          "time"
+          "interval",
+          "name"
         ],
         "type": "object",
         "properties": {
@@ -542,8 +542,9 @@
             "minLength": 1,
             "type": "string"
           },
-          "time": {
-            "$ref": "#/components/schemas/TimeSpan"
+          "interval": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -551,8 +552,8 @@
       "AddTriggerResult": {
         "required": [
           "deviceId",
-          "name",
-          "time"
+          "interval",
+          "name"
         ],
         "type": "object",
         "properties": {
@@ -564,8 +565,9 @@
             "minLength": 1,
             "type": "string"
           },
-          "time": {
-            "$ref": "#/components/schemas/TimeSpan"
+          "interval": {
+            "type": "number",
+            "format": "double"
           },
           "id": {
             "type": "string",
@@ -615,8 +617,9 @@
             "type": "string",
             "nullable": true
           },
-          "time": {
-            "$ref": "#/components/schemas/TimeSpan"
+          "interval": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -662,8 +665,9 @@
             "type": "string",
             "nullable": true
           },
-          "time": {
-            "$ref": "#/components/schemas/TimeSpan"
+          "interval": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -674,66 +678,6 @@
           "statusCode": {
             "type": "integer",
             "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TimeSpan": {
-        "type": "object",
-        "properties": {
-          "ticks": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "days": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "hours": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "milliseconds": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "minutes": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "seconds": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "totalDays": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
-          },
-          "totalHours": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
-          },
-          "totalMilliseconds": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
-          },
-          "totalMinutes": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
-          },
-          "totalSeconds": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -801,8 +745,8 @@
         "required": [
           "deviceId",
           "id",
-          "name",
-          "time"
+          "interval",
+          "name"
         ],
         "type": "object",
         "properties": {
@@ -818,8 +762,9 @@
             "minLength": 1,
             "type": "string"
           },
-          "time": {
-            "$ref": "#/components/schemas/TimeSpan"
+          "interval": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -839,8 +784,9 @@
             "type": "string",
             "nullable": true
           },
-          "time": {
-            "$ref": "#/components/schemas/TimeSpan"
+          "interval": {
+            "type": "integer",
+            "format": "int64"
           }
         },
         "additionalProperties": false

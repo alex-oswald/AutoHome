@@ -1,4 +1,4 @@
-﻿using AutoHome.PluginCore;
+﻿using AutoHome.Core;
 using System.Collections.Concurrent;
 
 namespace AutoHome.Server.Services;

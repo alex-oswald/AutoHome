@@ -1,4 +1,6 @@
-﻿namespace AutoHome.PluginCore;
+﻿using AutoHome.Core.Entities;
+
+namespace AutoHome.Core;
 
 public interface ITriggerAction
 {
