@@ -1,6 +1,6 @@
-﻿namespace AutoHome.Server.Endpoints.TimeTriggers;
+﻿namespace AutoHome.Server.Endpoints.Triggers;
 
-public class UpdateTimeTriggerResult
+public class GetTriggerResult
 {
     public Guid Id { get; set; }
     public Guid DeviceId { get; set; }

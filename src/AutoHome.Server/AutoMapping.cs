@@ -1,5 +1,5 @@
 ﻿using AutoHome.Server.Endpoints.Devices;
-using AutoHome.Server.Endpoints.TimeTriggers;
+using AutoHome.Server.Endpoints.Triggers;
 using AutoMapper;
 
 namespace AutoHome.Server;
@@ -16,12 +16,12 @@ public class AutoMapping : Profile
 		CreateMap<Device, UpdateDeviceRequest>();
 		CreateMap<Device, UpdateDeviceResult>();
 
-		CreateMap<AddTimeTriggerRequest, TimeTrigger>();
-		CreateMap<UpdateTimeTriggerRequest, TimeTrigger>();
-		CreateMap<TimeTrigger, AddTimeTriggerResult>();
-		CreateMap<TimeTrigger, GetTimeTriggerResult>();
-		CreateMap<TimeTrigger, ListTimeTriggersResult>();
-		CreateMap<TimeTrigger, UpdateTimeTriggerRequest>();
-		CreateMap<TimeTrigger, UpdateTimeTriggerResult>();
+		CreateMap<AddTriggerRequest, Trigger>();
+		CreateMap<UpdateTriggerRequest, Trigger>();
+		CreateMap<Trigger, AddTriggerResult>();
+		CreateMap<Trigger, GetTriggerResult>();
+		CreateMap<Trigger, ListTriggersResult>();
+		CreateMap<Trigger, UpdateTriggerRequest>();
+		CreateMap<Trigger, UpdateTriggerResult>();
 	}
 }

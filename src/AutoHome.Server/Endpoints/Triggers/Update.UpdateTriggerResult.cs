@@ -1,9 +1,9 @@
-﻿namespace AutoHome.Core.Entities;
+﻿namespace AutoHome.Server.Endpoints.Triggers;
 
-public class TimeTrigger : IEntity
+public class UpdateTriggerResult
 {
     public Guid Id { get; set; }
     public Guid DeviceId { get; set; }
     public string Name { get; set; } = string.Empty;
-    public long Interval { get; set; }
+    public TimeSpan Time { get; set; }
 }

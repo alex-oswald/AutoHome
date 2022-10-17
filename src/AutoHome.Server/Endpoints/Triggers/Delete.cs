@@ -3,28 +3,28 @@ using AutoHome.Data;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace AutoHome.Server.Endpoints.TimeTriggers;
+namespace AutoHome.Server.Endpoints.Triggers;
 
 public class Delete : EndpointBaseAsync
     .WithRequest<string>
     .WithActionResult
 {
-    private readonly IAsyncRepository<TimeTrigger> _repository;
+    private readonly IAsyncRepository<Trigger> _repository;
 
     public Delete(
-        IAsyncRepository<TimeTrigger> repository)
+        IAsyncRepository<Trigger> repository)
     {
         _repository = repository;
     }
 
-    [HttpDelete("api/timetriggers/{id}")]
+    [HttpDelete("api/triggers/{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [SwaggerOperation(
-        Summary = "Deletes a time trigger",
-        OperationId = "DeleteTimeTrigger",
-        Tags = new[] { "Time Triggers" }
+        Summary = "Deletes a trigger",
+        OperationId = "DeleteTrigger",
+        Tags = new[] { "Triggers" }
     )]
     public override async Task<ActionResult> HandleAsync(
         [FromRoute] string id, CancellationToken cancellationToken = default)

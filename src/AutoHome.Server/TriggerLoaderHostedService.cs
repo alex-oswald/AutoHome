@@ -8,13 +8,13 @@ public class TriggerLoaderHostedService : IHostedService
 {
     private readonly ILogger<TriggerLoaderHostedService> _logger;
     private readonly IServiceProvider _sp;
-    private readonly ITimeTriggersService _timeTriggersService;
+    private readonly ITriggersService _timeTriggersService;
     private readonly IEnumerable<ITriggerAction> _triggerActions;
 
     public TriggerLoaderHostedService(
         ILogger<TriggerLoaderHostedService> logger,
         IServiceProvider sp,
-        ITimeTriggersService timeTriggersService,
+        ITriggersService timeTriggersService,
         IEnumerable<ITriggerAction> triggerActions)
     {
         _logger = logger;
@@ -27,7 +27,7 @@ public class TriggerLoaderHostedService : IHostedService
     {
         using var scope = _sp.CreateScope();
 
-        var timeTriggersRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<TimeTrigger>>();
+        var timeTriggersRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Trigger>>();
         var devicesRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Device>>();
 
         var triggers = await timeTriggersRepo!.ListAsync(cancellationToken).ConfigureAwait(false);
@@ -38,7 +38,7 @@ public class TriggerLoaderHostedService : IHostedService
 
             var action = _triggerActions.Where(o => o.Name == trigger.Name).First();
 
-            _timeTriggersService.AddTimedTrigger(device, new TimeTriggerPackage(action.Name, TimeSpan.FromMilliseconds(trigger.Interval), action));
+            _timeTriggersService.AddTrigger(device, new TriggerPackage(action.Name, TimeSpan.FromMilliseconds(trigger.Interval), action));
         }
     }
 

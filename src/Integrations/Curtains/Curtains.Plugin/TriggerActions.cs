@@ -6,6 +6,8 @@ namespace Curtains.Plugin;
 
 public class OpenCurtainsTriggerAction : ITriggerAction
 {
+    public const string ACTION_NAME = "CurtainsClose";
+
     private readonly IServiceProvider _sp;
 
     public OpenCurtainsTriggerAction(IServiceProvider sp)
@@ -13,7 +15,7 @@ public class OpenCurtainsTriggerAction : ITriggerAction
         _sp = sp;
     }
 
-    public string Name { get; } = "CurtainsOpen";
+    public string Name { get; } = ACTION_NAME;
 
     public Func<Device, CancellationToken, Task> Action
     {
@@ -27,6 +29,8 @@ public class OpenCurtainsTriggerAction : ITriggerAction
 
 public class CloseCurtainsTriggerAction : ITriggerAction
 {
+    public const string ACTION_NAME = "CurtainsClose";
+
     private readonly IServiceProvider _sp;
 
     public CloseCurtainsTriggerAction(IServiceProvider sp)
@@ -34,7 +38,7 @@ public class CloseCurtainsTriggerAction : ITriggerAction
         _sp = sp;
     }
 
-    public string Name { get; } = "CurtainsClose";
+    public string Name { get; } = ACTION_NAME;
 
     public Func<Device, CancellationToken, Task> Action
     {

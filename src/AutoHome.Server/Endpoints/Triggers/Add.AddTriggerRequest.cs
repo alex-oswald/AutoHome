@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AutoHome.Server.Endpoints.TimeTriggers;
+namespace AutoHome.Server.Endpoints.Triggers;
 
-public class UpdateTimeTriggerRequest
+public class AddTriggerRequest
 {
-    [Required]
-    public Guid Id { get; set; }
     [Required]
     public Guid DeviceId { get; set; }
     [Required]

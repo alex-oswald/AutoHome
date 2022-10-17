@@ -4,37 +4,37 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace AutoHome.Server.Endpoints.TimeTriggers;
+namespace AutoHome.Server.Endpoints.Triggers;
 
 public class Update : EndpointBaseAsync
-    .WithRequest<UpdateTimeTriggerRequest>
-    .WithActionResult<UpdateTimeTriggerResult>
+    .WithRequest<UpdateTriggerRequest>
+    .WithActionResult<UpdateTriggerResult>
 {
-    private readonly IAsyncRepository<TimeTrigger> _repository;
+    private readonly IAsyncRepository<Trigger> _repository;
     private readonly IMapper _mapper;
 
     public Update(
-        IAsyncRepository<TimeTrigger> repository,
+        IAsyncRepository<Trigger> repository,
         IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;
     }
 
-    [HttpPut("api/timetriggers")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateTimeTriggerResult))]
+    [HttpPut("api/triggers")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateTriggerResult))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesJson]
     [ConsumesJson]
     [SwaggerOperation(
-        Summary = "Updates a time trigger",
-        OperationId = "UpdateTimeTrigger",
-        Tags = new[] { "Time Triggers" }
+        Summary = "Updates a trigger",
+        OperationId = "UpdateTrigger",
+        Tags = new[] { "Triggers" }
     )]
-    public override async Task<ActionResult<UpdateTimeTriggerResult>> HandleAsync(
-        [FromBody] UpdateTimeTriggerRequest request, CancellationToken cancellationToken = default)
+    public override async Task<ActionResult<UpdateTriggerResult>> HandleAsync(
+        [FromBody] UpdateTriggerRequest request, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
 
@@ -43,7 +43,7 @@ public class Update : EndpointBaseAsync
         _mapper.Map(request, entity);
         await _repository.UpdateAsync(entity, cancellationToken).ConfigureAwait(false);
 
-        UpdateTimeTriggerResult result = new();
+        UpdateTriggerResult result = new();
         _mapper.Map(entity, result);
         return result;
     }

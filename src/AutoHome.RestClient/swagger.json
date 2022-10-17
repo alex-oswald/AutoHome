@@ -5,18 +5,18 @@
     "version": "v1"
   },
   "paths": {
-    "/api/timetriggers": {
+    "/api/triggers": {
       "post": {
         "tags": [
-          "Time Triggers"
+          "Triggers"
         ],
-        "summary": "Adds a time trigger",
-        "operationId": "AddTimeTrigger",
+        "summary": "Adds a trigger",
+        "operationId": "AddTrigger",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddTimeTriggerRequest"
+                "$ref": "#/components/schemas/AddTriggerRequest"
               }
             }
           }
@@ -27,7 +27,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AddTimeTriggerResult"
+                  "$ref": "#/components/schemas/AddTriggerResult"
                 }
               }
             }
@@ -49,10 +49,10 @@
       },
       "get": {
         "tags": [
-          "Time Triggers"
+          "Triggers"
         ],
-        "summary": "Lists time triggers",
-        "operationId": "ListTimeTrigger",
+        "summary": "Lists triggers",
+        "operationId": "ListTrigger",
         "responses": {
           "200": {
             "description": "Success",
@@ -61,7 +61,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ListTimeTriggersResult"
+                    "$ref": "#/components/schemas/ListTriggersResult"
                   }
                 }
               }
@@ -84,15 +84,15 @@
       },
       "put": {
         "tags": [
-          "Time Triggers"
+          "Triggers"
         ],
-        "summary": "Updates a time trigger",
-        "operationId": "UpdateTimeTrigger",
+        "summary": "Updates a trigger",
+        "operationId": "UpdateTrigger",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateTimeTriggerRequest"
+                "$ref": "#/components/schemas/UpdateTriggerRequest"
               }
             }
           }
@@ -103,7 +103,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpdateTimeTriggerResult"
+                  "$ref": "#/components/schemas/UpdateTriggerResult"
                 }
               }
             }
@@ -263,13 +263,13 @@
         }
       }
     },
-    "/api/timetriggers/{id}": {
+    "/api/triggers/{id}": {
       "delete": {
         "tags": [
-          "Time Triggers"
+          "Triggers"
         ],
-        "summary": "Deletes a time trigger",
-        "operationId": "DeleteTimeTrigger",
+        "summary": "Deletes a trigger",
+        "operationId": "DeleteTrigger",
         "parameters": [
           {
             "name": "id",
@@ -311,10 +311,10 @@
       },
       "get": {
         "tags": [
-          "Time Triggers"
+          "Triggers"
         ],
-        "summary": "Gets a time trigger",
-        "operationId": "GetTimeTrigger",
+        "summary": "Gets a trigger",
+        "operationId": "GetTrigger",
         "parameters": [
           {
             "name": "id",
@@ -332,7 +332,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetTimeTriggerResult"
+                  "$ref": "#/components/schemas/GetTriggerResult"
                 }
               }
             }
@@ -526,7 +526,7 @@
         },
         "additionalProperties": false
       },
-      "AddTimeTriggerRequest": {
+      "AddTriggerRequest": {
         "required": [
           "deviceId",
           "name",
@@ -548,7 +548,7 @@
         },
         "additionalProperties": false
       },
-      "AddTimeTriggerResult": {
+      "AddTriggerResult": {
         "required": [
           "deviceId",
           "name",
@@ -600,7 +600,7 @@
         },
         "additionalProperties": false
       },
-      "GetTimeTriggerResult": {
+      "GetTriggerResult": {
         "type": "object",
         "properties": {
           "id": {
@@ -647,7 +647,7 @@
         },
         "additionalProperties": false
       },
-      "ListTimeTriggersResult": {
+      "ListTriggersResult": {
         "type": "object",
         "properties": {
           "id": {
@@ -797,7 +797,7 @@
         },
         "additionalProperties": false
       },
-      "UpdateTimeTriggerRequest": {
+      "UpdateTriggerRequest": {
         "required": [
           "deviceId",
           "id",
@@ -824,7 +824,7 @@
         },
         "additionalProperties": false
       },
-      "UpdateTimeTriggerResult": {
+      "UpdateTriggerResult": {
         "type": "object",
         "properties": {
           "id": {
