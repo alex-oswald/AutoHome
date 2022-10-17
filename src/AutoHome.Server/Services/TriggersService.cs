@@ -10,6 +10,9 @@ public record TriggerPackage(Trigger Trigger, Timer Timer, Device Device, Trigge
 
 public interface ITriggersService
 {
+    /// <summary>
+    /// Initialize the services trigger dictionary from the database.
+    /// </summary>
     Task InitializeTriggersAsync(CancellationToken cancellationToken);
     Task AddTriggerAsync(Trigger trigger, CancellationToken cancellationToken);
     Task UpdateTriggerAsync(Trigger trigger, CancellationToken cancellationToken);
@@ -43,12 +46,12 @@ public class TriggersService : ITriggersService
         var devicesRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Device>>();
 
         _triggers.Clear();
-        var triggers = await triggersRepo!.ListAsync(cancellationToken).ConfigureAwait(false);
+        var triggers = await triggersRepo.ListAsync(cancellationToken).ConfigureAwait(false);
 
         foreach (var trigger in triggers!)
         {
-            var device = (await devicesRepo.ListAsync(cancellationToken,
-                filter: d => d.DeviceId == trigger.DeviceId))!.Single();
+            Device device = (await devicesRepo.ListAsync(cancellationToken,
+                filter: d => d.DeviceId == trigger.DeviceId).ConfigureAwait(false))!.Single();
 
             await AddToDictAsync(trigger, device, cancellationToken);
         }
@@ -73,7 +76,7 @@ public class TriggersService : ITriggersService
         }, cancellationToken).ConfigureAwait(false);
 
         // Add the trigger to the dictionary
-        var device = (await devicesRepo.ListAsync(cancellationToken,
+        Device device = (await devicesRepo.ListAsync(cancellationToken,
             filter: d => d.DeviceId == trigger.DeviceId))!.Single();
         await AddToDictAsync(trigger, device, cancellationToken);
     }
