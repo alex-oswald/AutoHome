@@ -1,12 +1,11 @@
-﻿using AutoHome.Data.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
 namespace AutoHome.Data;
 
 public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
-        where T : BaseEntity
+        where T : class, IEntity
         where TDbContext : DbContext
 {
     private readonly ILogger<EntityFrameworkRepository<T, TDbContext>> _logger;
@@ -24,8 +23,8 @@ public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
 
     public virtual async Task<T> AddAsync(T entity, CancellationToken cancellationToken)
     {
-        await _dbContext.Set<T>().AddAsync(entity, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.Set<T>().AddAsync(entity, cancellationToken).ConfigureAwait(false);
+        await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
         return entity;
     }
@@ -33,13 +32,13 @@ public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
     public virtual async Task<bool> DeleteAsync(T entity, CancellationToken cancellationToken)
     {
         _dbContext.Set<T>().Remove(entity);
-        var writes = await _dbContext.SaveChangesAsync(cancellationToken);
+        var writes = await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         return writes > 0;
     }
 
     public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _dbContext.Set<T>().FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+        return await _dbContext.Set<T>().FirstOrDefaultAsync(a => a.Id == id, cancellationToken).ConfigureAwait(false);
     }
 
     public virtual async Task<IReadOnlyList<T>?> ListAsync(
@@ -69,11 +68,11 @@ public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
             // Sort
             if (orderBy != null)
             {
-                return await orderBy(query).AsNoTracking().ToListAsync(cancellationToken);
+                return await orderBy(query).AsNoTracking().ToListAsync(cancellationToken).ConfigureAwait(false);
             }
             else
             {
-                return await query.AsNoTracking().ToListAsync(cancellationToken);
+                return await query.AsNoTracking().ToListAsync(cancellationToken).ConfigureAwait(false);
             }
         }
         catch (Exception ex)
@@ -86,6 +85,6 @@ public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
     public virtual async Task UpdateAsync(T entity, CancellationToken cancellationToken)
     {
         _dbContext.Entry(entity).State = EntityState.Modified;
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 }

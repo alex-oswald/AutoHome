@@ -1,0 +1,41 @@
+﻿@inject AutoHomeRestClient Client;
+@inject IMapper Mapper;
+@inject ISnackbar Snackbar
+
+<EditForm Model="@Model" OnValidSubmit="Submit">
+    <DataAnnotationsValidator />
+    <MudDialog>
+        <DialogContent>
+            <MudTextField Label="Device Id"
+                          @bind-Value="Model.DeviceId" For="@(() => Model.DeviceId)" />
+            <MudTextField Label="Name"
+                          @bind-Value="Model.Name" For="@(() => Model.Name)" />
+            <MudTextField Label="Uri"
+                          @bind-Value="Model.Interval" For="@(() => Model.Interval)" />
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="Cancel">Cancel</MudButton>
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit">Ok</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public EditTriggerForm Model { get; set; }
+
+    async Task Submit(EditContext context)
+    {
+        var request = new UpdateTriggerRequest();
+        Mapper.Map(Model, request);
+        var result = await Client.UpdateTriggerAsync(request, CancellationToken.None);
+        if (result is null)
+        {
+            Snackbar.Add("Error editing the trigger.", Severity.Error);
+        }
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}

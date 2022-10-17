@@ -1,8 +1,9 @@
-using AutoHome;
 using AutoHome.Data;
-using AutoHome.Data.Entities;
+using AutoHome.Server;
 using AutoHome.Server.Services;
+using Curtains.Plugin;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 
@@ -31,15 +32,30 @@ try
     builder.Services.AddDbContext<SqliteDbContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
     builder.Services.AddScoped<IAsyncRepository<Device>, EntityFrameworkRepository<Device, SqliteDbContext>>();
-    builder.Services.AddScoped<IAsyncRepository<TimeTrigger>, EntityFrameworkRepository<TimeTrigger, SqliteDbContext>>();
+    builder.Services.AddScoped<IAsyncRepository<Trigger>, EntityFrameworkRepository<Trigger, SqliteDbContext>>();
 
     builder.Services.AddScoped<ICurtainsService, CurtainsService>();
-    builder.Services.AddSingleton<ICurtainController, CurtainController>();
 
-    builder.Services.AddSingleton<ITimeTriggersService, TimeTriggersService>();
+    builder.Services.AddSingleton<ITriggersService, TriggersService>();
     builder.Services.AddHostedService<TriggerLoaderHostedService>();
 
+    builder.Services.AddCurtainsPluginServer();
+
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(options =>
+    {
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Version = "v1",
+            Title = "AutoHome REST API",
+        });
+        options.EnableAnnotations();
+    });
+
     var app = builder.Build();
+
+    app.UseSwagger();
+    app.UseSwaggerUI();
 
     // Make sure the database is created
     using (var scoped = app.Services.CreateScope())

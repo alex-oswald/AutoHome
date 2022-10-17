@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 
 namespace AutoHome.PluginCore;
 
@@ -25,7 +23,7 @@ public class TokenProvider : ITokenProvider
     public Task<string> GetTokenAsync(Device device, CancellationToken cancellationToken) =>
         _cache.GetOrCreateAsync(KEY, async (entry) =>
         {
-            var token = await GetNewTokenAsync(device, cancellationToken);
+            var token = await GetNewTokenAsync(device, cancellationToken).ConfigureAwait(false);
             entry.SetOptions(_cacheOptions);
             entry.SetValue(token);
             return token;
@@ -33,7 +31,7 @@ public class TokenProvider : ITokenProvider
 
     public async Task<string> RefreshTokenAsync(Device device, CancellationToken cancellationToken)
     {
-        var token = await GetNewTokenAsync(device, cancellationToken);
+        var token = await GetNewTokenAsync(device, cancellationToken).ConfigureAwait(false);
         return _cache.Set(KEY, token, _cacheOptions);
     }
 
@@ -41,8 +39,8 @@ public class TokenProvider : ITokenProvider
     {
         HttpClient client = new();
         var request = new TokenRequest { DeviceId = device.DeviceId.ToString() };
-        var response = await client.PostAsJsonAsync(device.Uri + "/token", request, cancellationToken);
-        var result = await response.Content.ReadFromJsonAsync<TokenResult>(cancellationToken: cancellationToken);
+        var response = await client.PostAsJsonAsync(device.Uri + "/token", request, cancellationToken).ConfigureAwait(false);
+        var result = await response.Content.ReadFromJsonAsync<TokenResult>(cancellationToken: cancellationToken).ConfigureAwait(false);
         return result?.Token ?? string.Empty;
     }
 

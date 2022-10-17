@@ -1,95 +1,120 @@
 ﻿using AutoHome.Data;
+using Curtains.Plugin.TriggerActions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoHome.Server.Services;
 
 public interface ICurtainsService
 {
-    Task<(TimeSpan? open, TimeSpan? close)> GetTimesAsync(CancellationToken cancellationToken);
-    Task SaveCloseTimeAsync(TimeSpan? time, CancellationToken cancellationToken);
-    Task SaveOpenTimeAsync(TimeSpan? time, CancellationToken cancellationToken);
+    Task<(TimeSpan? open, TimeSpan? close)> GetTimesAsync(Guid deviceId, CancellationToken cancellationToken);
+    Task SaveCloseTimeAsync(Guid deviceId, TimeSpan? time, CancellationToken cancellationToken);
+    Task SaveOpenTimeAsync(Guid deviceId, TimeSpan? time, CancellationToken cancellationToken);
 }
 
 public class CurtainsService : ICurtainsService
 {
-    private const string CURTAINS_OPEN = "CurtainsOpen";
-    private const string CURTAINS_CLOSE = "CurtainsClose";
-
     private readonly ILogger<CurtainsService> _logger;
     private readonly SqliteDbContext _dbContext;
-    //private readonly DeviceOptions _options;
 
     public CurtainsService(
         ILogger<CurtainsService> logger,
         SqliteDbContext dbContext)
-    //IOptions<DeviceOptions> options)
     {
         _logger = logger;
         _dbContext = dbContext;
-        //_options = options.Value ?? throw new ArgumentNullException(nameof(options));
     }
 
-    public async Task<(TimeSpan? open, TimeSpan? close)> GetTimesAsync(CancellationToken cancellationToken)
+    public async Task<(TimeSpan? open, TimeSpan? close)> GetTimesAsync(Guid deviceId, CancellationToken cancellationToken)
     {
-        var open = await _dbContext.TimeTriggers!
-            //.Where(o => o.DeviceId == _options.Id)
-            .Where(o => o.Name == CURTAINS_OPEN)
-            .SingleOrDefaultAsync(cancellationToken);
-        var close = await _dbContext.TimeTriggers!
-            //.Where(o => o.DeviceId == _options.Id)
-            .Where(o => o.Name == CURTAINS_CLOSE)
-            .SingleOrDefaultAsync(cancellationToken);
-        _logger.LogInformation("{name} open:{openTime} close:{closeTime}", nameof(GetTimesAsync), open?.Time, close?.Time);
-        return (open?.Time, close?.Time);
+        var open = await _dbContext.Triggers!
+            .Where(o => o.DeviceId == deviceId)
+            .Where(o => o.Name == OpenCurtainsTriggerAction.ACTION_NAME)
+            .SingleOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
+        var close = await _dbContext.Triggers!
+            .Where(o => o.DeviceId == deviceId)
+            .Where(o => o.Name == CloseCurtainsTriggerAction.ACTION_NAME)
+            .SingleOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
+        _logger.LogInformation("{name} open:{openTime} close:{closeTime}", nameof(GetTimesAsync), open!.Interval, close!.Interval);
+        return (open is not null ? TimeSpan.FromMilliseconds(open.Interval) : null, close is not null ? TimeSpan.FromMilliseconds(close.Interval) : null);
     }
 
-    public async Task SaveOpenTimeAsync(TimeSpan? time, CancellationToken cancellationToken)
+    public async Task SaveOpenTimeAsync(Guid deviceId, TimeSpan? time, CancellationToken cancellationToken)
     {
         _logger.LogInformation("{name} open:{time}", nameof(SaveOpenTimeAsync), time);
-        var open = await _dbContext.TimeTriggers!
-            //.Where(o => o.DeviceId == _options.Id)
-            .Where(o => o.Name == CURTAINS_OPEN)
-            .SingleOrDefaultAsync(cancellationToken);
+        var open = await _dbContext.Triggers!
+            .Where(o => o.DeviceId == deviceId)
+            .Where(o => o.Name == OpenCurtainsTriggerAction.ACTION_NAME)
+            .SingleOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        // Save the open time
         if (open is not null)
         {
-            open.Time = time;
-            _dbContext.Update(open);
+            if (time is null)
+            {
+                // If the passed in time is null, remove the db entry
+                _dbContext.Remove(open);
+            }
+            else
+            {
+                // Otherwise update the db entry
+                open.Interval = time.Value.TotalMilliseconds;
+                _dbContext.Update(open);
+            }
         }
-        else
+        else if (time is not null)
         {
+            // If there is no entry, create a new one
             open ??= new()
             {
-                //DeviceId = _options.Id,
-                Name = CURTAINS_OPEN,
-                Time = time,
-            };
-            await _dbContext.AddAsync(open, cancellationToken);
+                DeviceId = deviceId,
+                Name = OpenCurtainsTriggerAction.ACTION_NAME,
+                Interval = time.Value.TotalMilliseconds,
+        };
+            await _dbContext.AddAsync(open, cancellationToken).ConfigureAwait(false);
         }
-        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task SaveCloseTimeAsync(TimeSpan? time, CancellationToken cancellationToken)
+    public async Task SaveCloseTimeAsync(Guid deviceId, TimeSpan? time, CancellationToken cancellationToken)
     {
         _logger.LogInformation("{name} close:{time}", nameof(SaveCloseTimeAsync), time);
-        var close = await _dbContext.TimeTriggers!
-            //.Where(o => o.DeviceId == _options.Id)
-            .Where(o => o.Name == CURTAINS_CLOSE)
-            .SingleOrDefaultAsync(cancellationToken);
+        var close = await _dbContext.Triggers!
+            .Where(o => o.DeviceId == deviceId)
+            .Where(o => o.Name == CloseCurtainsTriggerAction.ACTION_NAME)
+            .SingleOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        // Save the close time
         if (close is not null)
         {
-            close.Time = time;
-            _dbContext.Update(close);
+            if (time is null)
+            {
+                // If the passed in time is null, remove the db entry
+                _dbContext.Remove(close);
+            }
+            else
+            {
+                // Otherwise update the db entry
+                close.Interval = time.Value.TotalMilliseconds;
+                _dbContext.Update(close);
+            }
         }
-        else
+        else if (time is not null)
         {
+            // If there is no entry, create a new one
             close ??= new()
             {
-                //DeviceId = _options.Id,
-                Name = CURTAINS_CLOSE,
-                Time = time,
-            };
-            await _dbContext.AddAsync(close, cancellationToken);
+                DeviceId = deviceId,
+                Name = CloseCurtainsTriggerAction.ACTION_NAME,
+                Interval = time.Value.TotalMilliseconds,
+        };
+            await _dbContext.AddAsync(close, cancellationToken).ConfigureAwait(false);
         }
-        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 }

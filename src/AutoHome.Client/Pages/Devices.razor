@@ -1,11 +1,12 @@
 ﻿@page "/devices"
-@inject IDevicesManager DevicesManager;
+@inject AutoHomeRestClient Client;
 @inject IDialogService DialogService;
+@inject ISnackbar Snackbar;
 @inject IMapper Mapper;
 
 <MudText Typo="Typo.h4" Class="mt-4 mb-4">Devices</MudText>
 
-<MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" OnClick="OpenAddDeviceDialog" />
+<MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => OpenAddDeviceDialog())" />
 
 <MudSimpleTable Style="overflow-x: auto;" Class="mt-4">
     <thead>
@@ -26,8 +27,8 @@
                     <td>@row.Name</td>
                     <td>@row.Uri</td>
                     <td>
-                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="@(async () => UpdateDevice(row))" />
-                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(async () => DeleteDevice(row))" />
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => UpdateDevice(row))" />
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => DeleteDevice(row))" />
                     </td>
                 </tr>
             }
@@ -45,71 +46,102 @@
 @code {
     IEnumerable<ListDevicesResult> _devices { get; set; } = new List<ListDevicesResult>();
     string[] _headings = { "Device ID", "Name", "Url", "Actions" };
+    bool _buttonsDisabled = false;
 
     protected override async Task OnInitializedAsync()
     {
-        await RefreshDevices();
+        await Refresh();
     }
 
-    private async Task RefreshDevices()
+    private async Task Refresh()
     {
-        var devices = await DevicesManager.ListAsync(CancellationToken.None);
-        if (devices?.Any() ?? false) _devices = devices;
+        var devices = await Client.ListDeviceAsync(CancellationToken.None);
+        if (devices?.Any() ?? false)
+        {
+            _devices = devices;
+        }
         StateHasChanged();
     }
 
     private async void OpenAddDeviceDialog()
     {
-        DialogOptions dialogOptions = new DialogOptions()
-        {
-            CloseOnEscapeKey = true,
-            DisableBackdropClick = true,
-        };
+        DialogOptions dialogOptions = new()
+            {
+                CloseOnEscapeKey = true,
+                DisableBackdropClick = true,
+            };
 
-        var dialog = DialogService.Show<AddDeviceDialog>("Add Device", dialogOptions);
-        var result = (bool?)(await dialog.Result).Data;
-
-        if (result ?? false)
+        try
         {
-            await RefreshDevices();
+            _buttonsDisabled = true;
+            var dialog = DialogService.Show<AddDeviceDialog>("Add Device", dialogOptions);
+            var result = (bool?)(await dialog.Result).Data;
+
+            if (result ?? false)
+            {
+                await Refresh();
+            }
+        }
+        finally
+        {
+            _buttonsDisabled = false;
+            StateHasChanged();
         }
     }
 
     private async void UpdateDevice(ListDevicesResult device)
     {
         var dialogOptions = new DialogOptions()
-        {
-            CloseOnEscapeKey = true,
-            DisableBackdropClick = true,
-        };
-        AddEditDeviceForm model = new();
+            {
+                CloseOnEscapeKey = true,
+                DisableBackdropClick = true,
+            };
+        EditDeviceForm model = new();
         Mapper.Map(device, model);
         var parameters = new DialogParameters { ["Model"] = model };
 
-        var dialog = DialogService.Show<EditDeviceDialog>($"Update {device.Name}", parameters, dialogOptions);
-        var result = (bool?)(await dialog.Result).Data;
-
-        if (result ?? false)
+        try
         {
-            await RefreshDevices();
+            _buttonsDisabled = true;
+            var dialog = DialogService.Show<EditDeviceDialog>($"Update {device.Name}", parameters, dialogOptions);
+            var result = (bool?)(await dialog.Result).Data;
+
+            if (result ?? false)
+            {
+                await Refresh();
+            }
+        }
+        finally
+        {
+            _buttonsDisabled = false;
+            StateHasChanged();
         }
     }
 
     private async void DeleteDevice(ListDevicesResult device)
     {
-        bool? result = await DialogService.ShowMessageBox($"Delete {device.Name}", $"Are you sure you want to delete {device.Name}?", noText: "No");
-        if (result == true)
+        try
         {
-            var request = new DeleteDeviceRequest { Id = device.Id };
-            try
+            _buttonsDisabled = true;
+            bool? result = await DialogService.ShowMessageBox($"Delete {device.Name}", $"Are you sure you want to delete {device.Name}?", noText: "No");
+            if (result == true)
             {
-                await DevicesManager.DeleteAsync(request, CancellationToken.None);
-                await RefreshDevices();
+                try
+                {
+                    await Client.DeleteDeviceAsync(device.Id.ToString(), CancellationToken.None);
+                    await Refresh();
+                    Snackbar.Add($"{device.Name} deleted", Severity.Success);
+                }
+                catch (Exception ex)
+                {
+                    Snackbar.Add($"Error deleting {device.Name}.\n\n{ex.Message}", Severity.Error);
+                }
             }
-            catch
-            {
-                await DialogService.ShowMessageBox($"Delete {device.Name}", $"Error deleting {device.Name}.");
-            }
+        }
+        finally
+        {
+            _buttonsDisabled = false;
+            StateHasChanged();
         }
     }
 }

@@ -5,7 +5,7 @@ namespace AutoHome.Hardware;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddAutoCurtainsHardware(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddAutoHomeHardware(this IServiceCollection services, IConfiguration config)
     {
         services.AddOptions<A4988Options>()
             .Bind(config.GetSection(A4988Options.Section))

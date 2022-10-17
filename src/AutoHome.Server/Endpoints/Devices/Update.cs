@@ -1,9 +1,8 @@
 ﻿using Ardalis.ApiEndpoints;
 using AutoHome.Data;
-using AutoHome.Data.EndpointObjects.Devices;
-using AutoHome.Data.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace AutoHome.Server.Endpoints.Devices;
 
@@ -23,18 +22,29 @@ public class Update : EndpointBaseAsync
     }
 
     [HttpPut("api/devices")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateDeviceResult))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesJson]
+    [ConsumesJson]
+    [SwaggerOperation(
+        Summary = "Updates a device",
+        OperationId = "UpdateDevice",
+        Tags = new[] { "Devices" }
+    )]
     public override async Task<ActionResult<UpdateDeviceResult>> HandleAsync(
         [FromBody] UpdateDeviceRequest request, CancellationToken cancellationToken = default)
     {
-        var device = await _repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
+        var entity = await _repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
 
-        if (device is null) return NotFound();
+        if (entity is null) return NotFound();
 
-        _mapper.Map(request, device);
-        await _repository.UpdateAsync(device, cancellationToken).ConfigureAwait(false);
+        _mapper.Map(request, entity);
+        await _repository.UpdateAsync(entity, cancellationToken).ConfigureAwait(false);
 
         UpdateDeviceResult result = new();
-        _mapper.Map(device, result);
+        _mapper.Map(entity, result);
         return result;
     }
 }

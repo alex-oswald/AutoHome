@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.8" PrivateAssets="all" />
-    <PackageReference Include="MudBlazor" Version="6.0.14" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.9" PrivateAssets="all" />
+    <PackageReference Include="MudBlazor" Version="6.0.16" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,8 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Curtains.Plugin\Curtains.Plugin.csproj" />
-    <ProjectReference Include="..\AutoHome.Data\AutoHome.Data.csproj" />
+    <ProjectReference Include="..\AutoHome.RestClient\AutoHome.RestClient.csproj" />
+    <ProjectReference Include="..\Integrations\Curtains\Curtains.Plugin\Curtains.Plugin.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="AutoHome.Core.Entities" />
   </ItemGroup>
 
 </Project>
