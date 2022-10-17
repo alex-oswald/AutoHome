@@ -37,7 +37,7 @@ public class TriggerLoaderHostedService : IHostedService
             var device = (await devicesRepo.ListAsync(cancellationToken,
                 filter: d => d.DeviceId == trigger.DeviceId))!.SingleOrDefault();
 
-            _triggersService.AddTrigger(device!, trigger.Name, trigger.Interval);
+            await _triggersService.AddTriggerAsync(device!, trigger.Name, trigger.Interval, cancellationToken);
         }
     }
 
