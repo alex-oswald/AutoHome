@@ -1,5 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
 using AutoHome.Data;
+using AutoHome.Server.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -10,15 +11,18 @@ public class Update : EndpointBaseAsync
     .WithRequest<UpdateTriggerRequest>
     .WithActionResult<UpdateTriggerResult>
 {
-    private readonly IAsyncRepository<Trigger> _repository;
     private readonly IMapper _mapper;
+    private readonly IAsyncRepository<Trigger> _triggersRepo;
+    private readonly ITriggersService _triggersService;
 
     public Update(
-        IAsyncRepository<Trigger> repository,
-        IMapper mapper)
+        IMapper mapper,
+        IAsyncRepository<Trigger> triggersRepo,
+        ITriggersService triggersService)
     {
-        _repository = repository;
         _mapper = mapper;
+        _triggersRepo = triggersRepo;
+        _triggersService = triggersService;
     }
 
     [HttpPut("api/triggers")]
@@ -36,12 +40,12 @@ public class Update : EndpointBaseAsync
     public override async Task<ActionResult<UpdateTriggerResult>> HandleAsync(
         [FromBody] UpdateTriggerRequest request, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
+        var entity = await _triggersRepo.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
 
         if (entity is null) return NotFound();
 
         _mapper.Map(request, entity);
-        await _repository.UpdateAsync(entity, cancellationToken).ConfigureAwait(false);
+        await _triggersService.UpdateTriggerAsync(entity, cancellationToken).ConfigureAwait(false);
 
         UpdateTriggerResult result = new();
         _mapper.Map(entity, result);

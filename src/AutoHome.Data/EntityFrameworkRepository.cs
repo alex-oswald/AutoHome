@@ -87,4 +87,6 @@ public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
         _dbContext.Entry(entity).State = EntityState.Modified;
         await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
+
+    public virtual IQueryable<T> Set() => _dbSet;
 }

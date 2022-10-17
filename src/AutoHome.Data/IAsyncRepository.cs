@@ -18,4 +18,6 @@ public interface IAsyncRepository<T>
         string includeProperties = "");
 
     Task UpdateAsync(T entity, CancellationToken cancellationToken);
+
+    IQueryable<T> Set();
 }

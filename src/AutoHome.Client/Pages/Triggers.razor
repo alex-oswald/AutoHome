@@ -45,7 +45,7 @@
 
 @code {
     IEnumerable<ListTriggersResult> _triggers { get; set; } = new List<ListTriggersResult>();
-    string[] _headings = { "Device ID", "Name", "Interval" };
+    string[] _headings = { "Device ID", "Name", "Interval", string.Empty };
     bool _buttonsDisabled = false;
 
     protected override async Task OnInitializedAsync()

@@ -1,5 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
 using AutoHome.Data;
+using AutoHome.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -9,12 +10,15 @@ public class Delete : EndpointBaseAsync
     .WithRequest<string>
     .WithActionResult
 {
-    private readonly IAsyncRepository<Trigger> _repository;
+    private readonly IAsyncRepository<Trigger> _triggersRepo;
+    private readonly ITriggersService _triggersService;
 
     public Delete(
-        IAsyncRepository<Trigger> repository)
+        IAsyncRepository<Trigger> triggersRepo,
+        ITriggersService triggersService)
     {
-        _repository = repository;
+        _triggersRepo = triggersRepo;
+        _triggersService = triggersService;
     }
 
     [HttpDelete("api/triggers/{id}")]
@@ -29,11 +33,11 @@ public class Delete : EndpointBaseAsync
     public override async Task<ActionResult> HandleAsync(
         [FromRoute] string id, CancellationToken cancellationToken = default)
     {
-        var entity = await _repository.GetByIdAsync(Guid.Parse(id), cancellationToken).ConfigureAwait(false);
+        var entity = await _triggersRepo.GetByIdAsync(Guid.Parse(id), cancellationToken).ConfigureAwait(false);
 
         if (entity is null) return NotFound();
 
-        await _repository.DeleteAsync(entity, cancellationToken).ConfigureAwait(false);
+        await _triggersService.RemoveTriggerAsync(entity, cancellationToken).ConfigureAwait(false);
 
         return NoContent();
     }

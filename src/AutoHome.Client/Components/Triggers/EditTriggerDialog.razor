@@ -8,8 +8,11 @@
         <DialogContent>
             <MudTextField Label="Device Id"
                           @bind-Value="Model.DeviceId" For="@(() => Model.DeviceId)" />
-            <MudTextField Label="Name"
-                          @bind-Value="Model.Name" For="@(() => Model.Name)" />
+            <MudSelect Label="Type" AnchorOrigin="Origin.BottomCenter"
+                       @bind-Value="Model.Name" For="@(() => Model.Name)">
+                <MudSelectItem Value="@("CurtainsOpen")" />
+                <MudSelectItem Value="@("CurtainsClose")" />
+            </MudSelect>
             <MudTextField Label="Uri"
                           @bind-Value="Model.Interval" For="@(() => Model.Interval)" />
         </DialogContent>
