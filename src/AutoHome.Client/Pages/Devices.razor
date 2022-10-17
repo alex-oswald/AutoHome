@@ -45,7 +45,7 @@
 
 @code {
     IEnumerable<ListDevicesResult> _devices { get; set; } = new List<ListDevicesResult>();
-    string[] _headings = { "Device ID", "Name", "Url", "Actions" };
+    string[] _headings = { "Device ID", "Name", "Url", string.Empty };
     bool _buttonsDisabled = false;
 
     protected override async Task OnInitializedAsync()

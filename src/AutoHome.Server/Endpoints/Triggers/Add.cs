@@ -1,5 +1,5 @@
 ﻿using Ardalis.ApiEndpoints;
-using AutoHome.Data;
+using AutoHome.Server.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -10,15 +10,15 @@ public class Add : EndpointBaseAsync
     .WithRequest<AddTriggerRequest>
     .WithActionResult<AddTriggerResult>
 {
-    private readonly IAsyncRepository<Trigger> _repository;
     private readonly IMapper _mapper;
+    private readonly ITriggersService _triggersService;
 
     public Add(
-        IAsyncRepository<Trigger> repository,
-        IMapper mapper)
+        IMapper mapper,
+        ITriggersService triggersService)
     {
-        _repository = repository;
         _mapper = mapper;
+        _triggersService = triggersService;
     }
 
     [HttpPost("api/triggers")]
@@ -37,7 +37,9 @@ public class Add : EndpointBaseAsync
     {
         var entity = new Trigger();
         _mapper.Map(request, entity);
-        await _repository.AddAsync(entity, cancellationToken).ConfigureAwait(false);
+
+        // Add the trigger to the trigger service
+        await _triggersService.AddTriggerAsync(entity, cancellationToken).ConfigureAwait(false);
 
         var result = _mapper.Map<AddTriggerResult>(entity);
         return CreatedAtRoute("GetTriggers", new { id = result.Id }, result);
