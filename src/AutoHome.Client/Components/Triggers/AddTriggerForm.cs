@@ -8,7 +8,7 @@ public class AddTriggerForm
     public Guid Id { get; set; }
 
     [Required]
-    public Guid DeviceId { get; set; }
+    public Guid? DeviceId { get; set; } = Guid.Parse("8d291f88-3b06-428c-87fb-ecd0eea44d17");
 
     [Required]
     [StringLength(20, ErrorMessage = $"{nameof(Name)} must be at least 3 characters and not more than 100.", MinimumLength = 3)]

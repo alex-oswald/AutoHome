@@ -1,0 +1,58 @@
+﻿@page "/triggerhistory"
+@inject AutoHomeRestClient Client;
+@inject IDialogService DialogService;
+@inject ISnackbar Snackbar;
+@inject IMapper Mapper;
+
+<MudText Typo="Typo.h4" Class="mt-4 mb-4">Trigger History</MudText>
+
+<MudSimpleTable Style="overflow-x: auto;" Class="mt-4">
+    <thead>
+        <tr>
+            @foreach (var h in _headings)
+            {
+                <th>@h</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (_triggerEvents.Any())
+        {
+            @foreach (var row in _triggerEvents)
+            {
+                <tr>
+                    <td>@row.TimeStamp</td>
+                    <td>@row.TriggerId</td>
+                    <td>@row.Event</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr colspan=4>
+                <td>No trigger events</td>
+            </tr>
+        }
+
+    </tbody>
+</MudSimpleTable>
+
+@code {
+    IEnumerable<ListTriggerEventsResult> _triggerEvents { get; set; } = new List<ListTriggerEventsResult>();
+    string[] _headings = { "Time Stamp", "Trigger Id", "Event", string.Empty };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Refresh();
+    }
+
+    private async Task Refresh()
+    {
+        var triggerEvents = await Client.ListTriggerEventsAsync(CancellationToken.None);
+        if (triggerEvents?.Any() ?? false)
+        {
+            _triggerEvents = triggerEvents;
+        }
+        StateHasChanged();
+    }
+}

@@ -1,4 +1,6 @@
-﻿using AutoHome.Server.Endpoints.Devices;
+﻿using AutoHome.Data.Entities;
+using AutoHome.Server.Endpoints.Devices;
+using AutoHome.Server.Endpoints.TriggerEvents;
 using AutoHome.Server.Endpoints.Triggers;
 using AutoMapper;
 
@@ -23,5 +25,7 @@ public class AutoMapping : Profile
 		CreateMap<Trigger, ListTriggersResult>();
 		CreateMap<Trigger, UpdateTriggerRequest>();
 		CreateMap<Trigger, UpdateTriggerResult>();
+
+		CreateMap<TriggerEvent, ListTriggerEventsResult>();
 	}
 }

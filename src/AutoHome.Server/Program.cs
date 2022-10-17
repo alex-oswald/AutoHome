@@ -1,4 +1,5 @@
 using AutoHome.Data;
+using AutoHome.Data.Entities;
 using AutoHome.Server;
 using AutoHome.Server.Services;
 using Curtains.Plugin;
@@ -33,13 +34,13 @@ try
         options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
     builder.Services.AddScoped<IAsyncRepository<Device>, EntityFrameworkRepository<Device, SqliteDbContext>>();
     builder.Services.AddScoped<IAsyncRepository<Trigger>, EntityFrameworkRepository<Trigger, SqliteDbContext>>();
-
-    builder.Services.AddScoped<ICurtainsService, CurtainsService>();
+    builder.Services.AddScoped<IAsyncRepository<TriggerEvent>, EntityFrameworkRepository<TriggerEvent, SqliteDbContext>>();
 
     builder.Services.AddSingleton<ITriggersService, TriggersService>();
     builder.Services.AddHostedService<TriggerLoaderHostedService>();
 
     builder.Services.AddCurtainsPluginServer();
+    builder.Services.AddScoped<ICurtainsService, CurtainsService>();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(options =>
