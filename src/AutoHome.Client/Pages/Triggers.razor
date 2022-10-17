@@ -1,12 +1,12 @@
-﻿@page "/devices"
+﻿@page "/triggers"
 @inject AutoHomeRestClient Client;
 @inject IDialogService DialogService;
 @inject ISnackbar Snackbar;
 @inject IMapper Mapper;
 
-<MudText Typo="Typo.h4" Class="mt-4 mb-4">Devices</MudText>
+<MudText Typo="Typo.h4" Class="mt-4 mb-4">Triggers</MudText>
 
-<MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => OpenAddDeviceDialog())" />
+<MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => OpenAddTriggerDialog())" />
 
 <MudSimpleTable Style="overflow-x: auto;" Class="mt-4">
     <thead>
@@ -18,17 +18,17 @@
         </tr>
     </thead>
     <tbody>
-        @if (_devices.Any())
+        @if (_triggers.Any())
         {
-            @foreach (var row in _devices)
+            @foreach (var row in _triggers)
             {
                 <tr>
                     <td>@row.DeviceId</td>
                     <td>@row.Name</td>
-                    <td>@row.Uri</td>
+                    <td>@row.Interval</td>
                     <td>
-                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => UpdateDevice(row))" />
-                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => DeleteDevice(row))" />
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => UpdateTrigger(row))" />
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => DeleteTrigger(row))" />
                     </td>
                 </tr>
             }
@@ -36,7 +36,7 @@
         else
         {
             <tr colspan=4>
-                <td>No devices</td>
+                <td>No triggers</td>
             </tr>
         }
 
@@ -44,8 +44,8 @@
 </MudSimpleTable>
 
 @code {
-    IEnumerable<ListDevicesResult> _devices { get; set; } = new List<ListDevicesResult>();
-    string[] _headings = { "Device ID", "Name", "Url", "Actions" };
+    IEnumerable<ListTriggersResult> _triggers { get; set; } = new List<ListTriggersResult>();
+    string[] _headings = { "Device ID", "Name", "Interval" };
     bool _buttonsDisabled = false;
 
     protected override async Task OnInitializedAsync()
@@ -55,15 +55,15 @@
 
     private async Task Refresh()
     {
-        var devices = await Client.ListDeviceAsync(CancellationToken.None);
-        if (devices?.Any() ?? false)
+        var triggers = await Client.ListTriggerAsync(CancellationToken.None);
+        if (triggers?.Any() ?? false)
         {
-            _devices = devices;
+            _triggers = triggers;
         }
         StateHasChanged();
     }
 
-    private async void OpenAddDeviceDialog()
+    private async void OpenAddTriggerDialog()
     {
         DialogOptions dialogOptions = new()
             {
@@ -74,7 +74,7 @@
         try
         {
             _buttonsDisabled = true;
-            var dialog = DialogService.Show<AddDeviceDialog>("Add Device", dialogOptions);
+            var dialog = DialogService.Show<AddTriggerDialog>("Add Trigger", dialogOptions);
             var result = (bool?)(await dialog.Result).Data;
 
             if (result ?? false)
@@ -89,21 +89,21 @@
         }
     }
 
-    private async void UpdateDevice(ListDevicesResult device)
+    private async void UpdateTrigger(ListTriggersResult trigger)
     {
         var dialogOptions = new DialogOptions()
             {
                 CloseOnEscapeKey = true,
                 DisableBackdropClick = true,
             };
-        EditDeviceForm model = new();
-        Mapper.Map(device, model);
+        EditTriggerForm model = new();
+        Mapper.Map(trigger, model);
         var parameters = new DialogParameters { ["Model"] = model };
 
         try
         {
             _buttonsDisabled = true;
-            var dialog = DialogService.Show<EditDeviceDialog>($"Update {device.Name}", parameters, dialogOptions);
+            var dialog = DialogService.Show<EditTriggerDialog>($"Update {trigger.Name}", parameters, dialogOptions);
             var result = (bool?)(await dialog.Result).Data;
 
             if (result ?? false)
@@ -118,23 +118,23 @@
         }
     }
 
-    private async void DeleteDevice(ListDevicesResult device)
+    private async void DeleteTrigger(ListTriggersResult trigger)
     {
         try
         {
             _buttonsDisabled = true;
-            bool? result = await DialogService.ShowMessageBox($"Delete {device.Name}", $"Are you sure you want to delete {device.Name}?", noText: "No");
+            bool? result = await DialogService.ShowMessageBox($"Delete {trigger.Name}", $"Are you sure you want to delete {trigger.Name}?", noText: "No");
             if (result == true)
             {
                 try
                 {
-                    await Client.DeleteDeviceAsync(device.Id.ToString(), CancellationToken.None);
+                    await Client.DeleteTriggerAsync(trigger.Id.ToString(), CancellationToken.None);
                     await Refresh();
-                    Snackbar.Add($"{device.Name} deleted", Severity.Success);
+                    Snackbar.Add($"{trigger.Name} deleted", Severity.Success);
                 }
                 catch (Exception ex)
                 {
-                    Snackbar.Add($"Error deleting {device.Name}.\n\n{ex.Message}", Severity.Error);
+                    Snackbar.Add($"Error deleting {trigger.Name}.\n\n{ex.Message}", Severity.Error);
                 }
             }
         }

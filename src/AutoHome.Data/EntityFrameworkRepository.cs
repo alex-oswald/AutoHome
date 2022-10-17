@@ -1,12 +1,11 @@
-﻿using AutoHome.Data.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
 namespace AutoHome.Data;
 
 public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
-        where T : BaseEntity
+        where T : class, IEntity
         where TDbContext : DbContext
 {
     private readonly ILogger<EntityFrameworkRepository<T, TDbContext>> _logger;

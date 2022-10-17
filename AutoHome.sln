@@ -40,7 +40,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Curtains", "Curtains", "{66
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.RestClient", "src\AutoHome.RestClient\AutoHome.RestClient.csproj", "{98D0DB19-F5B3-4D17-B0FB-0260B344CFE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHome.DeviceCore", "src\AutoHome.DeviceCore\AutoHome.DeviceCore.csproj", "{B7C96CBE-809A-4DF8-AF92-E6A77581149F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.DeviceCore", "src\AutoHome.DeviceCore\AutoHome.DeviceCore.csproj", "{B7C96CBE-809A-4DF8-AF92-E6A77581149F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Core", "src\AutoHome.Core\AutoHome.Core.csproj", "{A37EAE33-53BA-4143-A3B3-DF01669B8B69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +90,10 @@ Global
 		{B7C96CBE-809A-4DF8-AF92-E6A77581149F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7C96CBE-809A-4DF8-AF92-E6A77581149F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7C96CBE-809A-4DF8-AF92-E6A77581149F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A37EAE33-53BA-4143-A3B3-DF01669B8B69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A37EAE33-53BA-4143-A3B3-DF01669B8B69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A37EAE33-53BA-4143-A3B3-DF01669B8B69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A37EAE33-53BA-4143-A3B3-DF01669B8B69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,54 +1,68 @@
-﻿using System.Collections.Concurrent;
+﻿using AutoHome.Core;
+using System.Collections.Concurrent;
 
 namespace AutoHome.Server.Services;
 
-public record TimeTriggerPackage(string Name, TimeSpan Time, Func<Task> Task);
-public record TimerPackage(Timer Timer, TimeTriggerPackage TimeTriggerPackage);
+public record TriggerPackage(string Name, TimeSpan Interval, ITriggerAction TriggerAction);
+public record TimerPackage(Timer Timer, Device Device, TriggerPackage Package);
 
-public interface ITimeTriggersService
+public interface ITriggersService
 {
-    void AddTimedTrigger(TimeTriggerPackage timeTriggerPackage);
+    bool AddTrigger(Device device, string triggerName, double intervalMilliseconds);
 }
 
-public class TimeTriggersService : ITimeTriggersService
+public class TriggersService : ITriggersService
 {
-    private readonly IDictionary<string, TimerPackage> _timeTriggers = new ConcurrentDictionary<string, TimerPackage>();
-    private readonly ILogger<TimeTriggersService> _logger;
+    private readonly ConcurrentDictionary<string, TimerPackage> _triggers = new();
+    private readonly ILogger<TriggersService> _logger;
+    private readonly IEnumerable<ITriggerAction> _triggerActions;
 
-    public TimeTriggersService(
-        ILogger<TimeTriggersService> logger)
+    public TriggersService(
+        ILogger<TriggersService> logger,
+        IEnumerable<ITriggerAction> triggerActions)
     {
         _logger = logger;
+        _triggerActions = triggerActions;
     }
 
-    public void AddTimedTrigger(TimeTriggerPackage timeTriggerPackage)
+    public bool AddTrigger(Device device, string triggerName, double intervalMilliseconds)
     {
-        var dateTime = DateTime.Now.Add(timeTriggerPackage.Time);
-        _logger.LogInformation("Adding timed trigger {name}, will trigger at {time}",
-            timeTriggerPackage.Name, dateTime.ToString("yyyy-MM-dd HH:mm:ss"));
+        var action = _triggerActions.Where(o => o.Name == triggerName).First();
+        var triggerPackage = new TriggerPackage(triggerName, TimeSpan.FromMilliseconds(intervalMilliseconds), action);
+
+        var dateTime = DateTime.Now.Add(triggerPackage.Interval);
+        _logger.LogInformation("Adding trigger {name}, will trigger at {time}",
+            triggerPackage.Name, dateTime.ToString("yyyy-MM-dd HH:mm:ss"));
 
         var timer = new Timer(
             callback: new TimerCallback(Callback!),
-            state: timeTriggerPackage.Name,
-            dueTime: timeTriggerPackage.Time,
+            state: triggerPackage.Name,
+            dueTime: triggerPackage.Interval,
             period: Timeout.InfiniteTimeSpan);
 
-        _timeTriggers.Add(timeTriggerPackage.Name, new TimerPackage(timer, timeTriggerPackage));
+        return _triggers.TryAdd(triggerPackage.Name, new TimerPackage(timer, device, triggerPackage));
     }
 
     private void Callback(object state)
     {
-        _logger.LogInformation("{class}.{method} for {state}", nameof(TimeTriggersService), nameof(Callback), state as string);
+        _logger.LogInformation("{class}.{method} for {state}", nameof(TriggersService), nameof(Callback), state as string);
 
         var key = state as string;
-        var success = _timeTriggers.TryGetValue(key!, out TimerPackage? timeTrigger);
+        var success = _triggers.TryGetValue(key!, out TimerPackage? trigger);
         if (!success)
         {
             _logger.LogError("Could not get the {object} object from the dictionary with key {key}", nameof(TimerPackage), key);
         }
+
         _logger.LogInformation("Removing trigger for {key}", key);
-        _timeTriggers.Remove(key!);
+        _triggers.Remove(key!, out TimerPackage _);
+
         _logger.LogInformation("Invoking task for {key}", key);
-        Task.Run(async () => await timeTrigger!.TimeTriggerPackage.Task.Invoke().ConfigureAwait(false));
+        Task.Run(async () => await trigger!.Package.TriggerAction.Action(trigger.Device, CancellationToken.None));
+
+        _logger.LogInformation("Adding trigger for {key}", key);
+        _triggers.TryAdd(key, trigger);
+
+        AddTrigger(trigger.Device, trigger.Package.Name, trigger.Package.Interval.TotalMilliseconds);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AutoHome.Client.Components;
+namespace AutoHome.Client.Components.Devices;
 
-public class AddEditDeviceForm
+public class EditDeviceForm
 {
     [Required]
     public Guid Id { get; set; }

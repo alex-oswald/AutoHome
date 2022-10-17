@@ -1,95 +1,43 @@
-﻿using AutoHome.Data;
-using AutoHome.Data.Entities;
+﻿using AutoHome.Core;
+using AutoHome.Data;
 using AutoHome.Server.Services;
 
 namespace AutoHome.Server;
-
-public interface ICurtainController
-{
-    Task CloseAsync();
-    Task OpenAsync();
-}
-
-public class CurtainController : ICurtainController
-{
-    //private readonly ILogger<CurtainController> _logger;
-    //private readonly IStepperMotor _stepperMotor;
-    //private readonly CurtainConfig _options;
-
-    //public CurtainController(
-    //    ILogger<CurtainController> logger,
-    //    IStepperMotor stepperMotor,
-    //    IOptions<CurtainConfig> options)
-    //{
-    //    _logger = logger;
-    //    _stepperMotor = stepperMotor;
-    //    _options = options.Value ?? throw new ArgumentNullException(nameof(options));
-    //}
-
-    public async Task OpenAsync() => await RotateAsync(true);
-
-    public async Task CloseAsync() => await RotateAsync(false);
-
-    private async Task RotateAsync(bool clockwise)
-    {
-        await Task.Run(() =>
-        {
-            //try
-            //{
-            //    _stepperMotor.SetEnabledState(true);
-            //    _stepperMotor.RPM = _options.RPM;
-            //    _stepperMotor.Step(clockwise ? _options.Steps : -_options.Steps);
-            //}
-            //finally
-            //{
-            //    _stepperMotor.SetEnabledState(false);
-            //}
-        });
-    }
-}
 
 public class TriggerLoaderHostedService : IHostedService
 {
     private readonly ILogger<TriggerLoaderHostedService> _logger;
     private readonly IServiceProvider _sp;
-    private readonly ITimeTriggersService _timeTriggersService;
-    private readonly ICurtainController _curtainController;
+    private readonly ITriggersService _triggersService;
+    private readonly IEnumerable<ITriggerAction> _triggerActions;
 
     public TriggerLoaderHostedService(
         ILogger<TriggerLoaderHostedService> logger,
         IServiceProvider sp,
-        ITimeTriggersService timeTriggersService,
-        ICurtainController curtainController)
+        ITriggersService triggersService,
+        IEnumerable<ITriggerAction> triggerActions)
     {
         _logger = logger;
         _sp = sp;
-        _timeTriggersService = timeTriggersService;
-        _curtainController = curtainController;
+        _triggersService = triggersService;
+        _triggerActions = triggerActions;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         using var scope = _sp.CreateScope();
 
-        var timeTriggersRepo = scope.ServiceProvider.GetService<IAsyncRepository<TimeTrigger>>();
+        var timeTriggersRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Trigger>>();
+        var devicesRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Device>>();
 
         var triggers = await timeTriggersRepo!.ListAsync(cancellationToken).ConfigureAwait(false);
 
         foreach (var trigger in triggers!)
         {
-            switch (trigger.Name)
-            {
-                case "CurtainsOpen":
-                    _timeTriggersService.AddTimedTrigger(
-                        new TimeTriggerPackage("CurtainsOpen", new TimeSpan(0, 0, 10), _curtainController.OpenAsync));
-                    break;
-                case "CurtainsClose":
-                    _timeTriggersService.AddTimedTrigger(
-                        new TimeTriggerPackage("CurtainsClose", new TimeSpan(0, 0, 30), _curtainController.CloseAsync));
-                    break;
-                default:
-                    break;
-            }
+            var device = (await devicesRepo.ListAsync(cancellationToken,
+                filter: d => d.DeviceId == trigger.DeviceId))!.SingleOrDefault();
+
+            _triggersService.AddTrigger(device!, trigger.Name, trigger.Interval);
         }
     }
 
