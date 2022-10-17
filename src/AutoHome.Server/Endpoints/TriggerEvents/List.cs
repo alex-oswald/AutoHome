@@ -1,7 +1,9 @@
 ﻿using Ardalis.ApiEndpoints;
 using AutoHome.Data;
+using AutoHome.Data.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace AutoHome.Server.Endpoints.TriggerEvents;
@@ -10,14 +12,14 @@ public class List : EndpointBaseAsync
     .WithoutRequest
     .WithResult<IEnumerable<ListTriggerEventsResult>>
 {
-    private readonly IAsyncRepository<Trigger> _repository;
+    private readonly IAsyncRepository<TriggerEvent> _triggerEventsRepo;
     private readonly IMapper _mapper;
 
     public List(
-        IAsyncRepository<Trigger> repository,
+        IAsyncRepository<TriggerEvent> triggerEventsRepo,
         IMapper mapper)
     {
-        _repository = repository;
+        _triggerEventsRepo = triggerEventsRepo;
         _mapper = mapper;
     }
 
@@ -34,7 +36,9 @@ public class List : EndpointBaseAsync
     public override async Task<IEnumerable<ListTriggerEventsResult>> HandleAsync(
         CancellationToken cancellationToken = default)
     {
-        var result = await _repository.ListAsync(orderBy: o => o.OrderBy(o => o.Name), cancellationToken: cancellationToken).ConfigureAwait(false);
+        var result = await _triggerEventsRepo.Set().OrderByDescending(o => o.TimeStamp).Take(10).ToListAsync();
+        //cancellationToken: cancellationToken,
+        //orderBy: o => o.OrderBy(o => o.Name).Take).ConfigureAwait(false);
         var mappedResult = result!.AsEnumerable().Select(i => _mapper.Map<ListTriggerEventsResult>(i));
         return mappedResult;
     }
