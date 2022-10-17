@@ -1,6 +1,5 @@
 ﻿using Ardalis.ApiEndpoints;
 using AutoHome.Data;
-using AutoHome.Data.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

@@ -1,43 +1,47 @@
-﻿using AutoHome.PluginCore;
+﻿using AutoHome.Core.Entities;
+using AutoHome.PluginCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Curtains.Plugin;
 
 public class OpenCurtainsTriggerAction : ITriggerAction
 {
-    private readonly ICurtainsManager _curtainsManager;
+    private readonly IServiceProvider _sp;
 
-    public OpenCurtainsTriggerAction(ICurtainsManager curtainsManager)
+    public OpenCurtainsTriggerAction(IServiceProvider sp)
     {
-        _curtainsManager = curtainsManager;
+        _sp = sp;
     }
 
     public string Name { get; } = "CurtainsOpen";
 
-    public Func<Device, Task> Action
+    public Func<Device, CancellationToken, Task> Action
     {
-        get => async (device) =>
+        get => async (device, cancellationToken) =>
         {
-            await _curtainsManager.OpenAsync(device, CancellationToken.None);
+            var curtainsManager = _sp.GetRequiredService<ICurtainsManager>();
+            await curtainsManager.OpenAsync(device, cancellationToken);
         };
     }
 }
 
-public class CloseCurtainsTriggerActiom : ITriggerAction
+public class CloseCurtainsTriggerAction : ITriggerAction
 {
-    private readonly ICurtainsManager _curtainsManager;
+    private readonly IServiceProvider _sp;
 
-    public CloseCurtainsTriggerActiom(ICurtainsManager curtainsManager)
+    public CloseCurtainsTriggerAction(IServiceProvider sp)
     {
-        _curtainsManager = curtainsManager;
+        _sp = sp;
     }
 
     public string Name { get; } = "CurtainsClose";
 
-    public Func<Device, Task> Action
+    public Func<Device, CancellationToken, Task> Action
     {
-        get => async (device) =>
+        get => async (device, cancellationToken) =>
         {
-            await _curtainsManager.CloseAsync(device, CancellationToken.None);
+            var curtainsManager = _sp.GetRequiredService<ICurtainsManager>();
+            await curtainsManager.CloseAsync(device, cancellationToken);
         };
     }
 }

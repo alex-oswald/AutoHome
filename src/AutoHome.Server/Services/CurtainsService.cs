@@ -38,8 +38,8 @@ public class CurtainsService : ICurtainsService
             .Where(o => o.Name == CURTAINS_CLOSE)
             .SingleOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
-        _logger.LogInformation("{name} open:{openTime} close:{closeTime}", nameof(GetTimesAsync), open!.Time, close!.Time);
-        return (open!.Time, close!.Time);
+        _logger.LogInformation("{name} open:{openTime} close:{closeTime}", nameof(GetTimesAsync), open!.Interval, close!.Interval);
+        return (open!.Interval, close!.Interval);
     }
 
     public async Task SaveOpenTimeAsync(Guid deviceId, TimeSpan? time, CancellationToken cancellationToken)
@@ -62,7 +62,7 @@ public class CurtainsService : ICurtainsService
             else
             {
                 // Otherwise update the db entry
-                open.Time = time.Value;
+                open.Interval = time.Value;
                 _dbContext.Update(open);
             }
         }
@@ -73,7 +73,7 @@ public class CurtainsService : ICurtainsService
             {
                 DeviceId = deviceId,
                 Name = CURTAINS_OPEN,
-                Time = time.Value,
+                Interval = time.Value,
             };
             await _dbContext.AddAsync(open, cancellationToken).ConfigureAwait(false);
         }
@@ -101,7 +101,7 @@ public class CurtainsService : ICurtainsService
             else
             {
                 // Otherwise update the db entry
-                close.Time = time.Value;
+                close.Interval = time.Value;
                 _dbContext.Update(close);
             }
         }
@@ -112,7 +112,7 @@ public class CurtainsService : ICurtainsService
             {
                 DeviceId = deviceId,
                 Name = CURTAINS_CLOSE,
-                Time = time.Value,
+                Interval = time.Value,
             };
             await _dbContext.AddAsync(close, cancellationToken).ConfigureAwait(false);
         }

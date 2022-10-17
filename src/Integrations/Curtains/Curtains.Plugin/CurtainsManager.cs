@@ -1,4 +1,5 @@
-﻿using AutoHome.PluginCore;
+﻿using AutoHome.Core.Entities;
+using AutoHome.PluginCore;
 using System.Net;
 using System.Net.Http.Headers;
 

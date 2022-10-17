@@ -1,10 +1,9 @@
-﻿namespace AutoHome.Data;
+﻿using System.Linq.Expressions;
 
-using AutoHome.Data.Entities;
-using System.Linq.Expressions;
+namespace AutoHome.Data;
 
 public interface IAsyncRepository<T>
-    where T : BaseEntity
+    where T : class, IEntity
 {
     Task<T> AddAsync(T entity, CancellationToken cancellationToken);
 

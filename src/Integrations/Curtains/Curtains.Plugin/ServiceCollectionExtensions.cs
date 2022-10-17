@@ -10,6 +10,9 @@ public static class ServiceCollectionExtensions
         services.AddAutoHomePluginCore();
         services.AddScoped<ICurtainsManager, CurtainsManager>();
 
+        services.AddTransient<ITriggerAction, OpenCurtainsTriggerAction>();
+        services.AddTransient<ITriggerAction, CloseCurtainsTriggerAction>();
+
         return services;
     }
 }

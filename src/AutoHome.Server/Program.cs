@@ -1,5 +1,4 @@
 using AutoHome.Data;
-using AutoHome.Data.Entities;
 using AutoHome.Server;
 using AutoHome.Server.Services;
 using Curtains.Plugin;

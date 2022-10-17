@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Integrations\Curtains\Curtains.Plugin\Curtains.Plugin.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="AutoHome.Core.Entities" />
+  </ItemGroup>
+
 </Project>
