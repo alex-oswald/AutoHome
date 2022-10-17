@@ -42,7 +42,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.RestClient", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.DeviceCore", "src\AutoHome.DeviceCore\AutoHome.DeviceCore.csproj", "{B7C96CBE-809A-4DF8-AF92-E6A77581149F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHome.Core", "src\AutoHome.Core\AutoHome.Core.csproj", "{A37EAE33-53BA-4143-A3B3-DF01669B8B69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Core", "src\AutoHome.Core\AutoHome.Core.csproj", "{A37EAE33-53BA-4143-A3B3-DF01669B8B69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

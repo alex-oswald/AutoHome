@@ -8,14 +8,10 @@
         <DialogContent>
             <MudTextField Label="Device Id"
                           @bind-Value="Model.DeviceId" For="@(() => Model.DeviceId)" />
-            <MudSelect Label="Type" AnchorOrigin="Origin.BottomCenter"
-                       @bind-Value="Model.Type" For="@(() => Model.Type)">
-                <MudSelectItem Value="@("Curtain")" />
-            </MudSelect>
             <MudTextField Label="Name"
                           @bind-Value="Model.Name" For="@(() => Model.Name)" />
             <MudTextField Label="Uri"
-                          @bind-Value="Model.Uri" For="@(() => Model.Uri)" />
+                          @bind-Value="Model.Interval" For="@(() => Model.Interval)" />
         </DialogContent>
         <DialogActions>
             <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -24,21 +20,19 @@
     </MudDialog>
 </EditForm>
 
-
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public AddEditDeviceForm Model { get; set; }
-
+    [Parameter] public EditTriggerForm Model { get; set; }
 
     async Task Submit(EditContext context)
     {
-        var request = new UpdateDeviceRequest();
+        var request = new UpdateTriggerRequest();
         Mapper.Map(Model, request);
-        var result = await Client.UpdateDeviceAsync(request, CancellationToken.None);
+        var result = await Client.UpdateTriggerAsync(request, CancellationToken.None);
         if (result is null)
         {
-            Snackbar.Add("Error editing the device.", Severity.Error);
+            Snackbar.Add("Error editing the trigger.", Severity.Error);
         }
         MudDialog.Close(DialogResult.Ok(true));
     }

@@ -50,13 +50,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await RefreshDevices();
+        await Refresh();
     }
 
-    private async Task RefreshDevices()
+    private async Task Refresh()
     {
         var devices = await Client.ListDeviceAsync(CancellationToken.None);
-        if (devices?.Any() ?? false) _devices = devices;
+        if (devices?.Any() ?? false)
+        {
+            _devices = devices;
+        }
         StateHasChanged();
     }
 
@@ -76,7 +79,7 @@
 
             if (result ?? false)
             {
-                await RefreshDevices();
+                await Refresh();
             }
         }
         finally
@@ -84,7 +87,6 @@
             _buttonsDisabled = false;
             StateHasChanged();
         }
-
     }
 
     private async void UpdateDevice(ListDevicesResult device)
@@ -94,7 +96,7 @@
                 CloseOnEscapeKey = true,
                 DisableBackdropClick = true,
             };
-        AddEditDeviceForm model = new();
+        EditDeviceForm model = new();
         Mapper.Map(device, model);
         var parameters = new DialogParameters { ["Model"] = model };
 
@@ -106,7 +108,7 @@
 
             if (result ?? false)
             {
-                await RefreshDevices();
+                await Refresh();
             }
         }
         finally
@@ -114,7 +116,6 @@
             _buttonsDisabled = false;
             StateHasChanged();
         }
-
     }
 
     private async void DeleteDevice(ListDevicesResult device)
@@ -128,7 +129,7 @@
                 try
                 {
                     await Client.DeleteDeviceAsync(device.Id.ToString(), CancellationToken.None);
-                    await RefreshDevices();
+                    await Refresh();
                     Snackbar.Add($"{device.Name} deleted", Severity.Success);
                 }
                 catch (Exception ex)

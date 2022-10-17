@@ -6,7 +6,7 @@ namespace Curtains.Plugin.TriggerActions;
 
 public class OpenCurtainsTriggerAction : ITriggerAction
 {
-    public const string ACTION_NAME = "CurtainsClose";
+    public const string ACTION_NAME = "CurtainsOpen";
 
     private readonly IServiceProvider _sp;
 

@@ -8,18 +8,18 @@ public class TriggerLoaderHostedService : IHostedService
 {
     private readonly ILogger<TriggerLoaderHostedService> _logger;
     private readonly IServiceProvider _sp;
-    private readonly ITriggersService _timeTriggersService;
+    private readonly ITriggersService _triggersService;
     private readonly IEnumerable<ITriggerAction> _triggerActions;
 
     public TriggerLoaderHostedService(
         ILogger<TriggerLoaderHostedService> logger,
         IServiceProvider sp,
-        ITriggersService timeTriggersService,
+        ITriggersService triggersService,
         IEnumerable<ITriggerAction> triggerActions)
     {
         _logger = logger;
         _sp = sp;
-        _timeTriggersService = timeTriggersService;
+        _triggersService = triggersService;
         _triggerActions = triggerActions;
     }
 
@@ -34,11 +34,10 @@ public class TriggerLoaderHostedService : IHostedService
 
         foreach (var trigger in triggers!)
         {
-            Device device = (await devicesRepo.GetByIdAsync(trigger.DeviceId, cancellationToken)) ?? throw new NullReferenceException(nameof(device));
+            var device = (await devicesRepo.ListAsync(cancellationToken,
+                filter: d => d.DeviceId == trigger.DeviceId))!.SingleOrDefault();
 
-            var action = _triggerActions.Where(o => o.Name == trigger.Name).First();
-
-            _timeTriggersService.AddTrigger(device, new TriggerPackage(action.Name, TimeSpan.FromMilliseconds(trigger.Interval), action));
+            _triggersService.AddTrigger(device!, trigger.Name, trigger.Interval);
         }
     }
 
