@@ -1,4 +1,6 @@
 ﻿@page "/triggerhistory"
+
+@inject NavigationManager NavigationManager
 @inject AutoHomeRestClient Client;
 @inject IDialogService DialogService;
 @inject ISnackbar Snackbar;
@@ -37,22 +39,57 @@
     </tbody>
 </MudSimpleTable>
 
+<div class="d-flex flex-column align-center">
+    <MudPagination ShowFirstButton="true" ShowLastButton="true" Class="mt-4 mb-4" SelectedChanged="SelectedPageChangedAsync" Selected="_listQuery.PageIndex" Count="_pageCount" />
+</div>
+
 @code {
+    private ListQuery _listQuery { get; set; }
     IEnumerable<ListTriggerEventsResult> _triggerEvents { get; set; } = new List<ListTriggerEventsResult>();
     string[] _headings = { "Time Stamp", "Trigger Id", "Event", string.Empty };
+    bool _loading = true;
+    int _pageCount = 0;
 
     protected override async Task OnInitializedAsync()
     {
+        _listQuery = NavigationManager.GetListQuery();
+        NavigationManager.LocationChanged += HandleLocationChanged;
         await Refresh();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        _listQuery = NavigationManager.GetListQuery();
+        StateHasChanged();
     }
 
     private async Task Refresh()
     {
-        var triggerEvents = await Client.ListTriggerEventsAsync(CancellationToken.None);
-        if (triggerEvents?.Any() ?? false)
-        {
-            _triggerEvents = triggerEvents;
-        }
+        _loading = true;
+        var triggerEvents = await Client.ListTriggerEventsAsync(_listQuery.PageIndex, _listQuery.PageSize);
+        _triggerEvents = triggerEvents.Data;
+        _pageCount = triggerEvents.TotalPages;
+        _loading = false;
+    }
+
+    private async Task SelectedPageChangedAsync(int pageIndex)
+    {
+        var dict = new ReadOnlyDictionary<string, object?>(new Dictionary<string, object?>()
+            {
+                { "pageIndex", pageIndex },
+                { "pageSize", _listQuery.PageSize },
+            });
+        NavigationManager.NavigateTo(
+            NavigationManager.GetUriWithQueryParameters(dict));
+        _listQuery.PageIndex = pageIndex;
+        _listQuery.PageSize = Convert.ToInt32(dict["pageSize"]);
+
+        await Refresh();
         StateHasChanged();
     }
 }

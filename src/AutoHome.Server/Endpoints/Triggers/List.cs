@@ -34,7 +34,7 @@ public class List : EndpointBaseAsync
     public override async Task<IEnumerable<ListTriggersResult>> HandleAsync(
         CancellationToken cancellationToken = default)
     {
-        var result = await _repository.ListAsync(orderBy: o => o.OrderBy(o => o.Name), cancellationToken: cancellationToken).ConfigureAwait(false);
+        var result = await _repository.GetAllAsync(orderBy: o => o.OrderBy(o => o.Name), cancellationToken: cancellationToken).ConfigureAwait(false);
         var mappedResult = result!.AsEnumerable().Select(i => _mapper.Map<ListTriggersResult>(i));
         return mappedResult;
     }

@@ -470,16 +470,31 @@
         ],
         "summary": "Lists triggers events",
         "operationId": "ListTriggerEvents",
+        "parameters": [
+          {
+            "name": "PageIndex",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ListTriggerEventsResult"
-                  }
+                  "$ref": "#/components/schemas/ListTriggerEventsResultIPagedResult"
                 }
               }
             }
@@ -705,6 +720,50 @@
           "event": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ListTriggerEventsResultIPagedResult": {
+        "type": "object",
+        "properties": {
+          "totalItems": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "currentPage": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "startPage": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "endPage": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListTriggerEventsResult"
+            },
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
