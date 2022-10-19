@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoHome.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
@@ -41,7 +42,8 @@ public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
         return await _dbContext.Set<T>().FirstOrDefaultAsync(a => a.Id == id, cancellationToken).ConfigureAwait(false);
     }
 
-    public virtual async Task<IReadOnlyList<T>?> ListAsync(
+    public virtual async Task<IPagedResult<T>> ListAsync(
+        IPagedRequest pagedRequest,
         CancellationToken cancellationToken,
         Expression<Func<T, bool>>? filter = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
@@ -66,19 +68,24 @@ public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
             }
 
             // Sort
+            var defaultPagedRequest = new DefaultPagedRequest();
             if (orderBy != null)
             {
-                return await orderBy(query).AsNoTracking().ToListAsync(cancellationToken).ConfigureAwait(false);
+                var pagedResult = await PagedResult<T>.CreateAsync(orderBy(query),
+                    pagedRequest.PageIndex ?? defaultPagedRequest.PageIndex!.Value, pagedRequest.PageSize ?? defaultPagedRequest.PageSize!.Value);
+                return pagedResult;
             }
             else
             {
-                return await query.AsNoTracking().ToListAsync(cancellationToken).ConfigureAwait(false);
+                var pagedResult = await PagedResult<T>.CreateAsync(query,
+                    pagedRequest.PageIndex ?? defaultPagedRequest.PageIndex!.Value, pagedRequest.PageSize ?? defaultPagedRequest.PageSize!.Value);
+                return pagedResult;
             }
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, nameof(ListAsync));
-            return null;
+            throw;
         }
     }
 

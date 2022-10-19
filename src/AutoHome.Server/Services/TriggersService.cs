@@ -46,12 +46,13 @@ public class TriggersService : ITriggersService
         var devicesRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Device>>();
 
         _triggers.Clear();
-        var triggers = await triggersRepo.ListAsync(cancellationToken).ConfigureAwait(false);
+        var pagedRequest = new DefaultPagedRequest { PageSize = 10000 };
+        var triggers = await triggersRepo.ListAsync(pagedRequest, cancellationToken).ConfigureAwait(false);
 
-        foreach (var trigger in triggers!)
+        foreach (var trigger in triggers.Data)
         {
-            Device device = (await devicesRepo.ListAsync(cancellationToken,
-                filter: d => d.DeviceId == trigger.DeviceId).ConfigureAwait(false))!.Single();
+            Device device = (await devicesRepo.ListAsync(new DefaultPagedRequest(), cancellationToken,
+                filter: d => d.DeviceId == trigger.DeviceId).ConfigureAwait(false)).Data.Single();
 
             await AddToDictAsync(trigger, device, cancellationToken);
         }
@@ -76,8 +77,8 @@ public class TriggersService : ITriggersService
         }, cancellationToken).ConfigureAwait(false);
 
         // Add the trigger to the dictionary
-        Device device = (await devicesRepo.ListAsync(cancellationToken,
-            filter: d => d.DeviceId == trigger.DeviceId))!.Single();
+        Device device = (await devicesRepo.ListAsync(new DefaultPagedRequest(), cancellationToken,
+            filter: d => d.DeviceId == trigger.DeviceId).ConfigureAwait(false)).Data.Single();
         await AddToDictAsync(trigger, device, cancellationToken);
     }
 

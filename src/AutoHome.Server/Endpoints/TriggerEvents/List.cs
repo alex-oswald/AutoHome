@@ -3,14 +3,13 @@ using AutoHome.Data;
 using AutoHome.Data.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace AutoHome.Server.Endpoints.TriggerEvents;
 
 public class List : EndpointBaseAsync
-    .WithoutRequest
-    .WithResult<IEnumerable<ListTriggerEventsResult>>
+    .WithRequest<ListTriggerEventsRequest>
+    .WithResult<IPagedResult<ListTriggerEventsResult>>
 {
     private readonly IAsyncRepository<TriggerEvent> _triggerEventsRepo;
     private readonly IMapper _mapper;
@@ -24,7 +23,7 @@ public class List : EndpointBaseAsync
     }
 
     [HttpGet("api/triggerevents")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ListTriggerEventsResult>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IPagedResult<ListTriggerEventsResult>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesJson]
@@ -33,13 +32,14 @@ public class List : EndpointBaseAsync
         OperationId = "ListTriggerEvents",
         Tags = new[] { "Trigger Events" }
     )]
-    public override async Task<IEnumerable<ListTriggerEventsResult>> HandleAsync(
-        CancellationToken cancellationToken = default)
+    public override async Task<IPagedResult<ListTriggerEventsResult>> HandleAsync(
+        [FromQuery] ListTriggerEventsRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await _triggerEventsRepo.Set().OrderByDescending(o => o.TimeStamp).Take(10).ToListAsync();
-        //cancellationToken: cancellationToken,
-        //orderBy: o => o.OrderBy(o => o.Name).Take).ConfigureAwait(false);
-        var mappedResult = result!.AsEnumerable().Select(i => _mapper.Map<ListTriggerEventsResult>(i));
-        return mappedResult;
+        IPagedResult<TriggerEvent> list = await _triggerEventsRepo.ListAsync(
+            pagedRequest: request,
+            orderBy: o => o.OrderByDescending(o => o.TimeStamp),
+            cancellationToken: cancellationToken).ConfigureAwait(false);
+        var result = list.MapTo(_mapper.Map<ListTriggerEventsResult>);
+        return result;
     }
 }

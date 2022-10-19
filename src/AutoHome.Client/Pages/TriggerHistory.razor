@@ -37,6 +37,10 @@
     </tbody>
 </MudSimpleTable>
 
+<div class="d-flex flex-column align-center">
+    @*<MudPagination ShowFirstButton="true" ShowLastButton="true" Class="mt-4 mb-4" SelectedChanged="SelectedPageChangedAsync" Selected="ListQuery.PageIndex" Count="PageCount" />*@
+</div>
+
 @code {
     IEnumerable<ListTriggerEventsResult> _triggerEvents { get; set; } = new List<ListTriggerEventsResult>();
     string[] _headings = { "Time Stamp", "Trigger Id", "Event", string.Empty };
