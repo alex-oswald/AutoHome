@@ -35,7 +35,7 @@ public class List : EndpointBaseAsync
     public override async Task<IPagedResult<ListTriggerEventsResult>> HandleAsync(
         [FromQuery] ListTriggerEventsRequest request, CancellationToken cancellationToken = default)
     {
-        IPagedResult<TriggerEvent> list = await _triggerEventsRepo.ListAsync(
+        IPagedResult<TriggerEvent> list = await _triggerEventsRepo.GetPageAsync(
             pagedRequest: request,
             orderBy: o => o.OrderByDescending(o => o.TimeStamp),
             cancellationToken: cancellationToken).ConfigureAwait(false);

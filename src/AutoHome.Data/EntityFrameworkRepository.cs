@@ -42,7 +42,49 @@ public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
         return await _dbContext.Set<T>().FirstOrDefaultAsync(a => a.Id == id, cancellationToken).ConfigureAwait(false);
     }
 
-    public virtual async Task<IPagedResult<T>> ListAsync(
+    public virtual async Task<IReadOnlyList<T>> GetAllAsync(
+        CancellationToken cancellationToken,
+        Expression<Func<T, bool>>? filter = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        string includeProperties = "")
+    {
+        try
+        {
+            // Get the dbSet from the Entity passed in                
+            IQueryable<T> query = _dbSet;
+
+            // Apply the filter
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            // Include the specified properties
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            // Sort
+            var defaultPagedRequest = new DefaultPagedRequest();
+            if (orderBy != null)
+            {
+                return await orderBy(query).AsNoTracking().ToListAsync(cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                return await query.AsNoTracking().ToListAsync(cancellationToken).ConfigureAwait(false);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, nameof(GetPageAsync));
+            throw;
+        }
+    }
+
+    public virtual async Task<IPagedResult<T>> GetPageAsync(
         IPagedRequest pagedRequest,
         CancellationToken cancellationToken,
         Expression<Func<T, bool>>? filter = null,
@@ -84,7 +126,7 @@ public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, nameof(ListAsync));
+            _logger.LogError(ex, nameof(GetPageAsync));
             throw;
         }
     }

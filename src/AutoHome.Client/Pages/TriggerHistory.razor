@@ -52,11 +52,11 @@
 
     private async Task Refresh()
     {
-        var triggerEvents = await Client.ListTriggerEventsAsync(CancellationToken.None);
-        if (triggerEvents?.Any() ?? false)
-        {
-            _triggerEvents = triggerEvents;
-        }
+        //var triggerEvents = await Client.ListTriggerEventsAsync(CancellationToken.None);
+        //if (triggerEvents?.Any() ?? false)
+        //{
+        //    _triggerEvents = triggerEvents;
+        //}
         StateHasChanged();
     }
 }
