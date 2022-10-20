@@ -6,8 +6,6 @@ namespace Curtains.Plugin.TriggerActions;
 
 public class CloseCurtainsTriggerAction : ITriggerAction
 {
-    public const string ACTION_NAME = "CurtainsClose";
-
     private readonly IServiceProvider _sp;
 
     public CloseCurtainsTriggerAction(IServiceProvider sp)
@@ -15,7 +13,9 @@ public class CloseCurtainsTriggerAction : ITriggerAction
         _sp = sp;
     }
 
-    public string Name { get; } = ACTION_NAME;
+    public string Name { get; } = "Close Curtains";
+
+    public string Key { get; } = "CloseCurtains";
 
     public Func<Device, CancellationToken, Task> Action
     {

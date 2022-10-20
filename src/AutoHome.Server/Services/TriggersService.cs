@@ -50,8 +50,8 @@ public class TriggersService : ITriggersService
 
         foreach (var trigger in triggers)
         {
-            Device device = (await devicesRepo.GetPageAsync(new DefaultPagedRequest(), cancellationToken,
-                filter: d => d.IntegrationDeviceId == trigger.DeviceId).ConfigureAwait(false)).Data.Single();
+            Device device = (await devicesRepo.GetAllAsync(cancellationToken,
+                filter: d => d.IntegrationDeviceId == trigger.DeviceId).ConfigureAwait(false)).Single();
 
             await AddToDictAsync(trigger, device, cancellationToken);
         }
@@ -72,7 +72,7 @@ public class TriggersService : ITriggersService
         {
             TimeStamp = DateTime.UtcNow,
             TriggerId = addResult.Id,
-            Event = "Add new trigger",
+            Event = $"Remove trigger {trigger.Name}",
         }, cancellationToken).ConfigureAwait(false);
 
         // Add the trigger to the dictionary
@@ -110,14 +110,14 @@ public class TriggersService : ITriggersService
         {
             TimeStamp = DateTime.UtcNow,
             TriggerId = trigger.Id,
-            Event = "Remove trigger",
+            Event = $"Remove trigger {triggerPackage.TriggerEventPackage.Name}",
         }, cancellationToken).ConfigureAwait(false);
     }
 
     private Task<bool> AddToDictAsync(Trigger trigger, Device device, CancellationToken cancellationToken)
     {
         // Get the action for the trigger
-        var action = _triggerActions.Where(o => o.Name == trigger.Name).FirstOrDefault();
+        var action = _triggerActions.Where(o => o.Key == trigger.Name).FirstOrDefault();
         var triggerPackage = new TriggerEventPackage(trigger.Name, TimeSpan.FromMilliseconds(trigger.Interval), action);
 
         var dateTime = DateTime.Now.Add(triggerPackage.Interval);
