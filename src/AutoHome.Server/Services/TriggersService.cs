@@ -159,16 +159,21 @@ public class TriggersService : ITriggersService
         {
             TriggerId = Guid.NewGuid(),
             TimeStamp = DateTime.UtcNow,
-            Event = "Invoking event",
+            Event = $"Invoking event {triggerPackage.TriggerEventPackage.Name}",
         }, CancellationToken.None);
 
         _logger.LogInformation("Invoking task for {key}", triggerName);
+
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         Task.Run(async () => await triggerPackage!.TriggerEventPackage.TriggerAction.Action(triggerPackage.Device, CancellationToken.None))
             .ContinueWith((s) => { _logger.LogInformation("Invocation for task {key} complete", triggerName); });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
         _logger.LogInformation("Adding trigger for {key}", triggerName);
         _triggers.TryAdd(triggerName, triggerPackage);
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         AddToDictAsync(triggerPackage.Trigger, triggerPackage.Device, CancellationToken.None);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
     }
 }
