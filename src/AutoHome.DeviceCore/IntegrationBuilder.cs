@@ -117,7 +117,7 @@ public class IntegrationBuilder
             app.MapPost("/token", [AllowAnonymous] async (HttpContext http, ITokenService tokenService) =>
             {
                 var deviceId = await http.Request.ReadFromJsonAsync<Auth>().ConfigureAwait(false);
-                if (deviceId?.DeviceId != builder.Configuration["DeviceId"])
+                if (deviceId?.DeviceId != builder.Configuration["IntegrationDeviceId"])
                 {
                     return Results.Unauthorized();
                 }

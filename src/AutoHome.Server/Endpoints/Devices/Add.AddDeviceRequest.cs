@@ -5,7 +5,7 @@ namespace AutoHome.Server.Endpoints.Devices;
 public class AddDeviceRequest
 {
     [Required]
-    public Guid DeviceId { get; set; }
+    public Guid IntegrationDeviceId { get; set; }
     [Required]
     public string Type { get; set; } = null!;
     [Required]

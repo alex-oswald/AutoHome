@@ -7,7 +7,7 @@ public class UpdateDeviceRequest
     [Required]
     public Guid Id { get; set; }
     [Required]
-    public Guid DeviceId { get; set; }
+    public Guid IntegrationDeviceId { get; set; }
     [Required]
     public string Type { get; set; } = null!;
     [Required]

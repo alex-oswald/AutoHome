@@ -51,7 +51,7 @@ public class TriggersService : ITriggersService
         foreach (var trigger in triggers)
         {
             Device device = (await devicesRepo.GetPageAsync(new DefaultPagedRequest(), cancellationToken,
-                filter: d => d.DeviceId == trigger.DeviceId).ConfigureAwait(false)).Data.Single();
+                filter: d => d.IntegrationDeviceId == trigger.DeviceId).ConfigureAwait(false)).Data.Single();
 
             await AddToDictAsync(trigger, device, cancellationToken);
         }
@@ -77,7 +77,7 @@ public class TriggersService : ITriggersService
 
         // Add the trigger to the dictionary
         Device device = (await devicesRepo.GetAllAsync(cancellationToken,
-            filter: d => d.DeviceId == trigger.DeviceId).ConfigureAwait(false)).Single();
+            filter: d => d.IntegrationDeviceId == trigger.DeviceId).ConfigureAwait(false)).Single();
         await AddToDictAsync(trigger, device, cancellationToken);
     }
 

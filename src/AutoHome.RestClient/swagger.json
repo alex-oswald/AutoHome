@@ -520,14 +520,14 @@
     "schemas": {
       "AddDeviceRequest": {
         "required": [
-          "deviceId",
+          "integrationDeviceId",
           "name",
           "type",
           "uri"
         ],
         "type": "object",
         "properties": {
-          "deviceId": {
+          "integrationDeviceId": {
             "type": "string",
             "format": "uuid"
           },
@@ -548,14 +548,14 @@
       },
       "AddDeviceResult": {
         "required": [
-          "deviceId",
+          "integrationDeviceId",
           "name",
           "type",
           "uri"
         ],
         "type": "object",
         "properties": {
-          "deviceId": {
+          "integrationDeviceId": {
             "type": "string",
             "format": "uuid"
           },
@@ -635,7 +635,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "deviceId": {
+          "integrationDeviceId": {
             "type": "string",
             "format": "uuid"
           },
@@ -683,7 +683,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "deviceId": {
+          "integrationDeviceId": {
             "type": "string",
             "format": "uuid"
           },
@@ -802,8 +802,8 @@
       },
       "UpdateDeviceRequest": {
         "required": [
-          "deviceId",
           "id",
+          "integrationDeviceId",
           "name",
           "type",
           "uri"
@@ -814,7 +814,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "deviceId": {
+          "integrationDeviceId": {
             "type": "string",
             "format": "uuid"
           },
@@ -840,7 +840,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "deviceId": {
+          "integrationDeviceId": {
             "type": "string",
             "format": "uuid"
           },

@@ -38,7 +38,7 @@ public class TokenProvider : ITokenProvider
     private static async Task<string> GetNewTokenAsync(Device device, CancellationToken cancellationToken)
     {
         HttpClient client = new();
-        var request = new TokenRequest { DeviceId = device.DeviceId.ToString() };
+        var request = new TokenRequest { DeviceId = device.IntegrationDeviceId.ToString() };
         var response = await client.PostAsJsonAsync(device.Uri + "/token", request, cancellationToken).ConfigureAwait(false);
         var result = await response.Content.ReadFromJsonAsync<TokenResult>(cancellationToken: cancellationToken).ConfigureAwait(false);
         return result?.Token ?? string.Empty;
