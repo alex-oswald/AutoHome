@@ -40,7 +40,6 @@ try
     builder.Services.AddHostedService<TriggerLoaderHostedService>();
 
     builder.Services.AddCurtainsPluginServer();
-    builder.Services.AddScoped<ICurtainsService, CurtainsService>();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(options =>
