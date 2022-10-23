@@ -67,7 +67,6 @@ public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
             }
 
             // Sort
-            var defaultPagedRequest = new DefaultPagedRequest();
             if (orderBy != null)
             {
                 return await orderBy(query).AsNoTracking().ToListAsync(cancellationToken).ConfigureAwait(false);

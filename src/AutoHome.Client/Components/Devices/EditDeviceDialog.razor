@@ -7,7 +7,7 @@
     <MudDialog>
         <DialogContent>
             <MudTextField Label="Device Id"
-                          @bind-Value="Model.DeviceId" For="@(() => Model.DeviceId)" />
+                          @bind-Value="Model.IntegrationDeviceId" For="@(() => Model.IntegrationDeviceId)" />
             <MudSelect Label="Type" AnchorOrigin="Origin.BottomCenter"
                        @bind-Value="Model.Type" For="@(() => Model.Type)">
                 <MudSelectItem Value="@("Curtain")" />

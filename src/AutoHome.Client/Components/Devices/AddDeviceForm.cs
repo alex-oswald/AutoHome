@@ -8,7 +8,7 @@ public class AddDeviceForm
     public Guid Id { get; set; }
 
     [Required]
-    public Guid? DeviceId { get; set; } = null;
+    public Guid? IntegrationDeviceId { get; set; } = null;
 
     [Required]
     [StringLength(100, ErrorMessage = $"{nameof(Type)} must be at least 3 characters and not more than 100.", MinimumLength = 3)]
