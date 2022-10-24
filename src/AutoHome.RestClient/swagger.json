@@ -786,6 +786,9 @@
           "interval": {
             "type": "number",
             "format": "double"
+          },
+          "device": {
+            "$ref": "#/components/schemas/GetDeviceResult"
           }
         },
         "additionalProperties": false

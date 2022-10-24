@@ -51,7 +51,7 @@ public class TriggersService : ITriggersService
         foreach (var trigger in triggers)
         {
             Device device = (await devicesRepo.GetAllAsync(cancellationToken,
-                filter: d => d.IntegrationDeviceId == trigger.DeviceId).ConfigureAwait(false)).Single();
+                filter: d => d.Id == trigger.DeviceId).ConfigureAwait(false)).Single();
 
             await AddToDictAsync(trigger, device, cancellationToken);
         }
@@ -77,7 +77,7 @@ public class TriggersService : ITriggersService
 
         // Add the trigger to the dictionary
         Device device = (await devicesRepo.GetAllAsync(cancellationToken,
-            filter: d => d.IntegrationDeviceId == trigger.DeviceId).ConfigureAwait(false)).Single();
+            filter: d => d.Id == trigger.DeviceId).ConfigureAwait(false)).Single();
         await AddToDictAsync(trigger, device, cancellationToken);
     }
 
@@ -98,9 +98,12 @@ public class TriggersService : ITriggersService
         var removalResult = _triggers.TryRemove(trigger.Name, out TriggerPackage? triggerPackage);
         if (!removalResult)
         {
-            throw new NullReferenceException(nameof(removalResult));
+            _logger.LogWarning("Unable to remove value from dictionary, it may not exist");
         }
-        triggerPackage!.Timer.Change(Timeout.Infinite, Timeout.Infinite);
+        else
+        {
+            triggerPackage!.Timer.Change(Timeout.Infinite, Timeout.Infinite);
+        }
 
         // Remove the trigger from the db
         await triggersRepo.DeleteAsync(trigger, cancellationToken).ConfigureAwait(false);

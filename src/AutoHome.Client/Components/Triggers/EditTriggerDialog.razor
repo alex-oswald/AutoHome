@@ -6,8 +6,13 @@
     <DataAnnotationsValidator />
     <MudDialog>
         <DialogContent>
-            <MudTextField Label="Device Id"
-                          @bind-Value="Model.DeviceId" For="@(() => Model.DeviceId)" />
+            <MudSelect Label="Device" AnchorOrigin="Origin.BottomCenter"
+                       @bind-Value="Model.DeviceId" For="@(() => Model.DeviceId)">
+                @foreach (var device in Devices)
+                {
+                    <MudSelectItem Value="@(device.Id)">@device.Name</MudSelectItem>
+                }
+            </MudSelect>
             <MudSelect Label="Type" AnchorOrigin="Origin.BottomCenter"
                        @bind-Value="Model.Name" For="@(() => Model.Name)">
                 <MudSelectItem Value="@("CurtainsOpen")" />
@@ -27,6 +32,8 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
     [Parameter] public EditTriggerForm Model { get; set; }
+
+    [Parameter] public List<ListDevicesResult> Devices { get; set; } = new();
 
     async Task Submit(EditContext context)
     {

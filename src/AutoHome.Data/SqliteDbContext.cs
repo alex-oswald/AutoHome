@@ -15,4 +15,12 @@ public class SqliteDbContext : DbContext
     public DbSet<Trigger> Triggers { get; set; } = null!;
 
     public DbSet<TriggerEvent> TriggerEvents { get; set; } = null!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Trigger>()
+            .HasOne(o => o.Device)
+            .WithMany()
+            .HasForeignKey(o => o.DeviceId);
+    }
 }
