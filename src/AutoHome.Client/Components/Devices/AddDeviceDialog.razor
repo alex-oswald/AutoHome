@@ -2,20 +2,20 @@
 @inject IMapper Mapper;
 @inject ISnackbar Snackbar
 
-<EditForm Model="@model" OnValidSubmit="Submit">
+<EditForm Model="@_model" OnValidSubmit="Submit">
     <DataAnnotationsValidator />
     <MudDialog>
         <DialogContent>
             <MudTextField Label="Device Id"
-                          @bind-Value="model.IntegrationDeviceId" For="@(() => model.IntegrationDeviceId)" />
+                          @bind-Value="_model.IntegrationDeviceId" For="@(() => _model.IntegrationDeviceId)" />
             <MudSelect Label="Type" AnchorOrigin="Origin.BottomCenter"
-                       @bind-Value="model.Type" For="@(() => model.Type)">
+                       @bind-Value="_model.Type" For="@(() => _model.Type)">
                 <MudSelectItem Value="@("Curtain")" />
             </MudSelect>
             <MudTextField Label="Name"
-                          @bind-Value="model.Name" For="@(() => model.Name)" />
+                          @bind-Value="_model.Name" For="@(() => _model.Name)" />
             <MudTextField Label="Uri"
-                          @bind-Value="model.Uri" For="@(() => model.Uri)" />
+                          @bind-Value="_model.Uri" For="@(() => _model.Uri)" />
         </DialogContent>
         <DialogActions>
             <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -28,12 +28,12 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    AddDeviceForm model = new();
+    AddDeviceForm _model = new();
 
     async Task Submit(EditContext context)
     {
         var request = new AddDeviceRequest();
-        Mapper.Map(model, request);
+        Mapper.Map(_model, request);
         var result = await Client.AddDeviceAsync(request, CancellationToken.None);
         if (result is null)
         {

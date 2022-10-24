@@ -15,5 +15,6 @@ public class EditTriggerForm
     public string Name { get; set; } = string.Empty;
 
     [Required]
+    [Range(0, double.MaxValue, ErrorMessage = "Interval must be 0 or greater.")]
     public double Interval { get; set; }
 }
