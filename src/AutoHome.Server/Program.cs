@@ -39,7 +39,8 @@ try
     builder.Services.AddSingleton<ITriggersService, TriggersService>();
 
     builder.Services.AddHostedService<TriggerLoaderHostedService>();
-    builder.Services.AddHostedService<DatabaseCleanupBackgroundService>();
+
+    builder.Services.AddDatabaseCleanupService();
 
     builder.Services.AddCurtainsPluginServer();
 
