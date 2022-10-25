@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 namespace AutoHome.Data;
 
 public interface IAsyncRepository<T>
-    where T : class
+    where T : class, IEntity
 {
     Task<T> AddAsync(T entity, CancellationToken cancellationToken);
 

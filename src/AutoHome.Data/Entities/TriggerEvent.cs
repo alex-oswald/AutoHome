@@ -1,6 +1,6 @@
 ﻿namespace AutoHome.Data.Entities;
 
-public class TriggerEvent : IEntity
+public class TriggerEvent : ITimeStamped
 {
     public Guid Id { get; set; }
     public Guid TriggerId { get; set; }

@@ -1,6 +1,4 @@
-﻿using AutoHome.Server.Services;
-
-namespace AutoHome.Server;
+﻿namespace AutoHome.Server.Services;
 
 public class TriggerLoaderHostedService : IHostedService
 {

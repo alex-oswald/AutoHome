@@ -1,6 +1,5 @@
 using AutoHome.Data;
 using AutoHome.Data.Entities;
-using AutoHome.Server;
 using AutoHome.Server.Services;
 using Curtains.Plugin;
 using Microsoft.EntityFrameworkCore;
@@ -35,9 +34,12 @@ try
     builder.Services.AddScoped<IAsyncRepository<Device>, EntityFrameworkRepository<Device, SqliteDbContext>>();
     builder.Services.AddScoped<IAsyncRepository<Trigger>, EntityFrameworkRepository<Trigger, SqliteDbContext>>();
     builder.Services.AddScoped<IAsyncRepository<TriggerEvent>, EntityFrameworkRepository<TriggerEvent, SqliteDbContext>>();
+    builder.Services.AddScoped<ITimeStampedRepository<TriggerEvent>, EntityFrameworkTimeStampedRepository<TriggerEvent, SqliteDbContext>>();
 
     builder.Services.AddSingleton<ITriggersService, TriggersService>();
+
     builder.Services.AddHostedService<TriggerLoaderHostedService>();
+    builder.Services.AddHostedService<DatabaseCleanupBackgroundService>();
 
     builder.Services.AddCurtainsPluginServer();
 
