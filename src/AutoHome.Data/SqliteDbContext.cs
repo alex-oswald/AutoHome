@@ -22,5 +22,10 @@ public class SqliteDbContext : DbContext
             .HasOne(o => o.Device)
             .WithMany()
             .HasForeignKey(o => o.DeviceId);
+
+        modelBuilder.Entity<TriggerEvent>()
+            .HasOne(o => o.Trigger)
+            .WithMany()
+            .HasForeignKey(o => o.TriggerId);
     }
 }

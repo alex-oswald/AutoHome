@@ -1,4 +1,6 @@
-﻿namespace AutoHome.Server.Endpoints.TriggerEvents;
+﻿using AutoHome.Server.Endpoints.Triggers;
+
+namespace AutoHome.Server.Endpoints.TriggerEvents;
 
 public class ListTriggerEventsResult
 {
@@ -6,4 +8,6 @@ public class ListTriggerEventsResult
     public Guid TriggerId { get; set; }
     public DateTime TimeStamp { get; set; }
     public string Event { get; set; } = string.Empty;
+
+    public GetTriggerResult Trigger { get; set; } = null!;
 }

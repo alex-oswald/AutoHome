@@ -38,7 +38,8 @@ public class List : EndpointBaseAsync
         IPagedResult<TriggerEvent> list = await _triggerEventsRepo.GetPageAsync(
             pagedRequest: request,
             orderBy: o => o.OrderByDescending(o => o.TimeStamp),
-            cancellationToken: cancellationToken).ConfigureAwait(false);
+            cancellationToken: cancellationToken,
+            includeProperties: string.Join(',', nameof(Trigger))).ConfigureAwait(false);
         var result = list.MapTo(_mapper.Map<ListTriggerEventsResult>);
         return result;
     }
