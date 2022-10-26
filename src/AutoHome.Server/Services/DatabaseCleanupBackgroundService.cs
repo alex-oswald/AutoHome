@@ -8,7 +8,7 @@ public static class DatabaseCleanupExtensions
 {
     public static IServiceCollection AddDatabaseCleanupService(this IServiceCollection services)
     {
-        services.AddHostedService<DatabaseCleanupBackgroundService>();
+        services.AddHostedService<TriggerHistoryCleanupBackgroundService>();
         services.Configure<DatabaseCleanupOptions>(options => { });
         return services;
     }
@@ -20,13 +20,13 @@ public class DatabaseCleanupOptions
     public int IntervalHours { get; set; } = 1;
 }
 
-public class DatabaseCleanupBackgroundService : BackgroundService
+public class TriggerHistoryCleanupBackgroundService : BackgroundService
 {
-    private readonly ILogger<DatabaseCleanupBackgroundService> _logger;
+    private readonly ILogger<TriggerHistoryCleanupBackgroundService> _logger;
     private readonly IServiceProvider _sp;
 
-    public DatabaseCleanupBackgroundService(
-        ILogger<DatabaseCleanupBackgroundService> logger,
+    public TriggerHistoryCleanupBackgroundService(
+        ILogger<TriggerHistoryCleanupBackgroundService> logger,
         IServiceProvider sp)
     {
         _logger = logger;
@@ -53,8 +53,9 @@ public class DatabaseCleanupBackgroundService : BackgroundService
                 // Get cleanup options and the trigger repo
                 var triggerEventsRepo = scope.ServiceProvider.GetRequiredService<ITimeStampedRepository<TriggerEvent>>();
 
-                // Delete all trigger events older than the given time
                 _logger.LogInformation("Cleaning up the database");
+
+                // Delete all trigger events older than the given time
                 await triggerEventsRepo.DeleteOlderThanAsync(
                     DateTime.UtcNow.Subtract(TimeSpan.FromHours(options.DeleteTriggerEventsOlderThanHours)),
                     stoppingToken).ConfigureAwait(false);
