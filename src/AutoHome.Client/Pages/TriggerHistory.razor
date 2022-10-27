@@ -23,9 +23,8 @@
             @foreach (var row in _triggerEvents)
             {
                 <tr>
+                    <td>@row.TimeStamp.LocalDateTime.ToString("yyyy/MM/dd HH:mm")</td>
                     <td>@row.Trigger.Name</td>
-                    <td>@row.TimeStamp</td>
-                    <td>@row.TriggerId</td>
                     <td>@row.Event</td>
                 </tr>
             }
@@ -47,7 +46,7 @@
 @code {
     private ListQuery _listQuery { get; set; }
     IEnumerable<ListTriggerEventsResult> _triggerEvents { get; set; } = new List<ListTriggerEventsResult>();
-    string[] _headings = { "Trigger Name", "Time Stamp", "Trigger Id", "Event" };
+    string[] _headings = { "Time Stamp", "Trigger Name", "Event" };
     bool _loading = true;
     int _pageCount = 0;
 
