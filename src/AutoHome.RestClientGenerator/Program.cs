@@ -21,7 +21,7 @@ var settings = new CSharpClientGeneratorSettings
 var generator = new CSharpClientGenerator(document, settings);
 var code = generator.GenerateFile();
 
-File.WriteAllText($"..\\..\\..\\..\\AutoHome.Client\\{className}.cs", code);
+File.WriteAllText($"..\\..\\..\\..\\AutoHome.RestClient\\{className}.cs", code);
 
 Console.WriteLine($"{className}.cs generated");
 
