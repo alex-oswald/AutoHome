@@ -38,7 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Curtains", "Curtains", "{66
 		src\Integrations\Curtains\README.md = src\Integrations\Curtains\README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.RestClient", "src\AutoHome.RestClient\AutoHome.RestClient.csproj", "{98D0DB19-F5B3-4D17-B0FB-0260B344CFE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.RestClientGenerator", "src\AutoHome.RestClientGenerator\AutoHome.RestClientGenerator.csproj", "{98D0DB19-F5B3-4D17-B0FB-0260B344CFE9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.DeviceCore", "src\AutoHome.DeviceCore\AutoHome.DeviceCore.csproj", "{B7C96CBE-809A-4DF8-AF92-E6A77581149F}"
 EndProject
