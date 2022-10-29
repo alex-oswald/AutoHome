@@ -11,6 +11,7 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     //.MinimumLevel.Verbose()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning) // Comment to show SQL queries in the logs
     .Enrich.FromLogContext()
     .WriteTo.Console()
     .WriteTo.Debug() // Write to the Debug output in Visual Studio
