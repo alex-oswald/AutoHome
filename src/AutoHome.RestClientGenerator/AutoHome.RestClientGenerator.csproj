@@ -8,16 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="swagger.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="swagger.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.17.0" />
   </ItemGroup>
 
