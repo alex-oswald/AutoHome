@@ -27,7 +27,11 @@ try
 
     builder.Services.AddAutoMapper(typeof(Program));
 
-    builder.Services.AddControllersWithViews();
+    builder.Services.AddControllersWithViews()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new DateTimeJsonConverter());
+        });
     builder.Services.AddRazorPages();
 
     builder.Services.AddDbContext<SqliteDbContext>(options =>

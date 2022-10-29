@@ -27,5 +27,24 @@ public class SqliteDbContext : DbContext
             .HasOne(o => o.Trigger)
             .WithMany()
             .HasForeignKey(o => o.TriggerId);
+
+        if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
+        {
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var properties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(DateTime));
+                foreach (var property in properties)
+                {
+                    // Save DateTime's in ISO 8601 format
+                    // Query DateTime's and produce DateTime with the proper Kind
+                    modelBuilder
+                        .Entity(entityType.Name)
+                        .Property<DateTime>(property.Name)
+                        .HasConversion(
+                            convertToProviderExpression: v => new DateTimeOffset(v).ToString("O"),
+                            convertFromProviderExpression: v => new DateTime(DateTimeOffset.Parse(v).UtcTicks, DateTimeKind.Utc));
+                }
+            }
+        }
     }
 }

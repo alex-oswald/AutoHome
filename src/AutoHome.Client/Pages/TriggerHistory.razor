@@ -23,7 +23,7 @@
             @foreach (var row in _triggerEvents)
             {
                 <tr>
-                    <td>@row.TimeStamp.LocalDateTime.ToString("yyyy/MM/dd HH:mm")</td>
+                    <td>@row.TimeStamp.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
                     <td>@row.Trigger.Name</td>
                     <td>@row.Event</td>
                 </tr>
