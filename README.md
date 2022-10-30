@@ -3,6 +3,16 @@
 Open source home automation! AutoHome is a web application that runs on a Raspberry Pi and controls local devices on your network.
 
 
+## Development
+
+Create database migrations
+
+```cmd
+cd src\AutoHome.Data
+dotnet ef migrations add MIGRATION_NAME
+```
+
+
 ## Devices
 
 

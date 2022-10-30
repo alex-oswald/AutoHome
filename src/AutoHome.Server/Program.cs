@@ -66,11 +66,11 @@ try
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    // Make sure the database is created
-    using (var scoped = app.Services.CreateScope())
+    // Create and/or migrate the database
+    using (var scope = app.Services.CreateScope())
     {
-        var db = scoped.ServiceProvider.GetService<SqliteDbContext>();
-        db?.Database.EnsureCreated();
+        var db = scope.ServiceProvider.GetRequiredService<SqliteDbContext>();
+        db.Database.Migrate();
     }
 
     if (app.Environment.IsDevelopment())
