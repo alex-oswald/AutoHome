@@ -1,33 +1,31 @@
 ﻿@inject ICurtainsManager CurtainsManager
 
-<MudStack Spacing="4">
-    <MudPaper>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true" Disabled="@motorRunning()" OnClick="Open">
-            @if (opening)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                <MudText Class="ms-2">Opening</MudText>
-            }
-            else
-            {
-                <MudText>Open</MudText>
-            }
-        </MudButton>
-    </MudPaper>
-    <MudPaper>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true" Disabled="@motorRunning()" OnClick="Close">
-            @if (closing)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                <MudText Class="ms-2">Closing</MudText>
-            }
-            else
-            {
-                <MudText>Close</MudText>
-            }
-        </MudButton>
-    </MudPaper>
-</MudStack>
+<MudPaper>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true" Disabled="@motorRunning()" OnClick="Open">
+        @if (opening)
+        {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+            <MudText Class="ms-2">Opening</MudText>
+        }
+        else
+        {
+            <MudText>Open</MudText>
+        }
+    </MudButton>
+</MudPaper>
+<MudPaper>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true" Disabled="@motorRunning()" OnClick="Close">
+        @if (closing)
+        {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+            <MudText Class="ms-2">Closing</MudText>
+        }
+        else
+        {
+            <MudText>Close</MudText>
+        }
+    </MudButton>
+</MudPaper>
 
 @code {
     [Parameter]
