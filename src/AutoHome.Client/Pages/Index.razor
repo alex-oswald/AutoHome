@@ -2,6 +2,9 @@
 @inject AutoHomeRestClient Client;
 @inject IMapper Mapper;
 
+<PageHeaderMenu Title="Dashboard">
+</PageHeaderMenu>
+
 @if (_devices is not null && _devices.Any())
 {
     foreach (var device in _devices)
@@ -14,6 +17,10 @@
                 break;
         }
     }
+}
+else
+{
+    <MudText Typo="Typo.h4" Class="mt-4 mb-4">No widgets</MudText>
 }
 
 @code {

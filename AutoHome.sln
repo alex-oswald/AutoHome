@@ -46,7 +46,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Core", "src\AutoHo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{EEA7CB79-64D1-49EA-8313-8B9CE96A4B05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHome.RestClient", "src\AutoHome.RestClient\AutoHome.RestClient.csproj", "{18DBDCD3-326D-4E28-8E00-E27E3CAEA93C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.RestClient", "src\AutoHome.RestClient\AutoHome.RestClient.csproj", "{18DBDCD3-326D-4E28-8E00-E27E3CAEA93C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

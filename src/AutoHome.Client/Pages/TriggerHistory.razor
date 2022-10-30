@@ -6,9 +6,13 @@
 @inject ISnackbar Snackbar;
 @inject IMapper Mapper;
 
-<MudText Typo="Typo.h4" Class="mt-4 mb-4">Trigger History</MudText>
+<PageHeaderMenu Title="Trigger History">
+    <MudIconButton Icon="@Icons.Material.Filled.Refresh" Class="mt-2 mb-2" Disabled="@_loading"
+        OnClick="@(async () => RefreshAsync())">
+    </MudIconButton>
+</PageHeaderMenu>
 
-<MudSimpleTable Style="overflow-x: auto;" Class="mt-4">
+<MudSimpleTable Style="overflow-x: auto;">
     <thead>
         <tr>
             @foreach (var h in _headings)
@@ -54,7 +58,7 @@
     {
         _listQuery = NavigationManager.GetListQuery();
         NavigationManager.LocationChanged += HandleLocationChanged;
-        await Refresh();
+        await RefreshAsync();
     }
 
     public void Dispose()
@@ -68,13 +72,14 @@
         StateHasChanged();
     }
 
-    private async Task Refresh()
+    private async Task RefreshAsync()
     {
         _loading = true;
         var triggerEvents = await Client.ListTriggerEventsAsync(_listQuery.PageIndex, _listQuery.PageSize);
         _triggerEvents = triggerEvents.Data;
         _pageCount = triggerEvents.TotalPages;
         _loading = false;
+        StateHasChanged();
     }
 
     private async Task SelectedPageChangedAsync(int pageIndex)
@@ -89,7 +94,7 @@
         _listQuery.PageIndex = pageIndex;
         _listQuery.PageSize = Convert.ToInt32(dict["pageSize"]);
 
-        await Refresh();
+        await RefreshAsync();
         StateHasChanged();
     }
 }
