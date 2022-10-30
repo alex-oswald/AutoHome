@@ -47,6 +47,7 @@ try
 
     builder.Services.AddDatabaseCleanupService();
 
+    builder.Services.AddAmbientWeatherPluginServer();
     builder.Services.AddCurtainsPluginServer();
 
     builder.Services.AddEndpointsApiExplorer();
