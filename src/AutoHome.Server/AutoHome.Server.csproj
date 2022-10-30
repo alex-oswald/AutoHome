@@ -26,11 +26,6 @@
     <ProjectReference Include="..\AutoHome.Client\AutoHome.Client.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="dotnet tool restore" />
-    <Exec Command="dotnet swagger tofile --output ..\AutoHome.RestClient\swagger.json $(OutputPath)\$(AssemblyName).dll v1" />
-  </Target>
-
   <ItemGroup>
     <Using Include="AutoHome.Core.Entities" />
   </ItemGroup>

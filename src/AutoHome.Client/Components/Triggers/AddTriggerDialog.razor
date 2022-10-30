@@ -2,19 +2,24 @@
 @inject IMapper Mapper;
 @inject ISnackbar Snackbar
 
-<EditForm Model="@model" OnValidSubmit="Submit">
+<EditForm Model="@_model" OnValidSubmit="Submit">
     <DataAnnotationsValidator />
     <MudDialog>
         <DialogContent>
-            <MudTextField Label="Device Id"
-                          @bind-Value="model.DeviceId" For="@(() => model.DeviceId)" />
+            <MudSelect Label="Device" AnchorOrigin="Origin.BottomCenter"
+                       @bind-Value="_model.DeviceId" For="@(() => _model.DeviceId)">
+                @foreach (var device in Devices)
+                {
+                    <MudSelectItem Value="@(device.Id)">@device.Name</MudSelectItem>
+                }
+            </MudSelect>
             <MudSelect Label="Type" AnchorOrigin="Origin.BottomCenter"
-                       @bind-Value="model.Name" For="@(() => model.Name)">
+                       @bind-Value="_model.Name" For="@(() => _model.Name)">
                 <MudSelectItem Value="@("CurtainsOpen")" />
                 <MudSelectItem Value="@("CurtainsClose")" />
             </MudSelect>
             <MudTextField Label="Interval"
-                          @bind-Value="model.Interval" For="@(() => model.Interval)" />
+                          @bind-Value="_model.Interval" For="@(() => _model.Interval)" />
         </DialogContent>
         <DialogActions>
             <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -26,12 +31,22 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    AddTriggerForm model = new();
+    [Parameter] public List<ListDevicesResult> Devices { get; set; } = new();
+
+    AddTriggerForm _model = new();
+
+    protected override void OnParametersSet()
+    {
+        if (Devices.Any())
+        {
+            _model.DeviceId = Devices.First().Id;
+        }
+    }
 
     async Task Submit(EditContext context)
     {
         var request = new AddTriggerRequest();
-        Mapper.Map(model, request);
+        Mapper.Map(_model, request);
         var result = await Client.AddTriggerAsync(request, CancellationToken.None);
         if (result is null)
         {

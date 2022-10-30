@@ -5,15 +5,13 @@ namespace AutoHome.Client.Components.Triggers;
 public class AddTriggerForm
 {
     [Required]
-    public Guid Id { get; set; }
+    public Guid DeviceId { get; set; }
 
     [Required]
-    public Guid? DeviceId { get; set; } = Guid.Parse("8d291f88-3b06-428c-87fb-ecd0eea44d17");
-
-    [Required]
-    [StringLength(20, ErrorMessage = $"{nameof(Name)} must be at least 3 characters and not more than 100.", MinimumLength = 3)]
+    [StringLength(20, ErrorMessage = $"{nameof(Name)} must be at least 3 characters and not more than 20.", MinimumLength = 3)]
     public string Name { get; set; } = string.Empty;
 
     [Required]
+    [Range(0, double.MaxValue, ErrorMessage = "Interval must be 0 or greater.")]
     public double Interval { get; set; }
 }

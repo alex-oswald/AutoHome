@@ -23,7 +23,7 @@
             @foreach (var row in _triggers)
             {
                 <tr>
-                    <td>@row.DeviceId</td>
+                    <td>@row.Device.Name @row.Device.Type</td>
                     <td>@row.Name</td>
                     <td>@row.Interval</td>
                     <td>
@@ -45,11 +45,13 @@
 
 @code {
     IEnumerable<ListTriggersResult> _triggers { get; set; } = new List<ListTriggersResult>();
-    string[] _headings = { "Device ID", "Name", "Interval", string.Empty };
+    ICollection<ListDevicesResult> _devices = new List<ListDevicesResult>();
+    string[] _headings = { "Device", "Name", "Interval", string.Empty };
     bool _buttonsDisabled = false;
 
     protected override async Task OnInitializedAsync()
     {
+        _devices = await Client.ListDeviceAsync(CancellationToken.None);
         await Refresh();
     }
 
@@ -70,11 +72,12 @@
                 CloseOnEscapeKey = true,
                 DisableBackdropClick = true,
             };
+        var parameters = new DialogParameters { ["Devices"] = _devices };
 
         try
         {
             _buttonsDisabled = true;
-            var dialog = DialogService.Show<AddTriggerDialog>("Add Trigger", dialogOptions);
+            var dialog = DialogService.Show<AddTriggerDialog>("Add Trigger", parameters, dialogOptions);
             var result = (bool?)(await dialog.Result).Data;
 
             if (result ?? false)
@@ -98,7 +101,7 @@
             };
         EditTriggerForm model = new();
         Mapper.Map(trigger, model);
-        var parameters = new DialogParameters { ["Model"] = model };
+        var parameters = new DialogParameters { ["Model"] = model, ["Devices"] = _devices };
 
         try
         {

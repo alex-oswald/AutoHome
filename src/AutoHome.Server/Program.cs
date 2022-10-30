@@ -1,6 +1,5 @@
 using AutoHome.Data;
 using AutoHome.Data.Entities;
-using AutoHome.Server;
 using AutoHome.Server.Services;
 using Curtains.Plugin;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +11,7 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     //.MinimumLevel.Verbose()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning) // Comment to show SQL queries in the logs
     .Enrich.FromLogContext()
     .WriteTo.Console()
     .WriteTo.Debug() // Write to the Debug output in Visual Studio
@@ -27,7 +27,11 @@ try
 
     builder.Services.AddAutoMapper(typeof(Program));
 
-    builder.Services.AddControllersWithViews();
+    builder.Services.AddControllersWithViews()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new DateTimeJsonConverter());
+        });
     builder.Services.AddRazorPages();
 
     builder.Services.AddDbContext<SqliteDbContext>(options =>
@@ -35,12 +39,15 @@ try
     builder.Services.AddScoped<IAsyncRepository<Device>, EntityFrameworkRepository<Device, SqliteDbContext>>();
     builder.Services.AddScoped<IAsyncRepository<Trigger>, EntityFrameworkRepository<Trigger, SqliteDbContext>>();
     builder.Services.AddScoped<IAsyncRepository<TriggerEvent>, EntityFrameworkRepository<TriggerEvent, SqliteDbContext>>();
+    builder.Services.AddScoped<ITimeStampedRepository<TriggerEvent>, EntityFrameworkTimeStampedRepository<TriggerEvent, SqliteDbContext>>();
 
     builder.Services.AddSingleton<ITriggersService, TriggersService>();
+
     builder.Services.AddHostedService<TriggerLoaderHostedService>();
 
+    builder.Services.AddDatabaseCleanupService();
+
     builder.Services.AddCurtainsPluginServer();
-    builder.Services.AddScoped<ICurtainsService, CurtainsService>();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(options =>

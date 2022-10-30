@@ -470,16 +470,31 @@
         ],
         "summary": "Lists triggers events",
         "operationId": "ListTriggerEvents",
+        "parameters": [
+          {
+            "name": "PageIndex",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ListTriggerEventsResult"
-                  }
+                  "$ref": "#/components/schemas/ListTriggerEventsResultIPagedResult"
                 }
               }
             }
@@ -505,14 +520,14 @@
     "schemas": {
       "AddDeviceRequest": {
         "required": [
-          "deviceId",
+          "integrationDeviceId",
           "name",
           "type",
           "uri"
         ],
         "type": "object",
         "properties": {
-          "deviceId": {
+          "integrationDeviceId": {
             "type": "string",
             "format": "uuid"
           },
@@ -533,14 +548,14 @@
       },
       "AddDeviceResult": {
         "required": [
-          "deviceId",
+          "integrationDeviceId",
           "name",
           "type",
           "uri"
         ],
         "type": "object",
         "properties": {
-          "deviceId": {
+          "integrationDeviceId": {
             "type": "string",
             "format": "uuid"
           },
@@ -620,7 +635,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "deviceId": {
+          "integrationDeviceId": {
             "type": "string",
             "format": "uuid"
           },
@@ -668,7 +683,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "deviceId": {
+          "integrationDeviceId": {
             "type": "string",
             "format": "uuid"
           },
@@ -705,6 +720,53 @@
           "event": {
             "type": "string",
             "nullable": true
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/GetTriggerResult"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ListTriggerEventsResultIPagedResult": {
+        "type": "object",
+        "properties": {
+          "totalItems": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "currentPage": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "startPage": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "endPage": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListTriggerEventsResult"
+            },
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -727,6 +789,9 @@
           "interval": {
             "type": "number",
             "format": "double"
+          },
+          "device": {
+            "$ref": "#/components/schemas/GetDeviceResult"
           }
         },
         "additionalProperties": false
@@ -743,8 +808,8 @@
       },
       "UpdateDeviceRequest": {
         "required": [
-          "deviceId",
           "id",
+          "integrationDeviceId",
           "name",
           "type",
           "uri"
@@ -755,7 +820,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "deviceId": {
+          "integrationDeviceId": {
             "type": "string",
             "format": "uuid"
           },
@@ -781,7 +846,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "deviceId": {
+          "integrationDeviceId": {
             "type": "string",
             "format": "uuid"
           },

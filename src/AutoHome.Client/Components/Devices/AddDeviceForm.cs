@@ -5,10 +5,7 @@ namespace AutoHome.Client.Components.Devices;
 public class AddDeviceForm
 {
     [Required]
-    public Guid Id { get; set; }
-
-    [Required]
-    public Guid? DeviceId { get; set; } = null;
+    public Guid? IntegrationDeviceId { get; set; } = Guid.Parse("8d291f88-3b06-428c-87fb-ecd0eea44d17");
 
     [Required]
     [StringLength(100, ErrorMessage = $"{nameof(Type)} must be at least 3 characters and not more than 100.", MinimumLength = 3)]

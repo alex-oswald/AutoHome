@@ -10,9 +10,26 @@ public record TriggerPackage(Trigger Trigger, Timer Timer, Device Device, Trigge
 
 public interface ITriggersService
 {
+    /// <summary>
+    /// Initialize the services trigger dictionary from the database.
+    /// </summary>
     Task InitializeTriggersAsync(CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Adds a trigger. The trigger is added to the internal dictionary. While in the dictionary, it is
+    /// considered running. Once it triggers, it will recreate itself.
+    /// </summary>
     Task AddTriggerAsync(Trigger trigger, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Updates a trigger. The trigger in the dictionary is removed. The passed trigger is added to the dictionary.
+    /// The trigger object is also updated in the database.
+    /// </summary>
     Task UpdateTriggerAsync(Trigger trigger, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Removes a trigger. The trigger in the dictionary is removed. The triggers internal timer is set to timeout
+    /// </summary>
     Task RemoveTriggerAsync(Trigger trigger, CancellationToken cancellationToken);
 }
 
@@ -21,7 +38,7 @@ public interface ITriggersService
 /// </summary>
 public class TriggersService : ITriggersService
 {
-    private readonly ConcurrentDictionary<string, TriggerPackage> _triggers = new();
+    private readonly ConcurrentDictionary<Guid, TriggerPackage> _triggers = new();
     private readonly ILogger<TriggersService> _logger;
     private readonly IEnumerable<ITriggerAction> _triggerActions;
     private readonly IServiceProvider _sp;
@@ -42,15 +59,24 @@ public class TriggersService : ITriggersService
         var triggersRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Trigger>>();
         var devicesRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Device>>();
 
-        _triggers.Clear();
-        var triggers = await triggersRepo!.ListAsync(cancellationToken).ConfigureAwait(false);
-
-        foreach (var trigger in triggers!)
+        _logger.LogInformation("Initializing triggers");
+        // Remove all triggers
+        foreach (KeyValuePair<Guid, TriggerPackage> trigger in _triggers)
         {
-            var device = (await devicesRepo.ListAsync(cancellationToken,
-                filter: d => d.DeviceId == trigger.DeviceId))!.Single();
+            RemoveFromDictionaryAndTimeout(trigger.Value.Trigger);
+        }
+        _triggers.Clear();
 
-            await AddToDictAsync(trigger, device, cancellationToken);
+        //  Get all triggers from the database
+        var triggers = await triggersRepo.GetAllAsync(cancellationToken).ConfigureAwait(false);
+
+        // Add each trigger from the database to the dictionary
+        foreach (var trigger in triggers)
+        {
+            Device device = (await devicesRepo.GetAllAsync(cancellationToken,
+                filter: d => d.Id == trigger.DeviceId).ConfigureAwait(false)).Single();
+
+            AddToDictionary(trigger, device, cancellationToken);
         }
     }
 
@@ -69,13 +95,13 @@ public class TriggersService : ITriggersService
         {
             TimeStamp = DateTime.UtcNow,
             TriggerId = addResult.Id,
-            Event = "Add new trigger",
+            Event = $"Remove trigger {trigger.Name}",
         }, cancellationToken).ConfigureAwait(false);
 
         // Add the trigger to the dictionary
-        var device = (await devicesRepo.ListAsync(cancellationToken,
-            filter: d => d.DeviceId == trigger.DeviceId))!.Single();
-        await AddToDictAsync(trigger, device, cancellationToken);
+        Device device = (await devicesRepo.GetAllAsync(cancellationToken,
+            filter: d => d.Id == trigger.DeviceId).ConfigureAwait(false)).Single();
+        AddToDictionary(trigger, device, cancellationToken);
     }
 
     public async Task UpdateTriggerAsync(Trigger trigger, CancellationToken cancellationToken)
@@ -92,12 +118,11 @@ public class TriggersService : ITriggersService
         var triggerEventsRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<TriggerEvent>>();
 
         // Remove the trigger from the dictionary
-        var removalResult = _triggers.TryRemove(trigger.Name, out TriggerPackage? triggerPackage);
-        if (!removalResult)
+        TriggerPackage? triggerPackage = RemoveFromDictionaryAndTimeout(trigger);
+        if (triggerPackage is null)
         {
-            throw new NullReferenceException(nameof(removalResult));
+            return;
         }
-        triggerPackage!.Timer.Change(Timeout.Infinite, Timeout.Infinite);
 
         // Remove the trigger from the db
         await triggersRepo.DeleteAsync(trigger, cancellationToken).ConfigureAwait(false);
@@ -107,14 +132,31 @@ public class TriggersService : ITriggersService
         {
             TimeStamp = DateTime.UtcNow,
             TriggerId = trigger.Id,
-            Event = "Remove trigger",
+            Event = $"Remove trigger {triggerPackage.TriggerEventPackage.Name}",
         }, cancellationToken).ConfigureAwait(false);
     }
 
-    private Task<bool> AddToDictAsync(Trigger trigger, Device device, CancellationToken cancellationToken)
+    private TriggerPackage? RemoveFromDictionaryAndTimeout(Trigger trigger)
+    {
+        // Remove the trigger from the dictionary
+        var removalResult = _triggers.TryRemove(trigger.Id, out TriggerPackage? triggerPackage);
+        if (!removalResult)
+        {
+            _logger.LogWarning("Unable to remove {id} from dictionary, it may not exist", trigger.Id);
+        }
+        else
+        {
+            triggerPackage!.Timer.Change(
+                dueTime: Timeout.Infinite,
+                period: Timeout.Infinite);
+        }
+        return triggerPackage;
+    }
+
+    private bool AddToDictionary(Trigger trigger, Device device, CancellationToken cancellationToken)
     {
         // Get the action for the trigger
-        var action = _triggerActions.Where(o => o.Name == trigger.Name).FirstOrDefault();
+        var action = _triggerActions.Where(o => o.Key == trigger.Name).FirstOrDefault();
         var triggerPackage = new TriggerEventPackage(trigger.Name, TimeSpan.FromMilliseconds(trigger.Interval), action);
 
         var dateTime = DateTime.Now.Add(triggerPackage.Interval);
@@ -123,30 +165,30 @@ public class TriggersService : ITriggersService
 
         var timer = new Timer(
             callback: new TimerCallback(Callback!),
-            state: triggerPackage.Name,
+            state: trigger.Id,
             dueTime: triggerPackage.Interval,
             period: Timeout.InfiniteTimeSpan);
 
-        var addResult = _triggers.TryAdd(triggerPackage.Name, new TriggerPackage(trigger, timer, device, triggerPackage));
-        return Task.FromResult(addResult);
+        var addResult = _triggers.TryAdd(trigger.Id, new TriggerPackage(trigger, timer, device, triggerPackage));
+        return addResult;
     }
 
     private async void Callback(object state)
     {
         _logger.LogInformation("{class}.{method} for {state}", nameof(TriggersService), nameof(Callback), state as string);
 
-        var triggerName = state as string;
+        Guid triggerId = (Guid)state;
 
-        if (!_triggers.TryGetValue(triggerName!, out _))
+        if (!_triggers.TryGetValue(triggerId!, out _))
         {
-            _logger.LogInformation("{triggerName} doesn't exist. Skipping...", triggerName);
+            _logger.LogInformation("{triggerId} doesn't exist. Skipping...", triggerId);
             return;
         }
 
-        _logger.LogInformation("Removing trigger for {key}", triggerName);
-        if (!_triggers.TryRemove(triggerName!, out TriggerPackage? triggerPackage))
+        _logger.LogInformation("Removing trigger for {triggerId}", triggerId);
+        if (!_triggers.TryRemove(triggerId!, out TriggerPackage? triggerPackage))
         {
-            _logger.LogError("Could not get the {object} object from the dictionary with key {key}", nameof(TriggerPackage), triggerName);
+            _logger.LogError("Could not get the {object} object from the dictionary with key {triggerId}", nameof(TriggerPackage), triggerId);
             throw new Exception("Could not remove object from dictionary");
         }
 
@@ -154,18 +196,39 @@ public class TriggersService : ITriggersService
         var triggerEventsRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<TriggerEvent>>();
         await triggerEventsRepo.AddAsync(new TriggerEvent
         {
-            TriggerId = Guid.NewGuid(),
+            TriggerId = triggerPackage.Trigger.Id,
             TimeStamp = DateTime.UtcNow,
-            Event = "Invoking event",
-        }, CancellationToken.None);
+            Event = $"Invoking event {triggerPackage.TriggerEventPackage.Name}",
+        }, CancellationToken.None).ConfigureAwait(false);
 
-        _logger.LogInformation("Invoking task for {key}", triggerName);
-        Task.Run(async () => await triggerPackage!.TriggerEventPackage.TriggerAction.Action(triggerPackage.Device, CancellationToken.None))
-            .ContinueWith((s) => { _logger.LogInformation("Invocation for task {key} complete", triggerName); });
+        _logger.LogInformation("Invoking task for {triggerId}", triggerId);
 
-        _logger.LogInformation("Adding trigger for {key}", triggerName);
-        _triggers.TryAdd(triggerName, triggerPackage);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        Task.Run(async () =>
+        {
+            await triggerPackage!.TriggerEventPackage.TriggerAction.Action(
+                triggerPackage.Device, CancellationToken.None).ConfigureAwait(false);
+        })
+        .ContinueWith(task =>
+        {
+            _logger.LogInformation("Invocation for task {triggerId} complete", triggerId);
+        });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-        AddToDictAsync(triggerPackage.Trigger, triggerPackage.Device, CancellationToken.None);
+        _logger.LogInformation("Adding trigger for {triggerId}", triggerId);
+        var added = _triggers.TryAdd(triggerId, triggerPackage);
+        if (added)
+        {
+            await triggerEventsRepo.AddAsync(new TriggerEvent
+            {
+                TriggerId = triggerPackage.Trigger.Id,
+                TimeStamp = DateTime.UtcNow,
+                Event = $"Removing trigger {triggerPackage.TriggerEventPackage.Name}",
+            }, CancellationToken.None).ConfigureAwait(false);
+        }
+
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        AddToDictionary(triggerPackage.Trigger, triggerPackage.Device, CancellationToken.None);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
     }
 }
