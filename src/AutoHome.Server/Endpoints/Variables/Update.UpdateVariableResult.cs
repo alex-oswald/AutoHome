@@ -1,6 +1,6 @@
-﻿namespace AutoHome.Core.Entities;
+﻿namespace AutoHome.Server.Endpoints.Variables;
 
-public class Variable : IEntity
+public class UpdateVariableResult
 {
     public Guid Id { get; set; }
     public string Key { get; set; } = null!;
