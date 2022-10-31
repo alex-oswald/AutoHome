@@ -16,6 +16,8 @@ public class SqliteDbContext : DbContext
 
     public DbSet<TriggerEvent> TriggerEvents { get; set; } = null!;
 
+    public DbSet<Variable> Variables { get; set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Trigger>()
@@ -27,6 +29,9 @@ public class SqliteDbContext : DbContext
             .HasOne(o => o.Trigger)
             .WithMany()
             .HasForeignKey(o => o.TriggerId);
+
+        modelBuilder.Entity<Variable>()
+            .HasKey(o => new { o.Id, o.Key });
 
         if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
         {
