@@ -36,10 +36,10 @@ try
     builder.Services.AddDbContext<SqliteDbContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
-    builder.Services.AddScoped<IAsyncRepository<Device>, EntityFrameworkRepository<Device, SqliteDbContext>>();
-    builder.Services.AddScoped<IAsyncRepository<Trigger>, EntityFrameworkRepository<Trigger, SqliteDbContext>>();
-    builder.Services.AddScoped<IAsyncRepository<TriggerEvent>, EntityFrameworkRepository<TriggerEvent, SqliteDbContext>>();
-    builder.Services.AddScoped<IAsyncRepository<Variable>, EntityFrameworkRepository<Variable, SqliteDbContext>>();
+    builder.Services.AddScoped<IRepository<Device>, EntityFrameworkRepository<Device, SqliteDbContext>>();
+    builder.Services.AddScoped<IRepository<Trigger>, EntityFrameworkRepository<Trigger, SqliteDbContext>>();
+    builder.Services.AddScoped<IRepository<TriggerEvent>, EntityFrameworkRepository<TriggerEvent, SqliteDbContext>>();
+    builder.Services.AddScoped<IRepository<Variable>, EntityFrameworkRepository<Variable, SqliteDbContext>>();
     builder.Services.AddScoped<ITimeStampedRepository<TriggerEvent>, EntityFrameworkTimeStampedRepository<TriggerEvent, SqliteDbContext>>();
 
     builder.Services.AddSingleton<ITriggersService, TriggersService>();

@@ -10,11 +10,11 @@ public class Get : EndpointBaseAsync
     .WithRequest<Guid>
     .WithActionResult<GetVariableResult>
 {
-    private readonly IAsyncRepository<Variable> _repository;
+    private readonly IRepository<Variable> _repository;
     private readonly IMapper _mapper;
 
     public Get(
-        IAsyncRepository<Variable> repository,
+        IRepository<Variable> repository,
         IMapper mapper)
     {
         _repository = repository;

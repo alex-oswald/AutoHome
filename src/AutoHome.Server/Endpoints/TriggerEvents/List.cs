@@ -10,11 +10,11 @@ public class List : EndpointBaseAsync
     .WithRequest<ListTriggerEventsRequest>
     .WithResult<IPagedResult<ListTriggerEventsResult>>
 {
-    private readonly IAsyncRepository<TriggerEvent> _triggerEventsRepo;
+    private readonly IRepository<TriggerEvent> _triggerEventsRepo;
     private readonly IMapper _mapper;
 
     public List(
-        IAsyncRepository<TriggerEvent> triggerEventsRepo,
+        IRepository<TriggerEvent> triggerEventsRepo,
         IMapper mapper)
     {
         _triggerEventsRepo = triggerEventsRepo;

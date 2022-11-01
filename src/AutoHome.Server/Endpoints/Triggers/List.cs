@@ -10,11 +10,11 @@ public class List : EndpointBaseAsync
     .WithoutRequest
     .WithResult<IEnumerable<ListTriggersResult>>
 {
-    private readonly IAsyncRepository<Trigger> _repository;
+    private readonly IRepository<Trigger> _repository;
     private readonly IMapper _mapper;
 
     public List(
-        IAsyncRepository<Trigger> repository,
+        IRepository<Trigger> repository,
         IMapper mapper)
     {
         _repository = repository;

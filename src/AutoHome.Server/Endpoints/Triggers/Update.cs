@@ -12,12 +12,12 @@ public class Update : EndpointBaseAsync
     .WithActionResult<UpdateTriggerResult>
 {
     private readonly IMapper _mapper;
-    private readonly IAsyncRepository<Trigger> _triggersRepo;
+    private readonly IRepository<Trigger> _triggersRepo;
     private readonly ITriggersService _triggersService;
 
     public Update(
         IMapper mapper,
-        IAsyncRepository<Trigger> triggersRepo,
+        IRepository<Trigger> triggersRepo,
         ITriggersService triggersService)
     {
         _mapper = mapper;

@@ -10,11 +10,11 @@ public class Add : EndpointBaseAsync
     .WithRequest<AddDeviceRequest>
     .WithActionResult<AddDeviceResult>
 {
-    private readonly IAsyncRepository<Device> _repository;
+    private readonly IRepository<Device> _repository;
     private readonly IMapper _mapper;
 
     public Add(
-        IAsyncRepository<Device> repository,
+        IRepository<Device> repository,
         IMapper mapper)
     {
         _repository = repository;

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace AutoHome.Data;
 
-public class EntityFrameworkRepository<T, TDbContext> : IAsyncRepository<T>
+public class EntityFrameworkRepository<T, TDbContext> : IRepository<T>
         where T : class, IEntity
         where TDbContext : DbContext
 {

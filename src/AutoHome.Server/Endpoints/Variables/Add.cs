@@ -10,11 +10,11 @@ public class Add : EndpointBaseAsync
     .WithRequest<AddVariableRequest>
     .WithActionResult<AddVariableResult>
 {
-    private readonly IAsyncRepository<Variable> _repository;
+    private readonly IRepository<Variable> _repository;
     private readonly IMapper _mapper;
 
     public Add(
-        IAsyncRepository<Variable> repository,
+        IRepository<Variable> repository,
         IMapper mapper)
     {
         _repository = repository;

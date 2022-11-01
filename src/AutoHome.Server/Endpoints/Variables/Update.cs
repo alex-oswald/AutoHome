@@ -10,11 +10,11 @@ public class Update : EndpointBaseAsync
     .WithRequest<UpdateVariableRequest>
     .WithActionResult<UpdateVariableResult>
 {
-    private readonly IAsyncRepository<Variable> _repository;
+    private readonly IRepository<Variable> _repository;
     private readonly IMapper _mapper;
 
     public Update(
-        IAsyncRepository<Variable> repository,
+        IRepository<Variable> repository,
         IMapper mapper)
     {
         _repository = repository;
