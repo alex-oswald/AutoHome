@@ -1,5 +1,4 @@
-﻿using AutoHome.Data.Entities;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 
 namespace AutoHome.Server.Services;
 

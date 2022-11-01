@@ -1,5 +1,4 @@
-﻿using AutoHome.Data.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace AutoHome.Data;
 

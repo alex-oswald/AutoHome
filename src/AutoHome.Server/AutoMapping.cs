@@ -1,5 +1,4 @@
-﻿using AutoHome.Data.Entities;
-using AutoHome.Server.Endpoints.Devices;
+﻿using AutoHome.Server.Endpoints.Devices;
 using AutoHome.Server.Endpoints.TriggerEvents;
 using AutoHome.Server.Endpoints.Triggers;
 using AutoHome.Server.Endpoints.Variables;
