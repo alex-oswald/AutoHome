@@ -25,6 +25,8 @@ public class WeatherBackupBackgroundService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        // Startup delay
+        await Task.Delay(30000, stoppingToken);
         while (!stoppingToken.IsCancellationRequested)
         {
             if (_options.BackgroundServiceEnabled)

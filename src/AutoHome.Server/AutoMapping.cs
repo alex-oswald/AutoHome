@@ -2,6 +2,7 @@
 using AutoHome.Server.Endpoints.TriggerEvents;
 using AutoHome.Server.Endpoints.Triggers;
 using AutoHome.Server.Endpoints.Variables;
+using AutoHome.Server.Endpoints.WeatherReading;
 using AutoMapper;
 
 namespace AutoHome.Server;
@@ -37,5 +38,6 @@ public class AutoMapping : Profile
 		CreateMap<Variable, UpdateVariableResult>();
 
 		CreateMap<Cirrus.Models.Device, WeatherReading>();
+		CreateMap<WeatherReading, ListWeatherReadingsResult>();
 	}
 }

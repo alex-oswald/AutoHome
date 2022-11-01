@@ -82,13 +82,13 @@ public class WeatherReading : IEntity
     public double? IndoorDewPointTemperatureFahrenheit { get; init; }
 
     [JsonPropertyName("lastRain")]
-    public DateTimeOffset LastRain { get; init; }
+    public DateTime LastRain { get; init; }
 
     [JsonPropertyName("loc")]
     public string? Loc { get; init; }
 
     [JsonPropertyName("date")]
-    public DateTimeOffset? UtcDate { get; init; }
+    public DateTime? UtcDate { get; init; }
 
     [JsonPropertyName("windgustdir")]
     public int? WindGustDir { get; init; }

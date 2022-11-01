@@ -5,6 +5,135 @@
     "version": "v1"
   },
   "paths": {
+    "/api/variables": {
+      "post": {
+        "tags": [
+          "Variables"
+        ],
+        "summary": "Adds a variable",
+        "operationId": "AddVariable",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddVariableRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddVariableResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Variables"
+        ],
+        "summary": "Lists variables",
+        "operationId": "ListVariable",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListVariablesResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Variables"
+        ],
+        "summary": "Updates a variable",
+        "operationId": "UpdateVariable",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVariableRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateVariableResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
     "/api/triggers": {
       "post": {
         "tags": [
@@ -263,6 +392,106 @@
         }
       }
     },
+    "/api/variables/{id}": {
+      "delete": {
+        "tags": [
+          "Variables"
+        ],
+        "summary": "Deletes a variable",
+        "operationId": "DeleteVariable",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Variables"
+        ],
+        "summary": "Gets a variable",
+        "operationId": "GetVariable",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetVariableResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
     "/api/triggers/{id}": {
       "delete": {
         "tags": [
@@ -463,6 +692,58 @@
         }
       }
     },
+    "/api/weatherreadings": {
+      "get": {
+        "tags": [
+          "Weather Readings"
+        ],
+        "summary": "Lists weather readings",
+        "operationId": "ListWeatherReadings",
+        "parameters": [
+          {
+            "name": "PageIndex",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListWeatherReadingsResultIPagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
     "/api/triggerevents": {
       "get": {
         "tags": [
@@ -628,6 +909,54 @@
         },
         "additionalProperties": false
       },
+      "AddVariableRequest": {
+        "required": [
+          "isSecret",
+          "key",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "value": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "isSecret": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddVariableResult": {
+        "required": [
+          "isSecret",
+          "key",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "value": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "isSecret": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
       "GetDeviceResult": {
         "type": "object",
         "properties": {
@@ -672,6 +1001,27 @@
           "interval": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetVariableResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "isSecret": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -796,6 +1146,215 @@
         },
         "additionalProperties": false
       },
+      "ListVariablesResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "isSecret": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ListWeatherReadingsResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "epochMilliseconds": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "indoorTemperatureFahrenheit": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "indoorHumidity": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "relativeBarometricPressure": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "absoluteBarometricPressure": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "outdoorTemperatureFahrenheit": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "batteryLowIndicator": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "outdoorHumidity": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "windDirection": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "windSpeedMph": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "windGustMph": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "maxDailyGust": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "hourlyRainfall": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "eventRainfall": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "dailyRainfall": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "weeklyRainfall": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "monthlyRainfall": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "yearlyRainfall": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "totalRainfall": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "solarRadiation": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ultravioletRadiationIndex": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "outdoorFeelsLikeTemperatureFahrenheit": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "dewPointFahrenheit": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "indoorFeelsLikeTemperatureFahrenheit": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "indoorDewPointTemperatureFahrenheit": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "lastRain": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "utcDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ListWeatherReadingsResultIPagedResult": {
+        "type": "object",
+        "properties": {
+          "totalItems": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "currentPage": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "startPage": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "endPage": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListWeatherReadingsResult"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "NotFoundResult": {
         "type": "object",
         "properties": {
@@ -911,6 +1470,54 @@
           "interval": {
             "type": "integer",
             "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateVariableRequest": {
+        "required": [
+          "id",
+          "isSecret",
+          "key",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "value": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "isSecret": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateVariableResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "isSecret": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
