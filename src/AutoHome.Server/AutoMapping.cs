@@ -35,5 +35,7 @@ public class AutoMapping : Profile
 		CreateMap<Variable, ListVariablesResult>();
 		CreateMap<Variable, UpdateVariableRequest>();
 		CreateMap<Variable, UpdateVariableResult>();
+
+		CreateMap<Cirrus.Models.Device, WeatherReading>();
 	}
 }

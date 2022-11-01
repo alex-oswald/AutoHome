@@ -17,6 +17,8 @@ public class SqliteDbContext : DbContext
 
     public DbSet<Variable> Variables { get; set; } = null!;
 
+    public DbSet<WeatherReading> WeatherReadings { get; set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Trigger>()

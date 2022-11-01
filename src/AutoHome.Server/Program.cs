@@ -1,4 +1,5 @@
 using AutoHome.Data;
+using AutoHome.Server.Integrations.AmbientWeather;
 using AutoHome.Server.Services;
 using Curtains.Plugin;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,7 @@ try
     builder.Services.AddScoped<IRepository<Trigger>, EntityFrameworkRepository<Trigger, SqliteDbContext>>();
     builder.Services.AddScoped<IRepository<TriggerEvent>, EntityFrameworkRepository<TriggerEvent, SqliteDbContext>>();
     builder.Services.AddScoped<IRepository<Variable>, EntityFrameworkRepository<Variable, SqliteDbContext>>();
+    builder.Services.AddScoped<IRepository<WeatherReading>, EntityFrameworkRepository<WeatherReading, SqliteDbContext>>(); // AmbientWeather
     builder.Services.AddScoped<ITimeStampedRepository<TriggerEvent>, EntityFrameworkTimeStampedRepository<TriggerEvent, SqliteDbContext>>();
 
     builder.Services.AddSingleton<ITriggersService, TriggersService>();
@@ -48,7 +50,8 @@ try
 
     builder.Services.AddDatabaseCleanupService();
 
-    builder.Services.AddAmbientWeatherPluginServer();
+    builder.Services.AddAmbientWeatherPluginServer(builder.Configuration);
+
     builder.Services.AddCurtainsPluginServer();
 
     builder.Services.AddEndpointsApiExplorer();
