@@ -1,6 +1,4 @@
-﻿using AutoHome.Core;
-
-namespace AutoHome.Server.Endpoints.Variables;
+﻿namespace AutoHome.Server.Endpoints.Variables;
 
 public class ListVariablesRequest : IPagedRequest
 {

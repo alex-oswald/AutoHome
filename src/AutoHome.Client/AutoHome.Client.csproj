@@ -19,12 +19,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AutoHome.Core\AutoHome.Core.csproj" />
     <ProjectReference Include="..\AutoHome.RestClient\AutoHome.RestClient.csproj" />
     <ProjectReference Include="..\Integrations\AmbientWeather\AmbientWeather.Plugin\AmbientWeather.Plugin.csproj" />
     <ProjectReference Include="..\Integrations\Curtains\Curtains.Plugin\Curtains.Plugin.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Using Include="AutoHome.Core" />
     <Using Include="AutoHome.Core.Entities" />
   </ItemGroup>
 
