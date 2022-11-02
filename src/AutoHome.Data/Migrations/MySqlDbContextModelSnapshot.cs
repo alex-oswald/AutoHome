@@ -3,42 +3,42 @@ using System;
 using AutoHome.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace AutoHome.Data.Migrations
 {
-    [DbContext(typeof(SqliteDbContext))]
-    [Migration("20221101035357_AddWeatherReadingTable")]
-    partial class AddWeatherReadingTable
+    [DbContext(typeof(MySqlDbContext))]
+    partial class MySqlDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("AutoHome.Core.Entities.Device", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("IntegrationDeviceId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Uri")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -49,17 +49,17 @@ namespace AutoHome.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("DeviceId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("char(36)");
 
                     b.Property<double>("Interval")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -72,18 +72,17 @@ namespace AutoHome.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Event")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
-                    b.Property<string>("TimeStamp")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<DateTimeOffset>("TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("TriggerId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -95,17 +94,17 @@ namespace AutoHome.Data.Migrations
             modelBuilder.Entity("AutoHome.Core.Entities.Variable", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Key")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("IsSecret")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id", "Key");
 
@@ -116,388 +115,388 @@ namespace AutoHome.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("char(36)");
 
                     b.Property<double?>("AbsoluteBarometricPressure")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<int?>("BatteryLowIndicator")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("BatteryLowIndicator1")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("BatteryLowIndicator10")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("BatteryLowIndicator2")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("BatteryLowIndicator3")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("BatteryLowIndicator4")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("BatteryLowIndicator5")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("BatteryLowIndicator6")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("BatteryLowIndicator7")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("BatteryLowIndicator8")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("BatteryLowIndicator9")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<double?>("CO2PartsPerMillion")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<int>("CO2SensorBatteryLowIndicator")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<double?>("DailyRainfall")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("DewPointFahrenheit")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("DewPointFahrenheit1")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("DewPointFahrenheit10")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("DewPointFahrenheit2")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("DewPointFahrenheit3")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("DewPointFahrenheit4")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("DewPointFahrenheit5")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("DewPointFahrenheit6")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("DewPointFahrenheit7")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("DewPointFahrenheit8")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("DewPointFahrenheit9")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<long?>("EpochMilliseconds")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bigint");
 
                     b.Property<double?>("EventRainfall")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("FeelsLikeTemperatureFahrenheit1")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("FeelsLikeTemperatureFahrenheit10")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("FeelsLikeTemperatureFahrenheit2")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("FeelsLikeTemperatureFahrenheit3")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("FeelsLikeTemperatureFahrenheit4")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("FeelsLikeTemperatureFahrenheit5")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("FeelsLikeTemperatureFahrenheit6")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("FeelsLikeTemperatureFahrenheit7")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("FeelsLikeTemperatureFahrenheit8")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("FeelsLikeTemperatureFahrenheit9")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("HourlyRainfall")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<int?>("HumiditySensor1")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("HumiditySensor10")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("HumiditySensor2")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("HumiditySensor3")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("HumiditySensor4")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("HumiditySensor5")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("HumiditySensor6")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("HumiditySensor7")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("HumiditySensor8")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("HumiditySensor9")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("IANATimeZone")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.Property<double?>("IndoorDewPointTemperatureFahrenheit")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("IndoorFeelsLikeTemperatureFahrenheit")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<int?>("IndoorHumidity")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<double?>("IndoorTemperatureFahrenheit")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<DateTimeOffset?>("LastLightningStrikeTime")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTimeOffset>("LastRain")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<double?>("LightningStrikeDistance")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<int?>("LightningStrikesPerDay")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("LightningStrikesPerHours")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Loc")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("MacAddress")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.Property<double?>("MaxDailyGust")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("MonthlyRainfall")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("OutdoorFeelsLikeTemperatureFahrenheit")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<int?>("OutdoorHumidity")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<double?>("OutdoorTemperatureFahrenheit")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<int?>("PM25AirQualityBatteryLowIndicator")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<double?>("PM25IndoorAirQuality")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("PM25IndoorAirQuality24HourAverage")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("PM25OutdoorAirQuality")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("PM25OutdoorAirQuality24HourAverage")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("Previous24HourRainfall")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("RelativeBarometricPressure")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<int?>("Relay1")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("Relay10")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("Relay2")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("Relay3")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("Relay4")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("Relay5")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("Relay6")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("Relay7")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("Relay8")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("Relay9")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("SoilHumiditySensor1")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("SoilHumiditySensor10")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("SoilHumiditySensor2")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("SoilHumiditySensor3")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("SoilHumiditySensor4")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("SoilHumiditySensor5")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("SoilHumiditySensor6")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("SoilHumiditySensor7")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("SoilHumiditySensor8")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("SoilHumiditySensor9")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<double?>("SoilTemperatureSensor1")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("SoilTemperatureSensor10")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("SoilTemperatureSensor2")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("SoilTemperatureSensor3")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("SoilTemperatureSensor4")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("SoilTemperatureSensor5")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("SoilTemperatureSensor6")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("SoilTemperatureSensor7")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("SoilTemperatureSensor8")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("SoilTemperatureSensor9")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("SolarRadiation")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("TemperatureSensor1")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("TemperatureSensor10")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("TemperatureSensor2")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("TemperatureSensor3")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("TemperatureSensor4")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("TemperatureSensor5")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("TemperatureSensor6")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("TemperatureSensor7")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("TemperatureSensor8")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("TemperatureSensor9")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("TotalRainfall")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<int?>("UltravioletRadiationIndex")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset?>("UtcDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<double?>("WeeklyRainfall")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<int?>("WindDirection")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("WindDirection10MinuteAverage")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("WindDirection2MinuteAverage")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("WindGustDir")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<double?>("WindGustMph")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("WindSpeedMph")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("WindSpeedMph10MinuteAverage")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("WindSpeedMph2MinuteAverage")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.Property<double?>("YearlyRainfall")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double");
 
                     b.HasKey("Id");
 

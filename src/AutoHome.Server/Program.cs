@@ -30,19 +30,19 @@ try
     builder.Services.AddControllersWithViews()
         .AddJsonOptions(options =>
         {
-            options.JsonSerializerOptions.Converters.Add(new DateTimeJsonConverter());
+            //options.JsonSerializerOptions.Converters.Add(new DateTimeJsonConverter());
         });
     builder.Services.AddRazorPages();
 
-    builder.Services.AddDbContext<SqliteDbContext>(options =>
-        options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
+    builder.Services.AddDbContext<MySqlDbContext>(options =>
+        options.UseMySql(builder.Configuration.GetConnectionString("Default"), new MariaDbServerVersion(new Version(10, 8, 5))));
 
-    builder.Services.AddScoped<IRepository<Device>, EntityFrameworkRepository<Device, SqliteDbContext>>();
-    builder.Services.AddScoped<IRepository<Trigger>, EntityFrameworkRepository<Trigger, SqliteDbContext>>();
-    builder.Services.AddScoped<IRepository<TriggerEvent>, EntityFrameworkRepository<TriggerEvent, SqliteDbContext>>();
-    builder.Services.AddScoped<IRepository<Variable>, EntityFrameworkRepository<Variable, SqliteDbContext>>();
-    builder.Services.AddScoped<IRepository<WeatherReading>, EntityFrameworkRepository<WeatherReading, SqliteDbContext>>(); // AmbientWeather
-    builder.Services.AddScoped<ITimeStampedRepository<TriggerEvent>, EntityFrameworkTimeStampedRepository<TriggerEvent, SqliteDbContext>>();
+    builder.Services.AddScoped<IRepository<Device>, EntityFrameworkRepository<Device, MySqlDbContext>>();
+    builder.Services.AddScoped<IRepository<Trigger>, EntityFrameworkRepository<Trigger, MySqlDbContext>>();
+    builder.Services.AddScoped<IRepository<TriggerEvent>, EntityFrameworkRepository<TriggerEvent, MySqlDbContext>>();
+    builder.Services.AddScoped<IRepository<Variable>, EntityFrameworkRepository<Variable, MySqlDbContext>>();
+    builder.Services.AddScoped<IRepository<WeatherReading>, EntityFrameworkRepository<WeatherReading, MySqlDbContext>>(); // AmbientWeather
+    builder.Services.AddScoped<ITimeStampedRepository<TriggerEvent>, EntityFrameworkTimeStampedRepository<TriggerEvent, MySqlDbContext>>();
 
     builder.Services.AddSingleton<ITriggersService, TriggersService>();
 
@@ -73,8 +73,13 @@ try
     // Create and/or migrate the database
     using (var scope = app.Services.CreateScope())
     {
-        var db = scope.ServiceProvider.GetRequiredService<SqliteDbContext>();
+        var db = scope.ServiceProvider.GetRequiredService<MySqlDbContext>();
+        Log.Logger.Information("Creating database");
+        db.Database.EnsureCreated();
+        Log.Logger.Information("Database creation complete");
+        Log.Logger.Information("Migrating database");
         db.Database.Migrate();
+        Log.Logger.Information("Database migration complete");
     }
 
     if (app.Environment.IsDevelopment())
