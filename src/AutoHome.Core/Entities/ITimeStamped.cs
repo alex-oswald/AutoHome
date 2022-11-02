@@ -2,5 +2,5 @@
 
 public interface ITimeStamped : IEntity
 {
-    DateTime TimeStamp { get; set; }
+    DateTimeOffset TimeStamp { get; set; }
 }

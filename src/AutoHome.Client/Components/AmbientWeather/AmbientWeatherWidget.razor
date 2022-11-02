@@ -1,0 +1,30 @@
+﻿@inject AutoHomeRestClient Client;
+
+<MudChart ChartType="ChartType.Line" ChartSeries="@Series"  @bind-SelectedIndex="Index"  XAxisLabels="@XAxisLabels"
+    Width="100%" Height="350px"></MudChart>
+
+@code {
+    private IList<ListWeatherReadingsResult> _readings = new List<ListWeatherReadingsResult>();
+    private DateTimeOffset _datetime = DateTimeOffset.UtcNow;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var pages = await Client.ListWeatherReadingsAsync(1, 20, CancellationToken.None);
+        _readings = pages.Data.OrderBy(o => o.UtcDate).ToList();
+
+        Series = new List<ChartSeries>();
+        Series.Add(new ChartSeries() { Name = "Indoor Temp", Data = _readings.Select(o => o.IndoorTemperatureFahrenheit.HasValue ? o.IndoorTemperatureFahrenheit.Value : 0).ToArray() });
+        Series.Add(new ChartSeries() { Name = "Outdoor Temp", Data = _readings.Select(o => o.OutdoorTemperatureFahrenheit.HasValue ? o.OutdoorTemperatureFahrenheit.Value : 0).ToArray() });
+        XAxisLabels = Enumerable.Repeat("", 20).ToArray();
+        for (int i = 0; i < 20; i = i + 2)
+        {
+            XAxisLabels[i] = _readings[i].UtcDate!.Value.ToString("HH:mm");
+        }
+    }
+
+    private int Index = -1; //default value cannot be 0 -> first selectedindex is 0.
+
+    public List<ChartSeries> Series = new List<ChartSeries>();
+    public string[] XAxisLabels = Array.Empty<string>();
+}
+

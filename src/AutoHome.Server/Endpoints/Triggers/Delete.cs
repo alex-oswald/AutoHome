@@ -10,11 +10,11 @@ public class Delete : EndpointBaseAsync
     .WithRequest<string>
     .WithActionResult
 {
-    private readonly IAsyncRepository<Trigger> _triggersRepo;
+    private readonly IRepository<Trigger> _triggersRepo;
     private readonly ITriggersService _triggersService;
 
     public Delete(
-        IAsyncRepository<Trigger> triggersRepo,
+        IRepository<Trigger> triggersRepo,
         ITriggersService triggersService)
     {
         _triggersRepo = triggersRepo;

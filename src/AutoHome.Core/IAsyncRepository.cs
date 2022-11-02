@@ -1,9 +1,9 @@
-﻿using AutoHome.Core;
+﻿using AutoHome.Core.Entities;
 using System.Linq.Expressions;
 
-namespace AutoHome.Data;
+namespace AutoHome.Core;
 
-public interface IAsyncRepository<T>
+public interface IRepository<T>
     where T : class, IEntity
 {
     Task<T> AddAsync(T entity, CancellationToken cancellationToken);

@@ -1,5 +1,5 @@
 using AutoHome.Data;
-using AutoHome.Data.Entities;
+using AutoHome.Server.Integrations.AmbientWeather;
 using AutoHome.Server.Services;
 using Curtains.Plugin;
 using Microsoft.EntityFrameworkCore;
@@ -30,22 +30,27 @@ try
     builder.Services.AddControllersWithViews()
         .AddJsonOptions(options =>
         {
-            options.JsonSerializerOptions.Converters.Add(new DateTimeJsonConverter());
+            //options.JsonSerializerOptions.Converters.Add(new DateTimeJsonConverter());
         });
     builder.Services.AddRazorPages();
 
-    builder.Services.AddDbContext<SqliteDbContext>(options =>
-        options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
-    builder.Services.AddScoped<IAsyncRepository<Device>, EntityFrameworkRepository<Device, SqliteDbContext>>();
-    builder.Services.AddScoped<IAsyncRepository<Trigger>, EntityFrameworkRepository<Trigger, SqliteDbContext>>();
-    builder.Services.AddScoped<IAsyncRepository<TriggerEvent>, EntityFrameworkRepository<TriggerEvent, SqliteDbContext>>();
-    builder.Services.AddScoped<ITimeStampedRepository<TriggerEvent>, EntityFrameworkTimeStampedRepository<TriggerEvent, SqliteDbContext>>();
+    builder.Services.AddDbContext<MySqlDbContext>(options =>
+        options.UseMySql(builder.Configuration.GetConnectionString("Default"), new MariaDbServerVersion(new Version(10, 8, 5))));
+
+    builder.Services.AddScoped<IRepository<Device>, EntityFrameworkRepository<Device, MySqlDbContext>>();
+    builder.Services.AddScoped<IRepository<Trigger>, EntityFrameworkRepository<Trigger, MySqlDbContext>>();
+    builder.Services.AddScoped<IRepository<TriggerEvent>, EntityFrameworkRepository<TriggerEvent, MySqlDbContext>>();
+    builder.Services.AddScoped<IRepository<Variable>, EntityFrameworkRepository<Variable, MySqlDbContext>>();
+    builder.Services.AddScoped<IRepository<WeatherReading>, EntityFrameworkRepository<WeatherReading, MySqlDbContext>>(); // AmbientWeather
+    builder.Services.AddScoped<ITimeStampedRepository<TriggerEvent>, EntityFrameworkTimeStampedRepository<TriggerEvent, MySqlDbContext>>();
 
     builder.Services.AddSingleton<ITriggersService, TriggersService>();
 
     builder.Services.AddHostedService<TriggerLoaderHostedService>();
 
     builder.Services.AddDatabaseCleanupService();
+
+    builder.Services.AddAmbientWeatherPluginServer(builder.Configuration);
 
     builder.Services.AddCurtainsPluginServer();
 
@@ -65,11 +70,16 @@ try
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    // Make sure the database is created
-    using (var scoped = app.Services.CreateScope())
+    // Create and/or migrate the database
+    using (var scope = app.Services.CreateScope())
     {
-        var db = scoped.ServiceProvider.GetService<SqliteDbContext>();
-        db?.Database.EnsureCreated();
+        var db = scope.ServiceProvider.GetRequiredService<MySqlDbContext>();
+        Log.Logger.Information("Creating database");
+        db.Database.EnsureCreated();
+        Log.Logger.Information("Database creation complete");
+        Log.Logger.Information("Migrating database");
+        db.Database.Migrate();
+        Log.Logger.Information("Database migration complete");
     }
 
     if (app.Environment.IsDevelopment())

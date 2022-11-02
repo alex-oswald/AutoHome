@@ -1,4 +1,6 @@
-﻿namespace AutoHome.Data;
+﻿using AutoHome.Core.Entities;
+
+namespace AutoHome.Core;
 
 public interface ITimeStampedRepository<T>
     where T : class, ITimeStamped
