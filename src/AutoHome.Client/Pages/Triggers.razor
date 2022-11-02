@@ -4,11 +4,13 @@
 @inject ISnackbar Snackbar;
 @inject IMapper Mapper;
 
-<MudText Typo="Typo.h4" Class="mt-4 mb-4">Triggers</MudText>
+<PageHeaderMenu Title="Triggers">
+    <MudIconButton Icon="@Icons.Material.Filled.Add" Class="mt-2 mb-2" Disabled="@_buttonsDisabled"
+                   OnClick="@(async () => OpenAddTriggerDialog())">
+    </MudIconButton>
+</PageHeaderMenu>
 
-<MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => OpenAddTriggerDialog())" />
-
-<MudSimpleTable Style="overflow-x: auto;" Class="mt-4">
+<MudSimpleTable Style="overflow-x: auto;">
     <thead>
         <tr>
             @foreach (var h in _headings)
@@ -52,10 +54,10 @@
     protected override async Task OnInitializedAsync()
     {
         _devices = await Client.ListDeviceAsync(CancellationToken.None);
-        await Refresh();
+        await RefreshAsync();
     }
 
-    private async Task Refresh()
+    private async Task RefreshAsync()
     {
         var triggers = await Client.ListTriggerAsync(CancellationToken.None);
         if (triggers?.Any() ?? false)
@@ -82,7 +84,7 @@
 
             if (result ?? false)
             {
-                await Refresh();
+                await RefreshAsync();
             }
         }
         finally
@@ -111,7 +113,7 @@
 
             if (result ?? false)
             {
-                await Refresh();
+                await RefreshAsync();
             }
         }
         finally
@@ -132,7 +134,7 @@
                 try
                 {
                     await Client.DeleteTriggerAsync(trigger.Id.ToString(), CancellationToken.None);
-                    await Refresh();
+                    await RefreshAsync();
                     Snackbar.Add($"{trigger.Name} deleted", Severity.Success);
                 }
                 catch (Exception ex)

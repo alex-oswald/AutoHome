@@ -2,18 +2,6 @@
 
 namespace AutoHome.Data;
 
-public interface IPagedResult<T>
-    where T : class
-{
-    int TotalItems { get; }
-    int CurrentPage { get; }
-    int PageSize { get; }
-    int TotalPages { get; }
-    int StartPage { get; }
-    int EndPage { get; }
-    IReadOnlyList<T> Data { get; }
-}
-
 public class PagedResult<T> : IPagedResult<T>
     where T : class
 {
@@ -74,7 +62,7 @@ public class PagedResult<T> : IPagedResult<T>
     }
 }
 
-public static class Extensions
+public static class IPagedResultExtensions
 {
     public static IPagedResult<TResult> MapTo<TRequest, TResult>(this IPagedResult<TRequest> pagedResult, Func<TRequest, TResult> mapper)
         where TRequest : class

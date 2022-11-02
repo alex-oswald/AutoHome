@@ -4,11 +4,13 @@
 @inject ISnackbar Snackbar;
 @inject IMapper Mapper;
 
-<MudText Typo="Typo.h4" Class="mt-4 mb-4">Devices</MudText>
+<PageHeaderMenu Title="Devices">
+    <MudIconButton Icon="@Icons.Material.Filled.Add" Class="mt-2 mb-2" Disabled="@_buttonsDisabled"
+        OnClick="@(async () => OpenAddDeviceDialog())">
+    </MudIconButton>
+</PageHeaderMenu>
 
-<MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" Disabled="@_buttonsDisabled" OnClick="@(async () => OpenAddDeviceDialog())" />
-
-<MudSimpleTable Style="overflow-x: auto;" Class="mt-4">
+<MudSimpleTable Style="overflow-x: auto;">
     <thead>
         <tr>
             @foreach (var h in _headings)
@@ -50,10 +52,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Refresh();
+        await RefreshAsync();
     }
 
-    private async Task Refresh()
+    private async Task RefreshAsync()
     {
         var devices = await Client.ListDeviceAsync(CancellationToken.None);
         if (devices?.Any() ?? false)
@@ -79,7 +81,7 @@
 
             if (result ?? false)
             {
-                await Refresh();
+                await RefreshAsync();
             }
         }
         finally
@@ -108,7 +110,7 @@
 
             if (result ?? false)
             {
-                await Refresh();
+                await RefreshAsync();
             }
         }
         finally
@@ -129,7 +131,7 @@
                 try
                 {
                     await Client.DeleteDeviceAsync(device.Id.ToString(), CancellationToken.None);
-                    await Refresh();
+                    await RefreshAsync();
                     Snackbar.Add($"{device.Name} deleted", Severity.Success);
                 }
                 catch (Exception ex)

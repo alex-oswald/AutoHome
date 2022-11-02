@@ -10,11 +10,11 @@ public class List : EndpointBaseAsync
     .WithoutRequest
     .WithResult<IEnumerable<ListDevicesResult>>
 {
-    private readonly IAsyncRepository<Device> _repository;
+    private readonly IRepository<Device> _repository;
     private readonly IMapper _mapper;
 
     public List(
-        IAsyncRepository<Device> repository,
+        IRepository<Device> repository,
         IMapper mapper)
     {
         _repository = repository;

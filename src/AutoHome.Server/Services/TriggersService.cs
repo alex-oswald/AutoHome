@@ -1,7 +1,4 @@
-﻿using AutoHome.Core;
-using AutoHome.Data;
-using AutoHome.Data.Entities;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 
 namespace AutoHome.Server.Services;
 
@@ -56,8 +53,8 @@ public class TriggersService : ITriggersService
     public async Task InitializeTriggersAsync(CancellationToken cancellationToken)
     {
         using var scope = _sp.CreateScope();
-        var triggersRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Trigger>>();
-        var devicesRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Device>>();
+        var triggersRepo = scope.ServiceProvider.GetRequiredService<IRepository<Trigger>>();
+        var devicesRepo = scope.ServiceProvider.GetRequiredService<IRepository<Device>>();
 
         _logger.LogInformation("Initializing triggers");
         // Remove all triggers
@@ -83,9 +80,9 @@ public class TriggersService : ITriggersService
     public async Task AddTriggerAsync(Trigger trigger, CancellationToken cancellationToken)
     {
         using var scope = _sp.CreateScope();
-        var devicesRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Device>>();
-        var triggersRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Trigger>>();
-        var triggerEventsRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<TriggerEvent>>();
+        var devicesRepo = scope.ServiceProvider.GetRequiredService<IRepository<Device>>();
+        var triggersRepo = scope.ServiceProvider.GetRequiredService<IRepository<Trigger>>();
+        var triggerEventsRepo = scope.ServiceProvider.GetRequiredService<IRepository<TriggerEvent>>();
 
         // Add trigger to the db
         var addResult = await triggersRepo.AddAsync(trigger, cancellationToken).ConfigureAwait(false);
@@ -113,9 +110,9 @@ public class TriggersService : ITriggersService
     public async Task RemoveTriggerAsync(Trigger trigger, CancellationToken cancellationToken)
     {
         using var scope = _sp.CreateScope();
-        var devicesRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Device>>();
-        var triggersRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Trigger>>();
-        var triggerEventsRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<TriggerEvent>>();
+        var devicesRepo = scope.ServiceProvider.GetRequiredService<IRepository<Device>>();
+        var triggersRepo = scope.ServiceProvider.GetRequiredService<IRepository<Trigger>>();
+        var triggerEventsRepo = scope.ServiceProvider.GetRequiredService<IRepository<TriggerEvent>>();
 
         // Remove the trigger from the dictionary
         TriggerPackage? triggerPackage = RemoveFromDictionaryAndTimeout(trigger);
@@ -193,7 +190,7 @@ public class TriggersService : ITriggersService
         }
 
         using var scope = _sp.CreateScope();
-        var triggerEventsRepo = scope.ServiceProvider.GetRequiredService<IAsyncRepository<TriggerEvent>>();
+        var triggerEventsRepo = scope.ServiceProvider.GetRequiredService<IRepository<TriggerEvent>>();
         await triggerEventsRepo.AddAsync(new TriggerEvent
         {
             TriggerId = triggerPackage.Trigger.Id,

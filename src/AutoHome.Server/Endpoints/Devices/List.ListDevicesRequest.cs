@@ -1,6 +1,4 @@
-﻿using AutoHome.Core;
-
-namespace AutoHome.Server.Endpoints.Devices;
+﻿namespace AutoHome.Server.Endpoints.Devices;
 
 public class ListDevicesRequest : IPagedRequest
 {

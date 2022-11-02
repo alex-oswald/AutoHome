@@ -1,6 +1,5 @@
 ﻿using Ardalis.ApiEndpoints;
 using AutoHome.Data;
-using AutoHome.Data.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -11,11 +10,11 @@ public class List : EndpointBaseAsync
     .WithRequest<ListTriggerEventsRequest>
     .WithResult<IPagedResult<ListTriggerEventsResult>>
 {
-    private readonly IAsyncRepository<TriggerEvent> _triggerEventsRepo;
+    private readonly IRepository<TriggerEvent> _triggerEventsRepo;
     private readonly IMapper _mapper;
 
     public List(
-        IAsyncRepository<TriggerEvent> triggerEventsRepo,
+        IRepository<TriggerEvent> triggerEventsRepo,
         IMapper mapper)
     {
         _triggerEventsRepo = triggerEventsRepo;

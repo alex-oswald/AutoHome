@@ -1,7 +1,8 @@
-﻿using AutoHome.Data.Entities;
-using AutoHome.Server.Endpoints.Devices;
+﻿using AutoHome.Server.Endpoints.Devices;
 using AutoHome.Server.Endpoints.TriggerEvents;
 using AutoHome.Server.Endpoints.Triggers;
+using AutoHome.Server.Endpoints.Variables;
+using AutoHome.Server.Endpoints.WeatherReading;
 using AutoMapper;
 
 namespace AutoHome.Server;
@@ -18,6 +19,8 @@ public class AutoMapping : Profile
 		CreateMap<Device, UpdateDeviceRequest>();
 		CreateMap<Device, UpdateDeviceResult>();
 
+		CreateMap<TriggerEvent, ListTriggerEventsResult>();
+
 		CreateMap<AddTriggerRequest, Trigger>();
 		CreateMap<UpdateTriggerRequest, Trigger>();
 		CreateMap<Trigger, AddTriggerResult>();
@@ -26,6 +29,15 @@ public class AutoMapping : Profile
 		CreateMap<Trigger, UpdateTriggerRequest>();
 		CreateMap<Trigger, UpdateTriggerResult>();
 
-		CreateMap<TriggerEvent, ListTriggerEventsResult>();
+		CreateMap<AddVariableRequest, Variable>();
+		CreateMap<UpdateVariableRequest, Variable>();
+		CreateMap<Variable, AddVariableResult>();
+		CreateMap<Variable, GetVariableResult>();
+		CreateMap<Variable, ListVariablesResult>();
+		CreateMap<Variable, UpdateVariableRequest>();
+		CreateMap<Variable, UpdateVariableResult>();
+
+		CreateMap<Cirrus.Models.Device, WeatherReading>();
+		CreateMap<WeatherReading, ListWeatherReadingsResult>();
 	}
 }

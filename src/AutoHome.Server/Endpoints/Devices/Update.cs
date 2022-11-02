@@ -10,11 +10,11 @@ public class Update : EndpointBaseAsync
     .WithRequest<UpdateDeviceRequest>
     .WithActionResult<UpdateDeviceResult>
 {
-    private readonly IAsyncRepository<Device> _repository;
+    private readonly IRepository<Device> _repository;
     private readonly IMapper _mapper;
 
     public Update(
-        IAsyncRepository<Device> repository,
+        IRepository<Device> repository,
         IMapper mapper)
     {
         _repository = repository;

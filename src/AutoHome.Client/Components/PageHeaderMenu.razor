@@ -1,0 +1,15 @@
+﻿<MudPaper Elevation="0" Class="mud-background mt-4 mb-2">
+    <MudStack Row="true" Justify="Justify.SpaceBetween">
+        <MudText Typo="Typo.h4" Class="mt-2 mb-2">@Title</MudText>
+        <MudSpacer />
+        @ChildContent
+    </MudStack>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

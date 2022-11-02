@@ -1,6 +1,4 @@
-﻿using AutoHome.Data;
-using AutoHome.Data.Entities;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 
 namespace AutoHome.Server.Services;
 

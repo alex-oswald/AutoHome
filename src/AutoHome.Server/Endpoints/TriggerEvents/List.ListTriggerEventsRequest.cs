@@ -1,6 +1,4 @@
-﻿using AutoHome.Core;
-
-namespace AutoHome.Server.Endpoints.TriggerEvents;
+﻿namespace AutoHome.Server.Endpoints.TriggerEvents;
 
 public class ListTriggerEventsRequest : IPagedRequest
 {
