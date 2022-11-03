@@ -1,0 +1,105 @@
+﻿@page "/weather"
+
+@inject NavigationManager NavigationManager
+@inject AutoHomeRestClient Client;
+@inject IDialogService DialogService;
+@inject ISnackbar Snackbar;
+@inject IMapper Mapper;
+
+<PageHeaderMenu Title="Weather Readings">
+    <MudIconButton Icon="@Icons.Material.Filled.Refresh" Class="mt-2 mb-2" Disabled="@_loading"
+        OnClick="@(async () => RefreshAsync())">
+    </MudIconButton>
+</PageHeaderMenu>
+
+<MudSimpleTable Style="overflow-x: auto;">
+    <thead>
+        <tr>
+            @foreach (var h in _headings)
+            {
+                <th>@h</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (_weatherReadings.Any())
+        {
+            @foreach (var row in _weatherReadings)
+            {
+                <tr>
+                    <td>@row.UtcDate!.Value.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>@row.IndoorTemperatureFahrenheit</td>
+                    <td>@row.IndoorHumidity</td>
+                    <td>@row.OutdoorTemperatureFahrenheit</td>
+                    <td>@row.OutdoorHumidity</td>
+                    <td>@row.SolarRadiation</td>
+                    <td>@row.WindDirection</td>
+                    <td>@row.WindSpeedMph</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr colspan=4>
+                <td>No weather readings</td>
+            </tr>
+        }
+
+    </tbody>
+</MudSimpleTable>
+
+<div class="d-flex flex-column align-center">
+    <MudPagination ShowFirstButton="true" ShowLastButton="true" Class="mt-4 mb-4" SelectedChanged="SelectedPageChangedAsync" Selected="_listQuery.PageIndex" Count="_pageCount" />
+</div>
+
+@code {
+    private ListQuery _listQuery { get; set; }
+    IEnumerable<ListWeatherReadingsResult> _weatherReadings { get; set; } = new List<ListWeatherReadingsResult>();
+    string[] _headings = { "Time Stamp", "Indoor Temp (°F)", "Indoor Humidity (%)", "Outdoor Temp (°F)", "Outdoor Humidity (°F)", "Solar Radiation (W/m^2)", "Wind Direction (°)", "Wind Speed (mph)" };
+    bool _loading = true;
+    int _pageCount = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _listQuery = NavigationManager.GetListQuery();
+        NavigationManager.LocationChanged += HandleLocationChanged;
+        await RefreshAsync();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        _listQuery = NavigationManager.GetListQuery();
+        StateHasChanged();
+    }
+
+    private async Task RefreshAsync()
+    {
+        _loading = true;
+        var weatherReadings = await Client.ListWeatherReadingsAsync(_listQuery.PageIndex, _listQuery.PageSize);
+        _weatherReadings = weatherReadings.Data;
+        _pageCount = weatherReadings.TotalPages;
+        _loading = false;
+        StateHasChanged();
+    }
+
+    private async Task SelectedPageChangedAsync(int pageIndex)
+    {
+        var dict = new ReadOnlyDictionary<string, object?>(new Dictionary<string, object?>()
+            {
+                { "pageIndex", pageIndex },
+                { "pageSize", _listQuery.PageSize },
+            });
+        NavigationManager.NavigateTo(
+            NavigationManager.GetUriWithQueryParameters(dict));
+        _listQuery.PageIndex = pageIndex;
+        _listQuery.PageSize = Convert.ToInt32(dict["pageSize"]);
+
+        await RefreshAsync();
+        StateHasChanged();
+    }
+}

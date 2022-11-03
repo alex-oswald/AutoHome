@@ -1,0 +1,39 @@
+﻿@inject AutoHomeRestClient Client;
+
+<MudChart ChartType="ChartType.Line" ChartSeries="@Series"  XAxisLabels="@XAxisLabels"
+    Width="100%" Height="350px"></MudChart>
+
+@code {
+    private IList<ListWeatherReadingsResult> _readings = new List<ListWeatherReadingsResult>();
+    private DateTimeOffset _datetime = DateTimeOffset.UtcNow;
+    private int _readingCount = 100;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var pages = await Client.ListWeatherReadingsAsync(1, _readingCount, CancellationToken.None);
+        _readings = pages.Data.OrderBy(o => o.UtcDate).ToList();
+
+        var indoor = new ChartSeries() { Name = "Indoor Temp", Data = Enumerable.Repeat(default(double), _readingCount).ToArray() };
+        var outdoor = new ChartSeries() { Name = "Outdoor Temp", Data = Enumerable.Repeat(default(double), _readingCount).ToArray() };
+
+        for (int seriesIndex = _readingCount - 1, readingIndex = _readings.Count - 1; readingIndex >= 0; seriesIndex--, readingIndex--)
+        {
+            var indoorReading = _readings[readingIndex].IndoorTemperatureFahrenheit;
+            indoor.Data[seriesIndex] = indoorReading.HasValue ? indoorReading.Value : default(double);
+            var outdoorReading = _readings[readingIndex].OutdoorTemperatureFahrenheit;
+            outdoor.Data[seriesIndex] = outdoorReading.HasValue ? outdoorReading.Value : default(double);
+        }
+
+        Series = new List<ChartSeries> { indoor, outdoor };
+        XAxisLabels = Enumerable.Repeat(string.Empty, _readingCount).ToArray();
+        var xAxisLabelCount = _readingCount / 10;
+        for (int labelIndex = _readingCount - 1, readingIndex = _readings.Count - 1;readingIndex >= xAxisLabelCount; labelIndex = labelIndex - xAxisLabelCount, readingIndex = readingIndex - xAxisLabelCount)
+        {
+            XAxisLabels[labelIndex] = _readings[readingIndex].UtcDate!.Value.ToString("HH:mm");
+        }
+    }
+
+    public List<ChartSeries> Series = new List<ChartSeries>();
+    public string[] XAxisLabels = Array.Empty<string>();
+}
+
