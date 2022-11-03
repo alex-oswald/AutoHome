@@ -50,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.RestClient", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AmbientWeather", "AmbientWeather", "{6E07D45D-8E3A-43DD-B6D0-8290546F5B27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmbientWeather.Plugin", "src\Integrations\AmbientWeather\AmbientWeather.Plugin\AmbientWeather.Plugin.csproj", "{1AEC4535-5CE6-4801-AE3F-7885E6CADAA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmbientWeather.Plugin", "src\Integrations\AmbientWeather\AmbientWeather.Plugin\AmbientWeather.Plugin.csproj", "{1AEC4535-5CE6-4801-AE3F-7885E6CADAA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
