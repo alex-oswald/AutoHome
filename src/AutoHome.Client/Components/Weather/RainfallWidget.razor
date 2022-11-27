@@ -1,6 +1,6 @@
 ﻿@inject AutoHomeRestClient Client;
 
-<MudChart ChartType="ChartType.Line" ChartSeries="@Series" XAxisLabels="@XAxisLabels"
+<MudChart ChartType="ChartType.Bar" ChartSeries="@Series" XAxisLabels="@XAxisLabels"
           Width="100%" Height="350px"></MudChart>
 
 @code {
@@ -9,7 +9,8 @@
     private ChartOptions chartOptions = new ChartOptions
     {
         MaxNumYAxisTicks = 5,
-        YAxisTicks = 5,
+        YAxisTicks = 1,
+        
     };
 
     public List<ChartSeries> Series = new List<ChartSeries>();
