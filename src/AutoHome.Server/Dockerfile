@@ -10,7 +10,7 @@ WORKDIR /src
 COPY ["src/AutoHome.Server/AutoHome.Server.csproj", "src/AutoHome.Server/"]
 RUN dotnet restore "src/AutoHome.Server/AutoHome.Server.csproj"
 COPY . .
-WORKDIR "/src/src/AutoHome.Server"
+WORKDIR "/src/AutoHome.Server"
 RUN dotnet build "AutoHome.Server.csproj" -c Release -o /app/build
 
 FROM build AS publish
