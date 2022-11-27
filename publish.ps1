@@ -14,10 +14,10 @@ try {
 
 	dotnet publish `
 		--configuration Release `
-		--output "bin\Release\net6.0\publish\" `
+		--output "bin\Release\net7.0\publish\" `
 		--self-contained false
 
-	scp -r bin\Release\net6.0\publish\* pi@$($IPAddress):/home/pi/$($ProjectName)
+	scp -r bin\Release\net7.0\publish\* pi@$($IPAddress):/home/pi/$($ProjectName)
 	
 	# Copy certificate
 	Set-Location $runDirectory

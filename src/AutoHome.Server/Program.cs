@@ -74,9 +74,6 @@ try
     using (var scope = app.Services.CreateScope())
     {
         var db = scope.ServiceProvider.GetRequiredService<MySqlDbContext>();
-        //Log.Logger.Information("Creating database");
-        //db.Database.EnsureCreated();
-        //Log.Logger.Information("Database creation complete");
         Log.Logger.Information("Migrating database");
         db.Database.Migrate();
         Log.Logger.Information("Database migration complete");
