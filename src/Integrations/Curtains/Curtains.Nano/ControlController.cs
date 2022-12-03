@@ -1,21 +1,20 @@
 ﻿using nanoFramework.WebServer;
 using System;
-using System.Device.Gpio;
 using System.Net;
 
-namespace Test
+namespace Curtains.Nano
 {
     //[Authentication("none")]
-    public class ControllerHello
+    public class HelloController
     {
-        [Route("hello")]
+        [Route("")]
         [Method("GET")]
         public void Open(WebServerEventArgs e)
         {
             try
             {
                 e.Context.Response.ContentType = "text/plain";
-                WebServer.OutPutStream(e.Context.Response, "Open called ESP32");
+                WebServer.OutPutStream(e.Context.Response, $"AutoHome Device - {Configuration.DeviceName}");
             }
             catch (Exception)
             {
@@ -24,10 +23,17 @@ namespace Test
         }
     }
 
-    [Authentication("ApiKey")]
-    public class Controller
+    //[Authentication("ApiKey")]
+    public class ControlController
     {
-        
+        private readonly IHardwareService _hardware;
+        private readonly IMessaging _messaging;
+
+        public ControlController(IHardwareService hardware, IMessaging messaging)
+        {
+            _hardware = hardware;
+            _messaging = messaging;
+        }
 
         [Route("open")]
         [Method("GET")]
@@ -35,6 +41,11 @@ namespace Test
         {
             try
             {
+                _messaging.PublishStatus("Open command received, opening...");
+                _hardware.BlinkFast();
+                _hardware.Open();
+                _hardware.BlinkFast();
+                _messaging.PublishStatus("Open complete");
                 e.Context.Response.ContentType = "text/plain";
                 WebServer.OutPutStream(e.Context.Response, "Open called ESP32");
             }
@@ -50,6 +61,11 @@ namespace Test
         {
             try
             {
+                _messaging.PublishStatus("Close command received, closing...");
+                _hardware.BlinkFast();
+                _hardware.Close();
+                _hardware.BlinkFast();
+                _messaging.PublishStatus("Close complete");
                 e.Context.Response.ContentType = "text/plain";
                 WebServer.OutPutStream(e.Context.Response, "Close called ESP32");
             }
