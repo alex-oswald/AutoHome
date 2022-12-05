@@ -1,29 +1,12 @@
 ﻿using nanoFramework.WebServer;
 using System;
+using System.Diagnostics;
 using System.Net;
+using System.Threading;
 
 namespace Curtains.Nano
 {
-    //[Authentication("none")]
-    public class HelloController
-    {
-        [Route("")]
-        [Method("GET")]
-        public void Open(WebServerEventArgs e)
-        {
-            try
-            {
-                e.Context.Response.ContentType = "text/plain";
-                WebServer.OutPutStream(e.Context.Response, $"AutoHome Device - {Configuration.DeviceName}");
-            }
-            catch (Exception)
-            {
-                WebServer.OutputHttpCode(e.Context.Response, HttpStatusCode.BadRequest);
-            }
-        }
-    }
-
-    //[Authentication("ApiKey")]
+    [Authentication("ApiKey:" + Configuration.IntegrationDeviceId)]
     public class ControlController
     {
         private readonly IHardwareService _hardware;
@@ -41,11 +24,18 @@ namespace Curtains.Nano
         {
             try
             {
+                Debug.WriteLine("Open command received");
+                var request = e.Context.Request;
+                var headers = request.Headers.AllKeys;
                 _messaging.PublishStatus("Open command received, opening...");
-                _hardware.BlinkFast();
-                _hardware.Open();
-                _hardware.BlinkFast();
-                _messaging.PublishStatus("Open complete");
+                Thread thread = new(() =>
+                {
+                    _hardware.BlinkFast();
+                    _hardware.Open();
+                    _hardware.BlinkFast();
+                    _messaging.PublishStatus("Open complete");
+                });
+                thread.Start();
                 e.Context.Response.ContentType = "text/plain";
                 WebServer.OutPutStream(e.Context.Response, "Open called ESP32");
             }
@@ -61,11 +51,16 @@ namespace Curtains.Nano
         {
             try
             {
+                Debug.WriteLine("Close command received");
                 _messaging.PublishStatus("Close command received, closing...");
-                _hardware.BlinkFast();
-                _hardware.Close();
-                _hardware.BlinkFast();
-                _messaging.PublishStatus("Close complete");
+                Thread thread = new(() =>
+                {
+                    _hardware.BlinkFast();
+                    _hardware.Close();
+                    _hardware.BlinkFast();
+                    _messaging.PublishStatus("Close complete");
+                });
+                thread.Start();
                 e.Context.Response.ContentType = "text/plain";
                 WebServer.OutPutStream(e.Context.Response, "Close called ESP32");
             }

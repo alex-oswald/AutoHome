@@ -1,5 +1,4 @@
 ﻿using nanoFramework.DependencyInjection;
-using nanoFramework.Networking;
 using nanoFramework.WebServer;
 using System;
 using System.Diagnostics;
@@ -25,6 +24,7 @@ namespace Curtains.Nano
         {
             // Setup web server
             using WebServerDi server = new(80, HttpProtocol.Http, new Type[] { typeof(ControlController), typeof(HelloController) }, _provider);
+            // This wasn't working. Had to add the ApiKey to the authorization attribute
             server.ApiKey = Configuration.IntegrationDeviceId;
             server.Start();
             Debug.WriteLine("Web server started");

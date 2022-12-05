@@ -41,6 +41,7 @@ namespace Curtains.Nano
 
                 CancellationTokenSource connectTimeoutCts = new(60000);
                 var success = WifiNetworkHelper.Reconnect(true, token: connectTimeoutCts.Token);
+                
                 if (!success)
                 {
                     Debug.WriteLine($"Can't get a proper IP address and DateTime, error: {WifiNetworkHelper.Status}.");
@@ -56,6 +57,10 @@ namespace Curtains.Nano
 
                 // Stop blinking
                 blinkCts.Cancel();
+                // Wait as long as the slow blink takes, otherwise the hardware class could get disposed before the blink finishes
+                // and throw a disposed exception
+                Thread.Sleep(2000);
+                _hardware.BlinkFast();
                 _hardware.Dispose();
 
                 // We're connected to the network now so lets run the application

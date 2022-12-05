@@ -12,8 +12,12 @@ namespace Curtains.Nano
         void Close();
     }
 
+    /// <summary>
+    /// This class is thread safe.
+    /// </summary>
     public class HardwareService : IHardwareService, IDisposable
     {
+        private readonly object _lock = new();
         private readonly GpioController _controller;
         private readonly GpioPin _ledPin;
         private readonly A4988 _motor;
@@ -27,46 +31,62 @@ namespace Curtains.Nano
 
         public void BlinkSlow(CancellationToken cancellationToken)
         {
-            Thread blink = new(() => blinkSlow(_ledPin, cancellationToken));
+            Thread blink = new(() => BlinkSlow(_ledPin, cancellationToken));
             blink.Start();
+        }
 
-            static void blinkSlow(GpioPin pin, CancellationToken cancellationToken)
+        private void BlinkSlow(GpioPin pin, CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
             {
-                while (!cancellationToken.IsCancellationRequested)
+                lock (_lock)
                 {
                     pin.Write(PinValue.High);
                     Thread.Sleep(250);
                     pin.Write(PinValue.Low);
-                    Thread.Sleep(1750);
                 }
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    continue;
+                }
+                Thread.Sleep(1750);
             }
         }
 
         public void BlinkFast()
         {
-            _ledPin.Write(PinValue.High);
-            Thread.Sleep(50);
-            _ledPin.Write(PinValue.Low);
-            Thread.Sleep(50);
-            _ledPin.Write(PinValue.High);
-            Thread.Sleep(50);
-            _ledPin.Write(PinValue.Low);
+            lock (_lock)
+            {
+                _ledPin.Write(PinValue.High);
+                Thread.Sleep(50);
+                _ledPin.Write(PinValue.Low);
+                Thread.Sleep(50);
+                _ledPin.Write(PinValue.High);
+                Thread.Sleep(50);
+                _ledPin.Write(PinValue.Low);
+            }
         }
 
         public void Open()
         {
-            _motor.SetEnabledState(true);
-            _motor.RPM = Configuration.RPM;
-            _motor.Step(Configuration.OpenSteps);
-            _motor.SetEnabledState(false);
+            lock (_lock)
+            {
+                _motor.SetEnabledState(true);
+                _motor.RPM = Configuration.RPM;
+                _motor.Step(Configuration.OpenSteps);
+                _motor.SetEnabledState(false);
+            }
         }
 
         public void Close()
         {
-            _motor.SetEnabledState(true);
-            _motor.RPM = Configuration.RPM;
-            _motor.Step(Configuration.CloseSteps);
-            _motor.SetEnabledState(false);
+            lock (_lock)
+            {
+                _motor.SetEnabledState(true);
+                _motor.RPM = Configuration.RPM;
+                _motor.Step(Configuration.CloseSteps);
+                _motor.SetEnabledState(false);
+            }
         }
 
         public void Dispose()
