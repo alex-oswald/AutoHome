@@ -7,9 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY . .
+COPY ["src/AutoHome.Server/AutoHome.Server.csproj", "src/AutoHome.Server/"]
 RUN dotnet restore "src/AutoHome.Server/AutoHome.Server.csproj"
-WORKDIR "/src/AutoHome.Server"
+COPY . .
+WORKDIR "/src/src/AutoHome.Server"
 RUN dotnet build "AutoHome.Server.csproj" -c Release -o /app/build
 
 FROM build AS publish
