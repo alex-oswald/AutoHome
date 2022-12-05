@@ -1,6 +1,6 @@
 using nanoFramework.DependencyInjection;
 using nanoFramework.Networking;
-using System.Device.Gpio;
+using System;
 using System.Diagnostics;
 using System.Threading;
 
@@ -29,36 +29,46 @@ namespace Curtains.Nano
     {
         public static void Main()
         {
-            Debug.WriteLine("Waiting for network up and IP address...");
-
-            // Start blinking the LED slowly to identify connecting to the network
-            CancellationTokenSource blinkCts = new();
-            var _hardware = new HardwareService();
-            _hardware.BlinkSlow(blinkCts.Token);
-
-        wifi_connect:
-            CancellationTokenSource connectTimeoutCts = new(60000);
-            var success = WifiNetworkHelper.Reconnect(true, token: connectTimeoutCts.Token);
-            if (!success)
+        reset:
+            try
             {
-                Debug.WriteLine($"Can't get a proper IP address and DateTime, error: {WifiNetworkHelper.Status}.");
-                if (WifiNetworkHelper.HelperException != null)
+                Debug.WriteLine("Waiting for network up and IP address...");
+
+                // Start blinking the LED slowly to identify connecting to the network
+                CancellationTokenSource blinkCts = new();
+                var _hardware = new HardwareService();
+                _hardware.BlinkSlow(blinkCts.Token);
+
+                CancellationTokenSource connectTimeoutCts = new(60000);
+                var success = WifiNetworkHelper.Reconnect(true, token: connectTimeoutCts.Token);
+                if (!success)
                 {
-                    Debug.WriteLine($"Exception: {WifiNetworkHelper.HelperException}");
+                    Debug.WriteLine($"Can't get a proper IP address and DateTime, error: {WifiNetworkHelper.Status}.");
+                    if (WifiNetworkHelper.HelperException != null)
+                    {
+                        Debug.WriteLine($"Exception: {WifiNetworkHelper.HelperException}");
+                    }
+                    // Start over trying to connect to wifi
+                    Debug.WriteLine("Go back and try to connect to WiFi again");
+                    goto reset;
                 }
-                // Start over trying to connect to wifi
-                Debug.WriteLine("Go back and try to connect to WiFi again");
-                goto wifi_connect;
+                Debug.WriteLine("Connected to WiFi");
+
+                // Stop blinking
+                blinkCts.Cancel();
+                _hardware.Dispose();
+
+                // We're connected to the network now so lets run the application
+                ServiceProvider services = ConfigureServices();
+                var application = (Application)services.GetRequiredService(typeof(Application));
+                application.Run();
             }
-            Debug.WriteLine("Connected to WiFi");
-
-            // Stop blinking
-            blinkCts.Cancel();
-            _hardware.Dispose();
-
-            ServiceProvider services = ConfigureServices();
-            var application = (Application)services.GetRequiredService(typeof(Application));
-            application.Run();
+            catch (Exception ex)
+            {
+                Debug.WriteLine("ERROR\n\n" + ex.ToString());
+            }
+            // If something catastrophic happens try to reset
+            goto reset;
         }
 
         private static ServiceProvider ConfigureServices()
