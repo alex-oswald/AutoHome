@@ -4,7 +4,8 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0.100 AS build
+ARG BUILDPLATFORM=linux/arm64
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 as build
 WORKDIR /source
 COPY src .
 RUN dotnet restore "AutoHome.Server/AutoHome.Server.csproj"
