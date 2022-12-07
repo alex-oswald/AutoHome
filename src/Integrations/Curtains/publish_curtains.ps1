@@ -7,7 +7,7 @@ $runDirectory = Get-Location
 try {
 	$ProjectName = "Curtains"
 	$Runtime = "linux-arm64"
-	$Output = "bin\Release\net6.0\linux-arm64\publish\"
+	$Output = "bin\Release\net7.0\linux-arm64\publish\"
 	Set-Location "src\$ProjectName"
 
 	Write-Host "Publishing $ProjectName" -ForegroundColor Green
@@ -17,10 +17,10 @@ try {
 	dotnet publish `
 		--runtime linux-arm64 `
 		--configuration Release `
-		--output "bin\Release\net6.0\linux-arm64\publish\" `
+		--output "bin\Release\net7.0\linux-arm64\publish\" `
 		--self-contained
 
-	scp -r bin\Release\net6.0\linux-arm64\publish\* pi@$($IPAddress):/home/pi/$($ProjectName)
+	scp -r bin\Release\net7.0\linux-arm64\publish\* pi@$($IPAddress):/home/pi/$($ProjectName)
 
 	# On the pi
 	# chmod +x ./Curtains

@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "AutoCurtains": {
+    "AutoHome.Server": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

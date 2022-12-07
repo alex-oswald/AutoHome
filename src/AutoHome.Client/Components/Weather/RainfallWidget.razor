@@ -1,0 +1,37 @@
+﻿@inject AutoHomeRestClient Client;
+
+<MudChart ChartType="ChartType.Bar" ChartSeries="@Series" XAxisLabels="@XAxisLabels"
+          Width="100%" Height="350px"></MudChart>
+
+@code {
+    private IList<ListWeatherReadingsResult> _readings = new List<ListWeatherReadingsResult>();
+    private DateTimeOffset _datetime = DateTimeOffset.UtcNow;
+    private ChartOptions chartOptions = new ChartOptions
+    {
+        MaxNumYAxisTicks = 5,
+        YAxisTicks = 1,
+        
+    };
+
+    public List<ChartSeries> Series = new List<ChartSeries>();
+    public string[] XAxisLabels = Array.Empty<string>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var pages = await Client.ListWeatherReadingsAsync(1, 1, CancellationToken.None);
+        _readings = pages.Data.OrderBy(o => o.UtcDate).ToList();
+
+        double[] data = new double[]
+        {
+            _readings.Single().EventRainfall!.Value,
+            _readings.Single().HourlyRainfall!.Value,
+            _readings.Single().DailyRainfall!.Value,
+            _readings.Single().WeeklyRainfall!.Value,
+            _readings.Single().MonthlyRainfall!.Value,
+        };
+        Series = new List<ChartSeries> { new ChartSeries { Name = "Rainfall", Data = data } };
+        XAxisLabels = new string[] { "Event", "Hourly", "Daily", "Weekly", "Monthly" };
+        
+    }
+}
