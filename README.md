@@ -13,6 +13,13 @@ dotnet ef migrations add MIGRATION_NAME
 ```
 
 
+### Update tools
+
+```cmd
+dotnet tool update --global dotnet-ef
+```
+
+
 ## Devices
 
 

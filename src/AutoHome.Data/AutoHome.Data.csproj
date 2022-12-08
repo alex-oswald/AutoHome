@@ -24,8 +24,4 @@
     <Using Include="AutoHome.Core.Entities" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>
