@@ -14,8 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		setup_sdcard.ps1 = setup_sdcard.ps1
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Hardware", "src\AutoHome.Hardware\AutoHome.Hardware.csproj", "{D41A9D61-80BD-4D62-9604-4DAB0DC24EEB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Tests", "tests\AutoHome.Tests\AutoHome.Tests.csproj", "{F1E2DBDD-29C3-4845-B0FE-61CC43D88A23}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHome.Client", "src\AutoHome.Client\AutoHome.Client.csproj", "{D7B1605E-7FCA-4F3A-9F45-F2093124A7CF}"
@@ -62,10 +60,6 @@ Global
 		{B88DD1D1-B1F7-4F70-AF16-F62316FA2A3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B88DD1D1-B1F7-4F70-AF16-F62316FA2A3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B88DD1D1-B1F7-4F70-AF16-F62316FA2A3C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D41A9D61-80BD-4D62-9604-4DAB0DC24EEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D41A9D61-80BD-4D62-9604-4DAB0DC24EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D41A9D61-80BD-4D62-9604-4DAB0DC24EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D41A9D61-80BD-4D62-9604-4DAB0DC24EEB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F1E2DBDD-29C3-4845-B0FE-61CC43D88A23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F1E2DBDD-29C3-4845-B0FE-61CC43D88A23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1E2DBDD-29C3-4845-B0FE-61CC43D88A23}.Release|Any CPU.ActiveCfg = Release|Any CPU
