@@ -6,6 +6,25 @@ using System.Threading;
 
 namespace Curtains.Nano
 {
+    public class HealthController
+    {
+        [Route("health")]
+        [Method("GET")]
+        public void Open(WebServerEventArgs e)
+        {
+            try
+            {
+                Debug.WriteLine("Health endpoint");
+                e.Context.Response.ContentType = "text/plain";
+                WebServer.OutPutStream(e.Context.Response, "healthy");
+            }
+            catch (Exception)
+            {
+                WebServer.OutputHttpCode(e.Context.Response, HttpStatusCode.BadRequest);
+            }
+        }
+    }
+
     [Authentication("ApiKey:" + Configuration.IntegrationDeviceId)]
     public class ControlController
     {
