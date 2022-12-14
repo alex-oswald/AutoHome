@@ -6,15 +6,16 @@ namespace Curtains.Nano
 {
     public interface IMessaging
     {
+        void Init();
         void PublishStatus(string value);
         void Publish(string topic, string value);
     }
 
     public class Messaging : IMessaging
     {
-        private readonly MqttClient _client;
+        private MqttClient _client = null;
 
-        public Messaging()
+        public void Init()
         {
             Debug.WriteLine("Connecting to MQTT broker");
             // Setup MQTT
@@ -29,12 +30,18 @@ namespace Curtains.Nano
 
         public void PublishStatus(string value)
         {
-            _client.Publish(Configuration.MqttTopicStatus, Encoding.UTF8.GetBytes(value));
+            if (_client != null)
+            {
+                _client.Publish(Configuration.MqttTopicStatus, Encoding.UTF8.GetBytes(value));
+            }
         }
 
         public void Publish(string topic, string value)
         {
-            _client.Publish(Configuration.MqttTopicBase + "/" + topic, Encoding.UTF8.GetBytes(value));
+            if (_client != null)
+            {
+                _client.Publish(Configuration.MqttTopicBase + "/" + topic, Encoding.UTF8.GetBytes(value));
+            }
         }
     }
 }

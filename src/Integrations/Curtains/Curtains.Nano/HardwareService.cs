@@ -6,6 +6,7 @@ namespace Curtains.Nano
 {
     public interface IHardwareService
     {
+        void Init();
         void BlinkSlow(CancellationToken cancellationToken);
         void BlinkFast();
         void Open();
@@ -18,11 +19,11 @@ namespace Curtains.Nano
     public class HardwareService : IHardwareService, IDisposable
     {
         private readonly object _lock = new();
-        private readonly GpioController _controller;
-        private readonly GpioPin _ledPin;
-        private readonly A4988 _motor;
+        private GpioController _controller;
+        private GpioPin _ledPin;
+        private A4988 _motor;
 
-        public HardwareService()
+        public void Init()
         {
             _controller = new GpioController(PinNumberingScheme.Logical);
             _ledPin = _controller.OpenPin(Configuration.LedPin, PinMode.Output);

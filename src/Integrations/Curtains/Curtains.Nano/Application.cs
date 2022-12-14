@@ -22,12 +22,17 @@ namespace Curtains.Nano
 
         public void Run()
         {
+            _hardware.Init();
+
             // Setup web server
             using WebServerDi server = new(80, HttpProtocol.Http, new Type[] { typeof(ControlController), typeof(HealthController) }, _provider);
             // This wasn't working. Had to add the ApiKey to the authorization attribute
             server.ApiKey = Configuration.IntegrationDeviceId;
             server.Start();
             Debug.WriteLine("Web server started");
+
+            // Start mqtt
+            _messaging.Init();
 
             // Send a heartbeat message every 30 seconds
             while (true)

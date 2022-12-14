@@ -30,7 +30,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{39106798
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Curtains", "Curtains", "{666D6C5A-B1CD-43B2-8750-CBA083ABD05A}"
 	ProjectSection(SolutionItems) = preProject
-		src\Integrations\Curtains\publish_curtains.ps1 = src\Integrations\Curtains\publish_curtains.ps1
 		src\Integrations\Curtains\README.md = src\Integrations\Curtains\README.md
 	EndProjectSection
 EndProject
