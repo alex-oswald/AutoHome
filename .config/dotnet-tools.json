@@ -13,6 +13,12 @@
       "commands": [
         "dotnet-ef"
       ]
+    },
+    "nanoff": {
+      "version": "2.4.24",
+      "commands": [
+        "nanoff"
+      ]
     }
   }
 }
