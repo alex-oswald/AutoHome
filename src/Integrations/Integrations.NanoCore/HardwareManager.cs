@@ -2,9 +2,9 @@
 using System.Device.Gpio;
 using System.Threading;
 
-namespace Curtains.Nano
+namespace AutoHome.Integrations.NanoCore
 {
-    public interface IHardwareService
+    public interface IHardwareManager
     {
         void Init();
         void BlinkSlow(CancellationToken cancellationToken);
@@ -16,18 +16,24 @@ namespace Curtains.Nano
     /// <summary>
     /// This class is thread safe.
     /// </summary>
-    public class HardwareService : IHardwareService, IDisposable
+    public class HardwareManager : IHardwareManager, IDisposable
     {
         private readonly object _lock = new();
+        private readonly IIntegrationOptions _options;
         private GpioController _controller;
         private GpioPin _ledPin;
         private A4988 _motor;
 
+        public HardwareManager(IIntegrationOptions options)
+        {
+            _options = options;
+        }
+
         public void Init()
         {
             _controller = new GpioController(PinNumberingScheme.Logical);
-            _ledPin = _controller.OpenPin(Configuration.LedPin, PinMode.Output);
-            _motor = new A4988(Configuration.StepPin, Configuration.DirectionPin, Configuration.EnablePin, _controller);
+            _ledPin = _controller.OpenPin(_options.LedPin, PinMode.Output);
+            _motor = new A4988(_options.StepPin, _options.DirectionPin, _options.EnablePin, _controller);
         }
 
         public void BlinkSlow(CancellationToken cancellationToken)
@@ -73,8 +79,8 @@ namespace Curtains.Nano
             lock (_lock)
             {
                 _motor.SetEnabledState(true);
-                _motor.RPM = Configuration.RPM;
-                _motor.Step(Configuration.OpenSteps);
+                _motor.RPM = _options.RPM;
+                _motor.Step(_options.OpenSteps);
                 _motor.SetEnabledState(false);
             }
         }
@@ -84,8 +90,8 @@ namespace Curtains.Nano
             lock (_lock)
             {
                 _motor.SetEnabledState(true);
-                _motor.RPM = Configuration.RPM;
-                _motor.Step(Configuration.CloseSteps);
+                _motor.RPM = _options.RPM;
+                _motor.Step(_options.CloseSteps);
                 _motor.SetEnabledState(false);
             }
         }

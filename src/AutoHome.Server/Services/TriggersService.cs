@@ -154,7 +154,7 @@ public class TriggersService : ITriggersService
     {
         // Get the action for the trigger
         var action = _triggerActions.Where(o => o.Key == trigger.Name).FirstOrDefault();
-        var triggerPackage = new TriggerEventPackage(trigger.Name, TimeSpan.FromMilliseconds(trigger.Interval), action);
+        var triggerPackage = new TriggerEventPackage(trigger.Name, TimeSpan.FromMilliseconds(trigger.Interval), action!);
 
         var dateTime = DateTime.Now.Add(triggerPackage.Interval);
         _logger.LogInformation("Adding trigger {name}, will trigger at {time}",

@@ -15,14 +15,14 @@ public static class ServiceCollectionExtensions
 
         // TODO this isn't working, why?
         //var apiKeys = section.GetValue<List<string>>(nameof(CirrusConfig.ApiKeys));
-        var apiKeys = new List<string> { section["ApiKeys:0"] };
+        var apiKeys = new List<string> { section["ApiKeys:0"] ?? string.Empty };
         var applicationKey = section.GetValue<string>(nameof(CirrusConfig.ApplicationKey));
         var macAddress = section.GetValue<string?>(nameof(CirrusConfig.MacAddress));
         services
             .AddCirrusServices(cirrusConfig =>
             {
                 cirrusConfig.ApiKeys = apiKeys;
-                cirrusConfig.ApplicationKey = applicationKey;
+                cirrusConfig.ApplicationKey = applicationKey!;
                 cirrusConfig.MacAddress = macAddress;
             });
 

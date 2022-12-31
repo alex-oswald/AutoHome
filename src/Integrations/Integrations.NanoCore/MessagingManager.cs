@@ -2,37 +2,43 @@
 using System.Diagnostics;
 using System.Text;
 
-namespace Curtains.Nano
+namespace AutoHome.Integrations.NanoCore
 {
-    public interface IMessaging
+    public interface IMessagingManager
     {
         void Init();
         void PublishStatus(string value);
         void Publish(string topic, string value);
     }
 
-    public class Messaging : IMessaging
+    public class MessagingManager : IMessagingManager
     {
         private MqttClient _client = null;
+        private readonly IIntegrationOptions _options;
+
+        public MessagingManager(IIntegrationOptions options)
+        {
+            _options = options;
+        }
 
         public void Init()
         {
             Debug.WriteLine("Connecting to MQTT broker");
             // Setup MQTT
-            _client = new MqttClient(Configuration.MqttBroker, 1883, false, null, null, MqttSslProtocols.None)
+            _client = new MqttClient(_options.MqttBroker, 1883, false, null, null, MqttSslProtocols.None)
             {
                 ProtocolVersion = MqttProtocolVersion.Version_5
             };
-            _client.Connect(Configuration.IntegrationDeviceId, true);
+            _client.Connect(_options.IntegrationDeviceId, true);
             Debug.WriteLine("Connected to MQTT broker");
-            _client.Publish(Configuration.MqttTopicStatus, Encoding.UTF8.GetBytes("Device is online"));
+            _client.Publish(_options.MqttTopicStatus, Encoding.UTF8.GetBytes("Device is online"));
         }
 
         public void PublishStatus(string value)
         {
             if (_client != null)
             {
-                _client.Publish(Configuration.MqttTopicStatus, Encoding.UTF8.GetBytes(value));
+                _client.Publish(_options.MqttTopicStatus, Encoding.UTF8.GetBytes(value));
             }
         }
 
@@ -40,7 +46,7 @@ namespace Curtains.Nano
         {
             if (_client != null)
             {
-                _client.Publish(Configuration.MqttTopicBase + "/" + topic, Encoding.UTF8.GetBytes(value));
+                _client.Publish(_options.MqttTopicBase + "/" + topic, Encoding.UTF8.GetBytes(value));
             }
         }
     }

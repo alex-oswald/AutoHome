@@ -1,10 +1,11 @@
-﻿using nanoFramework.WebServer;
+﻿using AutoHome.Integrations.NanoCore;
+using nanoFramework.WebServer;
 using System;
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
 
-namespace Curtains.Nano
+namespace AutoHome.Integrations.Curtains.Nano
 {
     public class HealthController
     {
@@ -25,13 +26,13 @@ namespace Curtains.Nano
         }
     }
 
-    [Authentication("ApiKey:" + Configuration.IntegrationDeviceId)]
+    [Authentication("ApiKey")]
     public class ControlController
     {
-        private readonly IHardwareService _hardware;
-        private readonly IMessaging _messaging;
+        private readonly IHardwareManager _hardware;
+        private readonly IMessagingManager _messaging;
 
-        public ControlController(IHardwareService hardware, IMessaging messaging)
+        public ControlController(IHardwareManager hardware, IMessagingManager messaging)
         {
             _hardware = hardware;
             _messaging = messaging;

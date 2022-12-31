@@ -42,7 +42,7 @@ public static class NavigationManagerExtensions
             }
         }
 
-        value = default;
+        value = default!;
         return false;
     }
 

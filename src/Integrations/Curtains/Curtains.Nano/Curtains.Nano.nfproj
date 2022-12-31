@@ -18,35 +18,28 @@
   </PropertyGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
-    <Compile Include="A4988.cs" />
-    <Compile Include="Application.cs" />
     <Compile Include="ControlController.cs" />
-    <Compile Include="HardwareService.cs" />
-    <Compile Include="Messaging.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Iot.Device.A4988">
-      <HintPath>..\..\..\..\packages\nanoFramework.Iot.Device.A4988.1.1.153\lib\Iot.Device.A4988.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib">
-      <HintPath>..\..\..\..\packages\nanoFramework.CoreLibrary.1.12.0\lib\mscorlib.dll</HintPath>
+      <HintPath>..\..\..\..\packages\nanoFramework.CoreLibrary.1.14.2\lib\mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="nanoFramework.DependencyInjection">
-      <HintPath>..\..\..\..\packages\nanoFramework.DependencyInjection.1.0.12\lib\nanoFramework.DependencyInjection.dll</HintPath>
+      <HintPath>..\..\..\..\packages\nanoFramework.DependencyInjection.1.0.22\lib\nanoFramework.DependencyInjection.dll</HintPath>
     </Reference>
-    <Reference Include="nanoFramework.M2Mqtt">
-      <HintPath>..\..\..\..\packages\nanoFramework.M2Mqtt.5.1.61\lib\nanoFramework.M2Mqtt.dll</HintPath>
+    <Reference Include="nanoFramework.Hosting">
+      <HintPath>..\..\..\..\packages\nanoFramework.Hosting.1.0.25\lib\nanoFramework.Hosting.dll</HintPath>
     </Reference>
     <Reference Include="nanoFramework.Runtime.Events">
-      <HintPath>..\..\..\..\packages\nanoFramework.Runtime.Events.1.11.1\lib\nanoFramework.Runtime.Events.dll</HintPath>
+      <HintPath>..\..\..\..\packages\nanoFramework.Runtime.Events.1.11.6\lib\nanoFramework.Runtime.Events.dll</HintPath>
     </Reference>
     <Reference Include="nanoFramework.Runtime.Native">
-      <HintPath>..\..\..\..\packages\nanoFramework.Runtime.Native.1.5.4\lib\nanoFramework.Runtime.Native.dll</HintPath>
+      <HintPath>..\..\..\..\packages\nanoFramework.Runtime.Native.1.6.6\lib\nanoFramework.Runtime.Native.dll</HintPath>
     </Reference>
     <Reference Include="nanoFramework.System.Collections">
-      <HintPath>..\..\..\..\packages\nanoFramework.System.Collections.1.4.0\lib\nanoFramework.System.Collections.dll</HintPath>
+      <HintPath>..\..\..\..\packages\nanoFramework.System.Collections.1.5.18\lib\nanoFramework.System.Collections.dll</HintPath>
     </Reference>
     <Reference Include="nanoFramework.System.Text">
       <HintPath>..\..\..\..\packages\nanoFramework.System.Text.1.2.22\lib\nanoFramework.System.Text.dll</HintPath>
@@ -67,22 +60,19 @@
       <HintPath>..\..\..\..\packages\nanoFramework.System.IO.Streams.1.1.27\lib\System.IO.Streams.dll</HintPath>
     </Reference>
     <Reference Include="System.Math">
-      <HintPath>..\..\..\..\packages\nanoFramework.System.Math.1.5.18\lib\System.Math.dll</HintPath>
+      <HintPath>..\..\..\..\packages\nanoFramework.System.Math.1.5.25\lib\System.Math.dll</HintPath>
     </Reference>
     <Reference Include="System.Net">
       <HintPath>..\..\..\..\packages\nanoFramework.System.Net.1.10.38\lib\System.Net.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
-      <HintPath>..\..\..\..\packages\nanoFramework.System.Net.Http.Server.1.5.61\lib\System.Net.Http.dll</HintPath>
+      <HintPath>..\..\..\..\packages\nanoFramework.System.Net.Http.Server.1.5.68\lib\System.Net.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading">
-      <HintPath>..\..\..\..\packages\nanoFramework.System.Threading.1.1.8\lib\System.Threading.dll</HintPath>
-    </Reference>
-    <Reference Include="UnitsNet.Angle">
-      <HintPath>..\..\..\..\packages\UnitsNet.nanoFramework.Angle.4.148.0\lib\UnitsNet.Angle.dll</HintPath>
+      <HintPath>..\..\..\..\packages\nanoFramework.System.Threading.1.1.19\lib\System.Threading.dll</HintPath>
     </Reference>
     <Reference Include="Windows.Storage">
-      <HintPath>..\..\..\..\packages\nanoFramework.Windows.Storage.1.5.24\lib\Windows.Storage.dll</HintPath>
+      <HintPath>..\..\..\..\packages\nanoFramework.Windows.Storage.1.5.27\lib\Windows.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Windows.Storage.Streams">
       <HintPath>..\..\..\..\packages\nanoFramework.Windows.Storage.Streams.1.14.19\lib\Windows.Storage.Streams.dll</HintPath>
@@ -90,6 +80,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Integrations.NanoCore\Integrations.NanoCore.nfproj" />
   </ItemGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
   <ProjectExtensions>

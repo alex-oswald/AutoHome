@@ -3,7 +3,7 @@ using System.Device.Gpio;
 using System.Diagnostics;
 using System.Threading;
 
-namespace Curtains.Nano
+namespace AutoHome.Integrations.NanoCore
 {
     public class A4988
     {

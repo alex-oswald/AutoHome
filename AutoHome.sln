@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmbientWeather.Plugin", "sr
 EndProject
 Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "Curtains.Nano", "src\Integrations\Curtains\Curtains.Nano\Curtains.Nano.nfproj", "{8118A6A4-7EC7-4391-9D26-E4580343EE93}"
 EndProject
+Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "Integrations.NanoCore", "src\Integrations\Integrations.NanoCore\Integrations.NanoCore.nfproj", "{84396799-A2F6-41F9-B610-28E73DAEB827}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,12 @@ Global
 		{8118A6A4-7EC7-4391-9D26-E4580343EE93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8118A6A4-7EC7-4391-9D26-E4580343EE93}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8118A6A4-7EC7-4391-9D26-E4580343EE93}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{84396799-A2F6-41F9-B610-28E73DAEB827}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84396799-A2F6-41F9-B610-28E73DAEB827}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84396799-A2F6-41F9-B610-28E73DAEB827}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{84396799-A2F6-41F9-B610-28E73DAEB827}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84396799-A2F6-41F9-B610-28E73DAEB827}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84396799-A2F6-41F9-B610-28E73DAEB827}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +120,7 @@ Global
 		{6E07D45D-8E3A-43DD-B6D0-8290546F5B27} = {4F99EAFD-E939-4E48-AF74-089B2CBAB60F}
 		{1AEC4535-5CE6-4801-AE3F-7885E6CADAA4} = {6E07D45D-8E3A-43DD-B6D0-8290546F5B27}
 		{8118A6A4-7EC7-4391-9D26-E4580343EE93} = {666D6C5A-B1CD-43B2-8750-CBA083ABD05A}
+		{84396799-A2F6-41F9-B610-28E73DAEB827} = {4F99EAFD-E939-4E48-AF74-089B2CBAB60F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28DE9D7A-1A22-4C65-8EFF-B3233A18AAC5}
