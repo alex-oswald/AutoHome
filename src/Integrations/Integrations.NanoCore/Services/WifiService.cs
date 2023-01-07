@@ -1,11 +1,10 @@
-﻿using nanoFramework.Hosting;
-using nanoFramework.Networking;
+﻿using nanoFramework.Networking;
 using System.Diagnostics;
 using System.Threading;
 
 namespace AutoHome.Integrations.NanoCore.Services
 {
-    public class WifiService : BackgroundService
+    public class WifiService
     {
         private readonly IHardwareManager _hardwareManager;
 
@@ -15,7 +14,7 @@ namespace AutoHome.Integrations.NanoCore.Services
             _hardwareManager = hardwareManager;
         }
 
-        protected override void ExecuteAsync()
+        public void StartWifi()
         {
             Debug.WriteLine("Waiting for network up and IP address...");
 
