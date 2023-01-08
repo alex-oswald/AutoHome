@@ -19,6 +19,7 @@
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
     <Compile Include="A4988.cs" />
+    <Compile Include="HardwareController.cs" />
     <Compile Include="HardwareManager.cs" />
     <Compile Include="Services\HeartbeatService.cs" />
     <Compile Include="IIntegrationOptions.cs" />
@@ -27,6 +28,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\WebServerService.cs" />
     <Compile Include="Services\WifiService.cs" />
+    <Compile Include="StatusLight.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Iot.Device.A4988">

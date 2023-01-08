@@ -2,6 +2,7 @@ using AutoHome.Integrations.NanoCore;
 using AutoHome.Integrations.NanoCore.Services;
 using nanoFramework.DependencyInjection;
 using nanoFramework.Hosting;
+using System.Threading;
 
 namespace AutoHome.Integrations.Curtains.Nano
 {
@@ -29,15 +30,19 @@ namespace AutoHome.Integrations.Curtains.Nano
 
         public static void Main()
         {
+            var source = new CancellationTokenSource();
             // Create our hardware manager and wifi service
             var hardware = new HardwareManager(options);
-            var app = new WifiService(hardware);
+            hardware.Init();
+            hardware.BlinkSlow(source.Token);
+
+            //var app = new WifiService(hardware);
             // Connect to wifi
-            app.StartWifi();
+            //app.StartWifi();
 
             // Run the host
-            var host = CreateHostBuilder(hardware).Build();
-            host.Run();
+            //var host = CreateHostBuilder(hardware).Build();
+            //host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(HardwareManager hardwareManager) =>

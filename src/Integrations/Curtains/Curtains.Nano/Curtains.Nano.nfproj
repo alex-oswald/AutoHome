@@ -23,6 +23,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Iot.Device.A4988">
+      <HintPath>..\..\..\..\packages\nanoFramework.Iot.Device.A4988.1.1.208\lib\Iot.Device.A4988.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>..\..\..\..\packages\nanoFramework.CoreLibrary.1.14.2\lib\mscorlib.dll</HintPath>
     </Reference>
@@ -54,7 +57,7 @@
       <HintPath>..\..\..\..\packages\nanoFramework.System.IO.Streams.1.1.38\lib\System.IO.Streams.dll</HintPath>
     </Reference>
     <Reference Include="System.Math">
-      <HintPath>..\..\..\..\packages\nanoFramework.System.Math.1.5.25\lib\System.Math.dll</HintPath>
+      <HintPath>..\..\..\..\packages\nanoFramework.System.Math.1.5.29\lib\System.Math.dll</HintPath>
     </Reference>
     <Reference Include="System.Net">
       <HintPath>..\..\..\..\packages\nanoFramework.System.Net.1.10.52\lib\System.Net.dll</HintPath>
@@ -64,6 +67,9 @@
     </Reference>
     <Reference Include="System.Threading">
       <HintPath>..\..\..\..\packages\nanoFramework.System.Threading.1.1.19\lib\System.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="UnitsNet.Angle">
+      <HintPath>..\..\..\..\packages\UnitsNet.nanoFramework.Angle.5.0.0-rc010\lib\UnitsNet.Angle.dll</HintPath>
     </Reference>
     <Reference Include="Windows.Storage">
       <HintPath>..\..\..\..\packages\nanoFramework.Windows.Storage.1.5.33\lib\Windows.Storage.dll</HintPath>
